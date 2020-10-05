@@ -1,17 +1,28 @@
-import React from 'react'
-import { DataQuery } from '@dhis2/app-runtime'
-import i18n from '@dhis2/d2-i18n'
-import classes from './App.module.css'
+import React, { useState } from "react";
+import { DataQuery } from "@dhis2/app-runtime";
+import { Menu, MenuItem, MenuSectionHeader } from "@dhis2/ui";
+import i18n from "@dhis2/d2-i18n";
+import styles from "./App.module.css";
+import CasesAndContacts from "./CasesAndContacts.js";
 
-const query = {
-    me: {
-        resource: 'me',
-    },
-}
+const MyApp = () => {
+  const [showIndexCases, getIndexCases] = useState(false);
 
-const MyApp = () => (
-    <div className={classes.container}>
-        <DataQuery query={query}>
+  return (
+    <div className={styles.container}>
+      <nav className={styles.menu} data-test-id="menu">
+        <MenuSectionHeader label={i18n.t("Menu")} />
+        <Menu>
+          <MenuItem
+            label={i18n.t("Cases and contact")}
+            dataTest="menu-cases-and-contacts"
+            onClick={() => getIndexCases(true)}
+          />
+          <MenuItem label={i18n.t("Follow-ups")} dataTest="menu-follow-ups" />
+        </Menu>
+      </nav>
+      {/* {showIndexCases && <CasesAndContacts />} */}
+      {/* <DataQuery query={query}>
             {({ error, loading, data }) => {
                 if (error) return <span>ERROR</span>
                 if (loading) return <span>...</span>
@@ -24,8 +35,9 @@ const MyApp = () => (
                     </>
                 )
             }}
-        </DataQuery>
+        </DataQuery> */}
     </div>
-)
+  );
+};
 
-export default MyApp
+export default MyApp;
