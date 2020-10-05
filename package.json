@@ -13,6 +13,7 @@
     "@dhis2/cli-app-scripts": "^5.2.1"
   },
   "dependencies": {
-    "@dhis2/app-runtime": "^2.3.0"
+    "@dhis2/app-runtime": "^2.3.0",
+    "@dhis2/ui": "^5.7.2"
   }
 }
