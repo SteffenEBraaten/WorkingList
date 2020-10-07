@@ -34,7 +34,10 @@ const Workload = () => {
 
   return (
     <>
-      <p>Index cases and contacts</p>
+      <div className={styles.wrapListItemWorkload}>
+        <h3>Index cases</h3>
+        <h3>Contacts</h3>
+      </div>
       <Menu>
         {/* {data.trackedEntityInstances.map(({ sB1IHYu2xQT }) => ( */}
         <div className={styles.wrapListItemWorkload}>
