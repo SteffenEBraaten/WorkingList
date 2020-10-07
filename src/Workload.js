@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { Menu, MenuItem } from "@dhis2/ui";
+import { Menu, MenuItem, Card } from "@dhis2/ui";
 import styles from "./App.module.css";
 import WorkloadHeader from "./WorkloadHeader.js";
 
@@ -22,6 +22,25 @@ const query = {
   },
 };
 
+const fakeData = {
+  cases: [
+    {
+      firstName: "Tine Margretha Vister",
+    },
+    {
+      firstName: "Steffen Ekeberg Bråten",
+    },
+  ],
+  contacts: [
+    {
+      contactNum: "1/2",
+    },
+    {
+      contactNum: "6/7",
+    },
+  ],
+};
+
 const Workload = () => {
   /*   const { error, loading, data } = useDataQuery(query);
    */
@@ -34,83 +53,32 @@ const Workload = () => {
 
   return (
     <>
-      <div className={styles.wrapListItemWorkload}>
-        <h3>Index cases</h3>
-        <h3>Contacts</h3>
+      <div className={styles.wrapListHeadingWorkload}>
+        <div class="">
+          <Menu>
+            <h3>Index cases</h3>
+            {fakeData.cases.map((x) => (
+              <MenuItem
+                dataTest="dhis2-uicore-card"
+                label={x.firstName}
+                className={styles.listItemCaseWorkload}
+              ></MenuItem>
+            ))}
+          </Menu>
+        </div>
+        <div class="">
+          <Menu>
+            <h3 className={styles.h3Center}>Contacts</h3>
+            {fakeData.contacts.map((x) => (
+              <MenuItem
+                dataTest="dhis2-uicore-card"
+                label={x.contactNum}
+                className={styles.listItemContactWorkload}
+              ></MenuItem>
+            ))}
+          </Menu>
+        </div>
       </div>
-      <Menu>
-        {/* {data.trackedEntityInstances.map(({ sB1IHYu2xQT }) => ( */}
-        <div className={styles.wrapListItemWorkload}>
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"Tine Margretha Vister"}
-            className={styles.listItemCaseWorkload}
-          />
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"1/3"}
-            className={styles.listItemContactWorkload}
-          />
-        </div>
-        <div className={styles.wrapListItemWorkload}>
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"Steffen Ekeberg Bråten"}
-            className={styles.listItemCaseWorkload}
-          />
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"0/9"}
-            className={styles.listItemContactWorkload}
-          />
-        </div>
-        <div className={styles.wrapListItemWorkload}>
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"Susanne Semsøy"}
-            className={styles.listItemCaseWorkload}
-          />
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"7/7"}
-            className={styles.listItemContactWorkload}
-          />
-        </div>
-        <div className={styles.wrapListItemWorkload}>
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"Steven H. Nguyen"}
-            className={styles.listItemCaseWorkload}
-          />
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"1/2"}
-            className={styles.listItemContactWorkload}
-          />
-        </div>
-        <div className={styles.wrapListItemWorkload}>
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"Thanh Thao Thi Tran"}
-            className={styles.listItemCaseWorkload}
-          />
-          <MenuItem
-            dataTest={`list-indexCases-${"firstName"}`}
-            key={"firstName"}
-            label={"2/4"}
-            className={styles.listItemContactWorkload}
-          />
-        </div>
-      </Menu>
     </>
   );
 };
