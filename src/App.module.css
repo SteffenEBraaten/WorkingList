@@ -1,13 +1,26 @@
 .container {
-  width: 15%;
+  /* width: 15%; */
   height: 100%;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  grid-template-areas: "sidebar main";
+  margin-left: 5%;
 }
 
 .menu {
   border-right: 1px solid rgb(128, 128, 128, 0.5);
   grid-area: sidebar;
+}
+
+.workloadHeader {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+  grid-column: auto;
+}
+
+.SplitButton {
+  margin-left: 2em;
 }
