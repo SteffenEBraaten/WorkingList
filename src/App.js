@@ -4,6 +4,7 @@ import { Menu, MenuItem, MenuSectionHeader } from "@dhis2/ui";
 import i18n from "@dhis2/d2-i18n";
 import styles from "./App.module.css";
 import Workload from "./Workload.js";
+import WorkloadHeader from "./WorkloadHeader";
 
 const query = {
   me: {
@@ -14,13 +15,15 @@ const query = {
 const MyApp = () => {
   return (
     <div className={styles.container}>
-      <DataQuery query={query}>
+      {/* <DataQuery query={query}>
         {({ error, loading, data }) => {
           if (error) return <span>ERROR</span>;
           if (loading) return <span>...</span>;
           return <div>{<Workload />}</div>;
         }}
-      </DataQuery>
+      </DataQuery> */}
+      {<WorkloadHeader />}
+      {<Workload />}
     </div>
   );
 };
