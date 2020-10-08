@@ -74,8 +74,8 @@ const Workload = (props) => {
   }
   if (error) {
     return (
-      <NoticeBox error title="Could not get the data sets list">
-        Could not fetch the working list. Please try again later.
+      <NoticeBox error title="Could not get working list">
+        Could not get the working list. Please try again later.
       </NoticeBox>
     );
   }
