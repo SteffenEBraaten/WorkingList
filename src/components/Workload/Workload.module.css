@@ -1,0 +1,28 @@
+.wrapListHeadingWorkload {
+  display: flex;
+  flex-direction: row;
+  /* width: 3.5%; */
+
+  /* justify-content: space-around; */
+  margin-bottom: 1em;
+}
+
+.listItemCaseWorkload {
+  border: 0.15em solid rgba(231, 231, 231, 0.5);
+  margin: 1em;
+  margin-right: 4em;
+  margin-left: 0em;
+  width: 30vw;
+}
+
+.listItemContactWorkload {
+  margin-bottom: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  text-align: center;
+  border: 0.15em solid rgba(231, 231, 231, 0.5);
+}
+
+.h3Center {
+  text-align: center;
+}

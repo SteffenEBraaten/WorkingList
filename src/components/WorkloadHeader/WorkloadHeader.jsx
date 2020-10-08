@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import { useDataQuery } from "@dhis2/app-runtime";
 import {
-  DropdownButton,
   InputField,
   SingleSelectField,
   SingleSelectOption,
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
 } from "@dhis2/ui";
-import styles from "./App.module.css";
-import i18n from "@dhis2/d2-i18n";
+import styles from "./WorkloadHeader.module.css";
 
 const WorkloadHeader = (props) => {
-  const [selected, setSelected] = useState("1")
+  const [selected, setSelected] = useState("1");
   return (
     <div className="workloadHeader">
       <div className={styles.singleSelectFields}>
@@ -83,7 +80,7 @@ const WorkloadHeader = (props) => {
         name="Default"
         className={styles.inputField}
         onChange={function logger(_ref) {
-          var name = _ref.name,
+          const name = _ref.name,
             value = _ref.value;
           return console.info("".concat(name, ": ").concat(value));
         }}
@@ -92,4 +89,5 @@ const WorkloadHeader = (props) => {
     </div>
   );
 };
+
 export default WorkloadHeader;
