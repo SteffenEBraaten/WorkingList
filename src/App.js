@@ -28,8 +28,8 @@ const MyApp = () => {
           return <div>{<Workload />}</div>;
         }}
       </DataQuery> */}
-      {<WorkloadHeader toggle={filterToggle}/>}
-      {<Workload indexFilterSelected={filterIndexCase}/>}
+      {<WorkloadHeader toggle={filterToggle} />}
+      {<Workload indexFilterSelected={filterIndexCase} />}
     </div>
   );
 };

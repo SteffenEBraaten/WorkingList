@@ -13,14 +13,14 @@ import i18n from "@dhis2/d2-i18n";
 const WorkloadHeader = (props) => {
   const [selected, setSelected] = useState("1")
   return (
-    <div class="workloadHeader">
+    <div className="workloadHeader">
       <div className={styles.singleSelectFields}>
         <SingleSelectField
           required
           selected={selected}
           className={styles.dropDownOptionLayout}
           onChange={function onChange(value) {
-            props.toggle(selected); 
+            props.toggle(value.selected.toString());
             setSelected(value.selected.toString());
           }}
         >

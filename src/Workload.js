@@ -25,7 +25,7 @@ const query = {
 };
 
 const indexCases = {
-  cases: [ ],
+  cases: [],
   contacts: [
     {
       contactNum: "1/2",
@@ -49,14 +49,14 @@ const loadIndexCases = () => {
   data.allIndexCases.trackedEntityInstances.map(({ attributes }) => {
     var tempNameList = []
 
-    if (attributes.find(item => item.code === "surname") !== undefined){
+    if (attributes.find(item => item.code === "surname") !== undefined) {
       tempNameList.push({
         key: "lastName",
         value: attributes.find(item => item.code === "surname").value
       })
     }
 
-    if (attributes.find(item => item.code === "first_name") !== undefined){
+    if (attributes.find(item => item.code === "first_name") !== undefined) {
       tempNameList.push({
         key: "firstName",
         value: attributes.find(item => item.code === "first_name").value
@@ -75,41 +75,45 @@ const getName = () => {
   })
 
   return nameList
-} 
+}
 
 const Workload = (props) => {
   loadIndexCases()
 
-  console.log("filterToggle: ", props.indexFilterSelected)
-
   return (
     <>
       <div className={styles.wrapListHeadingWorkload}>
-        <div class="">
-          <Menu>
-            <h3>Index cases</h3>
-            {getName().map((x) => (
+        {(props.indexFilterSelected === "1" || props.indexFilterSelected === "2") &&
+          <div>
+            <Menu>
+              <h3>Index cases</h3>
+              {getName().map((x, key) => (
                 <MenuItem
                   dataTest="dhis2-uicore-card"
                   label={x}
                   className={styles.listItemCaseWorkload}
+                  key={key}
                 ></MenuItem>
               ))
-            }
-          </Menu>
-        </div>
-        <div class="">
-          <Menu>
-            <h3 className={styles.h3Center}>Contacts</h3>
-            {indexCases.contacts.map((x) => (
-              <MenuItem
-                dataTest="dhis2-uicore-card"
-                label={x.contactNum}
-                className={styles.listItemContactWorkload}
-              ></MenuItem>
-            ))}
-          </Menu>
-        </div>
+              }
+            </Menu>
+          </div>
+        }
+        {(props.indexFilterSelected === "1" || props.indexFilterSelected === "3") &&
+          <div>
+            <Menu>
+              <h3 className={styles.h3Center}>Contacts</h3>
+              {indexCases.contacts.map((x, key) => (
+                <MenuItem
+                  dataTest="dhis2-uicore-card"
+                  label={x.contactNum}
+                  className={styles.listItemContactWorkload}
+                  key={key}
+                ></MenuItem>
+              ))}
+            </Menu>
+          </div>
+        }
       </div>
     </>
   );
