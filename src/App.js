@@ -13,6 +13,12 @@ const query = {
 };
 
 const MyApp = () => {
+  const [filterIndexCase, setFilterIndexCase] = useState("1")
+
+  const filterToggle = (value) => {
+    setFilterIndexCase(value)
+  }
+
   return (
     <div className={styles.container}>
       {/* <DataQuery query={query}>
@@ -22,8 +28,8 @@ const MyApp = () => {
           return <div>{<Workload />}</div>;
         }}
       </DataQuery> */}
-      {<WorkloadHeader />}
-      {<Workload />}
+      {<WorkloadHeader toggle={filterToggle}/>}
+      {<Workload indexFilterSelected={filterIndexCase}/>}
     </div>
   );
 };

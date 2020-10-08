@@ -77,8 +77,10 @@ const getName = () => {
   return nameList
 } 
 
-const Workload = () => {
+const Workload = (props) => {
   loadIndexCases()
+
+  console.log("filterToggle: ", props.indexFilterSelected)
 
   return (
     <>

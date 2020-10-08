@@ -10,29 +10,34 @@ import {
 import styles from "./App.module.css";
 import i18n from "@dhis2/d2-i18n";
 
-const WorkloadHeader = () => {
+const WorkloadHeader = (props) => {
+  const [selected, setSelected] = useState("1")
   return (
     <div class="workloadHeader">
       <div className={styles.singleSelectFields}>
         <SingleSelectField
           required
-          selected="Index cases and contacts"
+          selected={selected}
           className={styles.dropDownOptionLayout}
+          onChange={function onChange(value) {
+            props.toggle(selected); 
+            setSelected(value.selected.toString());
+          }}
         >
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Index cases and contacts"
-            value="Index cases and contacts"
+            value="1"
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Index cases"
-            value="Index cases"
+            value="2"
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Contacts"
-            value="Contacts"
+            value="3"
           />
         </SingleSelectField>
         <SingleSelectField
