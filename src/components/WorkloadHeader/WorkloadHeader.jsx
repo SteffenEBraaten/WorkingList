@@ -75,17 +75,7 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
       </div>
-      <InputField
-        dataTest="dhis2-uiwidgets-inputfield"
-        name="Default"
-        className={styles.inputField}
-        onChange={function logger(_ref) {
-          const name = _ref.name,
-            value = _ref.value;
-          return console.info("".concat(name, ": ").concat(value));
-        }}
-        placeholder="Search for person"
-      />
+      
     </div>
   );
 };
