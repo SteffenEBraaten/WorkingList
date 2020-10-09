@@ -12,10 +12,7 @@ const query = {
   allIndexCases: {
     resource: "trackedEntityInstances",
     params: {
-      ou: "BPzJYNBjmwO",
-      ouMode: "DESCENDANTS",
-      trackedEntity: "MCPQUTHX1Ze",
-      program: "uYjxkTbwRNf",
+      ou: "a8QXqdXyhNr",
       paging: false,
     },
   },
@@ -83,42 +80,40 @@ const Workload = (props) => {
   loadIndexCases(data);
 
   return (
-    <>
-      <div className={styles.wrapListHeadingWorkload}>
-        {(props.indexFilterSelected === "1" ||
-          props.indexFilterSelected === "2") && (
-          <div>
-            <Menu>
-              <h3>Index cases</h3>
-              {getName().map((name, key) => (
-                <MenuItem
-                  dataTest="dhis2-uicore-card"
-                  label={name}
-                  className={styles.listItemCaseWorkload}
-                  key={key}
-                />
-              ))}
-            </Menu>
-          </div>
-        )}
-        {(props.indexFilterSelected === "1" ||
-          props.indexFilterSelected === "3") && (
-          <div>
-            <Menu>
-              <h3 className={styles.h3Center}>Contacts</h3>
-              {indexCases.contacts.map((contact, key) => (
-                <MenuItem
-                  dataTest="dhis2-uicore-card"
-                  label={contact.contactNum}
-                  className={styles.listItemContactWorkload}
-                  key={key}
-                />
-              ))}
-            </Menu>
-          </div>
-        )}
-      </div>
-    </>
+    <div className={styles.workloadContainer}>
+      {(props.indexFilterSelected === "1" ||
+        props.indexFilterSelected === "2") && (
+        <div>
+          <Menu>
+            <h3>Index cases</h3>
+            {getName().map((name, key) => (
+              <MenuItem
+                dataTest="dhis2-uicore-card"
+                label={name}
+                className={`${styles.case}  ${styles.listItem}`}
+                key={key}
+              />
+            ))}
+          </Menu>
+        </div>
+      )}
+      {(props.indexFilterSelected === "1" ||
+        props.indexFilterSelected === "3") && (
+        <div>
+          <Menu>
+            <h3>Contacts</h3>
+            {indexCases.contacts.map((contact, key) => (
+              <MenuItem
+                dataTest="dhis2-uicore-card"
+                label={contact.contactNum}
+                className={styles.listItem}
+                key={key}
+              />
+            ))}
+          </Menu>
+        </div>
+      )}
+    </div>
   );
 };
 

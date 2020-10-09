@@ -1,20 +1,31 @@
 .workloadHeader {
-  width: 100%;
   display: flex;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
 }
 
-.singleSelectFields {
-  margin-top: 2em;
-  margin-right: 2em;
+.singleSelectFieldContainer {
+  margin: 3em 0 5em;
   display: flex;
-  flex-direction: column;
-
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
-.dropDownOptionLayout {
-  flex-wrap: wrap;
-  margin: 0.2em;
+.singleSelectField {
+  width: 17.5em;
+  margin: 1em 0 0;
+}
+
+@media screen and (min-width: 768px) {
+  .workloadHeader {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .singleSelectField {
+    margin: 1em 2em 0 0;
+  }
 }

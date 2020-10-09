@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  InputField,
   SingleSelectField,
   SingleSelectOption,
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
@@ -9,13 +8,14 @@ import styles from "./WorkloadHeader.module.css";
 
 const WorkloadHeader = (props) => {
   const [selected, setSelected] = useState("1");
+
   return (
-    <div className="workloadHeader">
-      <div className={styles.singleSelectFields}>
+    <div className={styles.workloadHeader}>
+      <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
           required
           selected={selected}
-          className={styles.dropDownOptionLayout}
+          className={styles.singleSelectField}
           onChange={function onChange(value) {
             props.toggle(value.selected.toString());
             setSelected(value.selected.toString());
@@ -40,7 +40,7 @@ const WorkloadHeader = (props) => {
         <SingleSelectField
           required
           selected="All"
-          className={styles.dropDownOptionLayout}
+          className={styles.singleSelectField}
         >
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
@@ -61,7 +61,7 @@ const WorkloadHeader = (props) => {
         <SingleSelectField
           required
           selected="Today"
-          className={styles.dropDownOptionLayout}
+          className={styles.singleSelectField}
         >
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
@@ -75,7 +75,6 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
       </div>
-      
     </div>
   );
 };
