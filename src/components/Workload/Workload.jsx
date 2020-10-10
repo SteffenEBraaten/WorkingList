@@ -38,7 +38,7 @@ const Workload = (props) => {
     );
   }
 
-  const indexCasesTest = generateIndexCases(data);
+  const indexCases = generateIndexCases(data);
 
   return (
     <div className={styles.workloadContainer}>
@@ -47,7 +47,7 @@ const Workload = (props) => {
         <div>
           <Menu>
             <h3>Index cases</h3>
-            {indexCasesTest.map((indexCase, key) => (
+            {indexCases.map((indexCase, key) => (
               <MenuItem
                 dataTest="dhis2-uicore-card"
                 label={`${indexCase.firstName} ${indexCase.lastName}`}
