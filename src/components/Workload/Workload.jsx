@@ -1,24 +1,16 @@
 import React from "react";
-import { useDataQuery } from "@dhis2/app-runtime";
 import { Menu, MenuItem, CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
-
+import fetchAllTrackedEntityInstances, {
+  generateIndexCases,
+} from "../../api/TrackedEnitityInstancesAPI";
+import trackerCaptureURL from "../../api/Urls";
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
 */
 
-const query = {
-  allIndexCases: {
-    resource: "trackedEntityInstances",
-    params: {
-      ou: "a8QXqdXyhNr",
-      paging: false,
-    },
-  },
-};
-
-const indexCases = {
+const contactsList = {
   cases: [],
   contacts: [
     {
@@ -30,41 +22,10 @@ const indexCases = {
   ],
 };
 
-const loadIndexCases = ({ allIndexCases }) => {
-  allIndexCases.trackedEntityInstances.map(({ attributes }) => {
-    const tempNameList = [];
-
-    if (attributes.find((item) => item.code === "surname") !== undefined) {
-      tempNameList.push({
-        key: "lastName",
-        value: attributes.find((item) => item.code === "surname").value,
-      });
-    }
-
-    if (attributes.find((item) => item.code === "first_name") !== undefined) {
-      tempNameList.push({
-        key: "firstName",
-        value: attributes.find((item) => item.code === "first_name").value,
-      });
-    }
-
-    if (tempNameList.length !== 0) indexCases["cases"].push(tempNameList);
-  });
-};
-
-const getName = () => {
-  const nameList = [];
-  indexCases.cases.map((thisCase) => {
-    if (thisCase.length > 1)
-      nameList.push(thisCase[1].value.concat(" ", thisCase[0].value));
-    else nameList.push(thisCase[0].value);
-  });
-
-  return nameList;
-};
-
 const Workload = (props) => {
-  const { error, loading, data } = useDataQuery(query);
+  const { error, loading, data } = fetchAllTrackedEntityInstances(
+    "a8QXqdXyhNr"
+  );
 
   if (loading) {
     return <CircularLoader />;
@@ -77,7 +38,7 @@ const Workload = (props) => {
     );
   }
 
-  loadIndexCases(data);
+  const indexCases = generateIndexCases(data);
 
   return (
     <div className={styles.workloadContainer}>
@@ -86,12 +47,14 @@ const Workload = (props) => {
         <div>
           <Menu>
             <h3>Index cases</h3>
-            {getName().map((name, key) => (
+            {indexCases.map((indexCase, key) => (
               <MenuItem
                 dataTest="dhis2-uicore-card"
-                label={name}
+                label={`${indexCase.firstName} ${indexCase.lastName}`}
                 className={`${styles.case}  ${styles.listItem}`}
                 key={key}
+                href={`${trackerCaptureURL}tei=${indexCase.trackedEntityInstance}&program=DM9n1bUw8W8&ou=${indexCase.orgUnit}`}
+                target="_blank"
               />
             ))}
           </Menu>
@@ -102,7 +65,7 @@ const Workload = (props) => {
         <div>
           <Menu>
             <h3>Contacts</h3>
-            {indexCases.contacts.map((contact, key) => (
+            {contactsList.contacts.map((contact, key) => (
               <MenuItem
                 dataTest="dhis2-uicore-card"
                 label={contact.contactNum}
