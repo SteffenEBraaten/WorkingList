@@ -34,7 +34,7 @@ const Workload = (props) => {
 
   return (
     <div className={styles.workloadContainer}>
-        <WorkloadTable data={indexCases} />
+      <WorkloadTable data={indexCases} />
     </div>
   );
 };
