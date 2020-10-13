@@ -1,24 +1,12 @@
 .workloadContainer {
   display: flex;
-  margin-bottom: 1em;
+  flex: 1;
+  margin-bottom: 2em;
   justify-content: center;
+  align-content: center;
 }
 
-.listItem {
-  border: 0.15em solid rgba(231, 231, 231, 0.5);
-}
-
-.case {
-  width: 90%;
-  margin-right: 3em;
-}
-
-a {
-  text-decoration: none !important;
-}
-
-@media screen and (min-width: 768px) {
-  .workloadContainer {
-    justify-content: flex-start;
-  }
+.centerElement {
+  align-self: center;
+  justify-self: center;
 }
