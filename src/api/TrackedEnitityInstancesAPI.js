@@ -18,7 +18,6 @@ const fetchContacts = (organisationUnit) => {
 };
 
 export const generateResponse = ({ allIndexCases }) => {
-  console.log(allIndexCases);
   return allIndexCases.trackedEntityInstances.map((indexCase) => ({
     orgUnit: indexCase.orgUnit,
     trackedEntityInstance: indexCase.trackedEntityInstance,
