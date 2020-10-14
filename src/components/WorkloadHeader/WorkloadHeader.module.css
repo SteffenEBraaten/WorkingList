@@ -1,7 +1,6 @@
 .workloadHeader {
   display: flex;
   align-items: center;
-  flex-direction: column;
   justify-content: space-around;
 }
 
@@ -21,11 +20,14 @@
 @media screen and (min-width: 768px) {
   .workloadHeader {
     flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
+  }
+
+  .singleSelectFieldContainer {
+    flex-wrap: nowrap;
+    margin: 3em 2em;
   }
 
   .singleSelectField {
-    margin: 1em 2em 0 0;
+    margin: 1em 2em 0;
   }
 }

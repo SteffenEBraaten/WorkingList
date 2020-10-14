@@ -1,12 +1,15 @@
 import { useDataQuery } from "@dhis2/app-runtime";
 
-const fetchTrackedEntityInstances = (organisationUnit) => {
+const fetchContacts = (organisationUnit) => {
   const query = {
     allIndexCases: {
       resource: "trackedEntityInstances",
       params: {
+        program: "DM9n1bUw8W8",
         ou: organisationUnit,
         paging: false,
+        fields:
+          "created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
       },
     },
   };
@@ -14,11 +17,18 @@ const fetchTrackedEntityInstances = (organisationUnit) => {
   return useDataQuery(query);
 };
 
-export const generateIndexCases = ({ allIndexCases }) => {
+export const generateResponse = ({ allIndexCases }) => {
   return allIndexCases.trackedEntityInstances.map((indexCase) => ({
     orgUnit: indexCase.orgUnit,
     trackedEntityInstance: indexCase.trackedEntityInstance,
     trackedEntityType: indexCase.trackedEntityType,
+    lastUpdated: indexCase.lastUpdated,
+    programID: indexCase.enrollments[0].program
+      ? indexCase.enrollments[0].program
+      : "N/A",
+    incidentDate: indexCase.enrollments[0].incidentDate
+      ? indexCase.enrollments[0].incidentDate
+      : "N/A",
     firstName: indexCase.attributes.find((item) => item.code === "first_name")
       ? indexCase.attributes.find((item) => item.code === "first_name").value
       : "N/A",
@@ -35,7 +45,16 @@ export const generateIndexCases = ({ allIndexCases }) => {
     gender: indexCase.attributes.find((item) => item.code === "patinfo_sex")
       ? indexCase.attributes.find((item) => item.code === "patinfo_sex").value
       : "N/A",
+    phoneNumber: indexCase.attributes.find(
+      (item) => item.code === "phone_local"
+    )
+      ? indexCase.attributes.find((item) => item.code === "phone_local").value
+      : "N/A",
+    age: indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
+      ? indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
+          .value
+      : "N/A",
   }));
 };
 
-export default fetchTrackedEntityInstances;
+export default fetchContacts;
