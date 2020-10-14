@@ -17,7 +17,23 @@ const fetchContacts = (organisationUnit) => {
   return useDataQuery(query);
 };
 
-export const generateResponse = ({ allIndexCases }) => {
+const fetchIndexcases = (organisationUnit) => { // Fetch index
+  const query = {
+    allIndexCases: {
+      resource: "trackedEntityInstances",
+      params: {
+        program: "uYjxkTbwRNf",
+        ou: organisationUnit,
+        paging: false,
+        fields:
+          "created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
+      },
+    },
+  };
+  return useDataQuery(query);
+};
+
+const generateResponse = ({ allIndexCases }) => {
   return allIndexCases.trackedEntityInstances.map((indexCase) => ({
     orgUnit: indexCase.orgUnit,
     trackedEntityInstance: indexCase.trackedEntityInstance,
@@ -39,8 +55,8 @@ export const generateResponse = ({ allIndexCases }) => {
       (item) => item.code === "patinfo_ageonsetunit"
     )
       ? indexCase.attributes.find(
-          (item) => item.code === "patinfo_ageonsetunit"
-        ).value
+        (item) => item.code === "patinfo_ageonsetunit"
+      ).value
       : "N/A",
     gender: indexCase.attributes.find((item) => item.code === "patinfo_sex")
       ? indexCase.attributes.find((item) => item.code === "patinfo_sex").value
@@ -52,9 +68,9 @@ export const generateResponse = ({ allIndexCases }) => {
       : "N/A",
     age: indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
       ? indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
-          .value
+        .value
       : "N/A",
   }));
 };
 
-export default fetchContacts;
+export { fetchIndexcases, fetchContacts, generateResponse };

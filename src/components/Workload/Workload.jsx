@@ -1,8 +1,8 @@
 import React from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
-import fetchAllTrackedEntityInstances, {
-  generateResponse,
+import {
+  fetchContacts, generateResponse, fetchIndexcases
 } from "../../api/TrackedEnitityInstancesAPI";
 import WorkloadTable from "./WorkloadTable";
 /*
@@ -10,15 +10,25 @@ This file is for the 'main' page that contains list element
 (index cases ) and number of contacts
 */
 
+/*
+  1: index cases and contacts
+  2: index cases
+  3: contact cases
+*/
 const Workload = (props) => {
-  const { error, loading, data } = fetchAllTrackedEntityInstances(
+
+  const filtered = props.indexFilterSelected;
+  const indexCasesData = fetchIndexcases(
+    "a8QXqdXyhNr"
+  );
+  const contactCasesData = fetchContacts(
     "a8QXqdXyhNr"
   );
 
-  if (loading) {
+  if (indexCasesData.loading || contactCasesData.loading) {
     return <CircularLoader className={styles.centerElement} />;
   }
-  if (error) {
+  if (indexCasesData.error || contactCasesData.error) {
     return (
       <NoticeBox
         error
@@ -30,11 +40,14 @@ const Workload = (props) => {
     );
   }
 
-  const indexCases = generateResponse(data);
+  const indexCases = generateResponse(indexCasesData.data);
+  const contacts = generateResponse(contactCasesData.data);
+  const both = indexCases.concat(contacts)
 
+  const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={indexCases} />
+      <WorkloadTable data={dataToDisplay} />
     </div>
   );
 };
