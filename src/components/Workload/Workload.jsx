@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import {
@@ -16,14 +16,21 @@ This file is for the 'main' page that contains list element
   3: contact cases
 */
 const Workload = (props) => {
-
   const filtered = props.indexFilterSelected;
-  const indexCasesData = fetchIndexcases(
-    "a8QXqdXyhNr"
+  const caseStatus = props.statusSelected;
+  let indexCasesData = fetchIndexcases("a8QXqdXyhNr", caseStatus);
+  let contactCasesData = fetchContacts(
+    "a8QXqdXyhNr", caseStatus
   );
-  const contactCasesData = fetchContacts(
-    "a8QXqdXyhNr"
-  );
+  useEffect(() => {
+    console.log("Changes")
+    async function refetch() {
+      // TODOS: refetching doesnt fetch data with new casestatus
+      const test = await indexCasesData.refetch();
+    };
+    console.warn(refetch())
+    // contactCasesData.refetch();
+  }, [caseStatus]);
 
   if (indexCasesData.loading || contactCasesData.loading) {
     return <CircularLoader className={styles.centerElement} />;
@@ -40,10 +47,10 @@ const Workload = (props) => {
     );
   }
 
-  const indexCases = generateResponse(indexCasesData.data);
-  const contacts = generateResponse(contactCasesData.data);
-  const both = indexCases.concat(contacts)
-
+  let indexCases = generateResponse(indexCasesData.data);
+  console.log(indexCases, caseStatus)
+  let contacts = generateResponse(contactCasesData.data);
+  let both = indexCases.concat(contacts)
   const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
   return (
     <div className={styles.workloadContainer}>

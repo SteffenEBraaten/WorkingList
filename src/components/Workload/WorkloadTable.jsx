@@ -39,8 +39,9 @@ const goToTrackerCaptureApp = (trackedEntityInstance, programID, orgUnit) => {
   }, 200);
 };
 
-const WorkloadTable = ({ data }) => {
+const WorkloadTable = ({ data }, props) => {
   return (
+    (props.statusSelected === "ALL" || data.caseStatus == props.statusSelected) &&
     <Table>
       <TableHead>
         <TableRowHead>
@@ -83,7 +84,7 @@ const WorkloadTable = ({ data }) => {
           </TableRow>
         ))}
       </TableBody>
-    </Table>
+    </Table >
   );
 };
 
