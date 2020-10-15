@@ -52,6 +52,7 @@ const WorkloadTable = ({ data }, props) => {
           <TableCellHead>Age</TableCellHead>
           <TableCellHead>Incident Date</TableCellHead>
           <TableCellHead>Last updated</TableCellHead>
+          <TableCellHead>Status</TableCellHead>
           <TableCellHead>Link to Tracker Capture App</TableCellHead>
         </TableRowHead>
       </TableHead>
@@ -67,6 +68,7 @@ const WorkloadTable = ({ data }, props) => {
               {toDateAndTimeFormat(dataEntry.incidentDate, false)}
             </TableCell>
             <TableCell>{toDateAndTimeFormat(dataEntry.lastUpdated)}</TableCell>
+            <TableCell>{dataEntry.caseStatus}</TableCell>
             <TableCell>
               <Button
                 primary
