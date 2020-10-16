@@ -21,42 +21,51 @@ const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
 
-  // const option = {
-  //   variables: {
-  //     programStatus: caseStatus
-  //   }
-  // }
-  // const query = {
-  //   allIndexCases: {
-  //     resource: "trackedEntityInstances",
-  //     params: ({ programStatus }) => ({
-  //       program: "uYjxkTbwRNf",
-  //       ou: "a8QXqdXyhNr",
-  //       fields: ["created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated,inactive"],
-  //       // filter: `programStatus:eq:${programStatus}`,
-  //       programStatus: status !== "ALL" ? status : null,
+  const option = {
+    variables: {
+      programStatus: caseStatus
+    }
+  }
+  const queryContact = {
+    allIndexCases: {
+      resource: "trackedEntityInstances",
+      params: ({ programStatus }) => ({
+        program: "DM9n1bUw8W8",
+        ou: "a8QXqdXyhNr",
+        fields: ["created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated,inactive"],
+        // filter: `programStatus:eq:${programStatus}`,
+        programStatus: programStatus !== "ALL" ? programStatus : null,
 
-  //       paging: false,
-  //     })
-  //   }
-  // };
+        paging: false,
+      })
+    }
+  };
+  const queryIndex = {
+    allIndexCases: {
+      resource: "trackedEntityInstances",
+      params: ({ programStatus }) => ({
+        program: "uYjxkTbwRNf",
+        ou: "a8QXqdXyhNr",
+        fields: ["created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated,inactive"],
+        // filter: `programStatus:eq:${programStatus}`,
+        programStatus: programStatus !== "ALL" ? programStatus : null,
+        paging: false,
+      })
+    }
+  };
   const {
     error: indexCaseError, loading: indexCaseLoading, data: indexCasesData, refetch: indexcaseRefetch
-  } = fetchIndexcases("a8QXqdXyhNr", caseStatus);
+  } = useDataQuery(queryIndex, option);
   const {
     error: contactCaseError, loading: contactCaseLoading, data: contactCasesData, refetch: contactCaseRefetch
-  } = fetchContacts(
-    "a8QXqdXyhNr", caseStatus
-  );
+  } = useDataQuery(queryContact, option);
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch("a8QXqdXyhNr", caseStatus);
-      console.warn("Fetching index cases: ", indexCasesData)
+      await indexcaseRefetch(queryIndex, option);
 
     };
     async function fetchContact() {
-      await contactCaseRefetch("a8QXqdXyhNr", caseStatus);
-      console.warn("Fetching contactss: ", contactCasesData)
+      await contactCaseRefetch(queryContact, option);
 
     };
     if (filtered == "1") {

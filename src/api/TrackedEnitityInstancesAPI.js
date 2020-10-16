@@ -7,6 +7,7 @@ const fetchContacts = (organisationUnit, status) => {
       params: {
         program: "DM9n1bUw8W8",
         programStatus: status !== "ALL" ? status : null,
+        // filter: `programStatus:eq:${programStatus}`,
         ou: organisationUnit,
         paging: false,
         fields:
@@ -20,22 +21,23 @@ const fetchContacts = (organisationUnit, status) => {
   return useDataQuery(query);
 };
 
-const fetchIndexcases = (organisationUnit, status) => { // Fetch index
+const fetchIndexcases = (organisationUnit, option) => { // Fetch index
   const query = {
     allIndexCases: {
       resource: "trackedEntityInstances",
-      params: {
+      params: ({ programStatus }) => ({
         program: "uYjxkTbwRNf",
-        programStatus: status !== "ALL" ? status : null,
+        // programStatus: status !== "ALL" ? status : null,
+        filter: `programStatus:eq:${programStatus}`,
         ou: organisationUnit,
         paging: false,
         fields:
           "created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated,inactive",
-      }
+      })
     },
   };
 
-  return useDataQuery(query);
+  return useDataQuery(query, option);
 };
 
 const generateResponse = ({ allIndexCases }) => {
