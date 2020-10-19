@@ -10,6 +10,7 @@ import {
   Button,
 } from "@dhis2/ui";
 import trackerCaptureURL from "../../api/Urls";
+import { findValue } from "../../api/APIUtils";
 
 const toDateAndTimeFormat = (dateString, time = true) => {
   const date = time
@@ -41,52 +42,54 @@ const goToTrackerCaptureApp = (trackedEntityInstance, programID, orgUnit) => {
 
 const WorkloadTable = ({ data }, props) => {
   return (
-    (props.statusSelected === "ALL" || data.caseStatus == props.statusSelected) &&
-    <Table>
-      <TableHead>
-        <TableRowHead>
-          <TableCellHead>Type</TableCellHead>
-          <TableCellHead>First Name</TableCellHead>
-          <TableCellHead>Last Name</TableCellHead>
-          <TableCellHead>Phone Number</TableCellHead>
-          <TableCellHead>Age</TableCellHead>
-          <TableCellHead>Incident Date</TableCellHead>
-          <TableCellHead>Last updated</TableCellHead>
-          <TableCellHead>Status</TableCellHead>
-          <TableCellHead>Link to Tracker Capture App</TableCellHead>
-        </TableRowHead>
-      </TableHead>
-      <TableBody>
-        {data.map((dataEntry, key) => (
-          <TableRow key={key}>
-            <TableCell>{mapProgramIDToName(dataEntry.programID)}</TableCell>
-            <TableCell>{dataEntry.firstName}</TableCell>
-            <TableCell>{dataEntry.lastName}</TableCell>
-            <TableCell>{dataEntry.phoneNumber}</TableCell>
-            <TableCell>{dataEntry.age}</TableCell>
-            <TableCell>
-              {toDateAndTimeFormat(dataEntry.incidentDate, false)}
-            </TableCell>
-            <TableCell>{toDateAndTimeFormat(dataEntry.lastUpdated)}</TableCell>
-            <TableCell>{dataEntry.caseStatus}</TableCell>
-            <TableCell>
-              <Button
-                primary
-                onClick={() =>
-                  goToTrackerCaptureApp(
-                    dataEntry.trackedEntityInstance,
-                    dataEntry.programID,
-                    dataEntry.orgUnit
-                  )
-                }
-              >
-                Go to Tracker Capture App!
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table >
+    (props.statusSelected === "ALL" ||
+      data.caseStatus == props.statusSelected) && (
+      <Table>
+        <TableHead>
+          <TableRowHead>
+            <TableCellHead>Type</TableCellHead>
+            <TableCellHead>First Name</TableCellHead>
+            <TableCellHead>Last Name</TableCellHead>
+            <TableCellHead>Phone Number</TableCellHead>
+            <TableCellHead>Age</TableCellHead>
+            <TableCellHead>Incident Date</TableCellHead>
+            <TableCellHead>Last updated</TableCellHead>
+            <TableCellHead>Status</TableCellHead>
+            <TableCellHead>Link to Tracker Capture App</TableCellHead>
+          </TableRowHead>
+        </TableHead>
+        <TableBody>
+          {data.map((item, key) => (
+            <TableRow key={key}>
+              <TableCell>{mapProgramIDToName(item.enrollments[0].program)}</TableCell>
+              <TableCell>{findValue(item.attributes, "first_name")}</TableCell>
+              <TableCell>{findValue(item.attributes, "surname")}</TableCell>
+              <TableCell>{findValue(item.attributes, "phone_local")}</TableCell>
+              <TableCell>{findValue(item.attributes, "patinfo_ageonset")}</TableCell>
+              <TableCell>
+                {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
+              </TableCell>
+              <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
+              <TableCell>{item.enrollments[0].status}</TableCell>
+              <TableCell>
+                <Button
+                  primary
+                  onClick={() =>
+                    goToTrackerCaptureApp(
+                      item.trackedEntityInstance,
+                      item.enrollments[0].program,
+                      item.orgUnit
+                    )
+                  }
+                >
+                  Go to Tracker Capture App!
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    )
   );
 };
 
