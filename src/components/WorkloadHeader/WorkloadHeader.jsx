@@ -6,6 +6,7 @@ import {
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
+import ChooseDate from "./ChooseDate.jsx";
 
 const WorkloadHeader = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
@@ -82,6 +83,9 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
       </div>
+
+      <ChooseDate />
+
     </div>
   );
 };
