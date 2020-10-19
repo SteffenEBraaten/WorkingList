@@ -14,6 +14,7 @@ This file is for the 'main' page that contains list element
   2: index cases
   3: contact cases
 */
+
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
@@ -23,6 +24,7 @@ const Workload = (props) => {
       programStatus: caseStatus,
     },
   };
+
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -45,6 +47,7 @@ const Workload = (props) => {
       }),
     },
   };
+
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
@@ -66,24 +69,27 @@ const Workload = (props) => {
       }),
     },
   };
+
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
     refetch: indexcaseRefetch,
   } = useDataQuery(queryIndex, option);
+
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
     refetch: contactCaseRefetch,
   } = useDataQuery(queryContact, option);
+
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch(queryIndex, option);
+      await indexcaseRefetch(option.variables);
     }
     async function fetchContact() {
-      await contactCaseRefetch(queryContact, option);
+      await contactCaseRefetch(option.variables);
     }
     if (filtered == "1") {
       fetchIndex();
@@ -95,6 +101,7 @@ const Workload = (props) => {
   if (indexCaseLoading || contactCaseLoading) {
     return <CircularLoader className={styles.centerElement} />;
   }
+
   if (indexCaseError || contactCaseError) {
     return (
       <NoticeBox
@@ -111,6 +118,7 @@ const Workload = (props) => {
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
+
   const dataToDisplay =
     filtered == "1"
       ? both
