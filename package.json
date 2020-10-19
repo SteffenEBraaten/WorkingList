@@ -10,7 +10,7 @@
     "test": "d2-app-scripts test"
   },
   "devDependencies": {
-    "@dhis2/cli-app-scripts": "^5.2.1"
+    "@dhis2/cli-app-scripts": "^5.3.0"
   },
   "dependencies": {
     "@dhis2/app-runtime": "^2.3.0",
