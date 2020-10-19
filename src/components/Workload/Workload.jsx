@@ -9,6 +9,51 @@ This file is for the 'main' page that contains list element
 (index cases ) and number of contacts
 */
 
+const queryContact = {
+  contacts: {
+    resource: "trackedEntityInstances",
+    params: ({ programStatus }) => ({
+      program: "DM9n1bUw8W8",
+      ou: "a8QXqdXyhNr",
+      fields: [
+        "created",
+        "orgUnit",
+        "attributes",
+        "trackedEntityType",
+        "trackedEntityInstance",
+        "enrollments",
+        "lastUpdated",
+        "inactive",
+      ],
+      programStatus: programStatus !== "ALL" ? programStatus : null,
+
+      paging: false,
+    }),
+  },
+};
+
+const queryIndex = {
+  indexCases: {
+    resource: "trackedEntityInstances",
+    params: ({ programStatus }) => ({
+      program: "uYjxkTbwRNf",
+      ou: "a8QXqdXyhNr",
+      fields: [
+        "created",
+        "orgUnit",
+        "attributes",
+        "trackedEntityType",
+        "trackedEntityInstance",
+        "enrollments",
+        "lastUpdated",
+        "inactive",
+      ],
+      programStatus: programStatus !== "ALL" ? programStatus : null,
+      paging: false,
+    }),
+  },
+};
+
 /*
   1: index cases and contacts
   2: index cases
@@ -23,67 +68,27 @@ const Workload = (props) => {
       programStatus: caseStatus,
     },
   };
-  const queryContact = {
-    contacts: {
-      resource: "trackedEntityInstances",
-      params: ({ programStatus }) => ({
-        program: "DM9n1bUw8W8",
-        ou: "a8QXqdXyhNr",
-        fields: [
-          "created",
-          "orgUnit",
-          "attributes",
-          "trackedEntityType",
-          "trackedEntityInstance",
-          "enrollments",
-          "lastUpdated",
-          "inactive",
-        ],
-        programStatus: programStatus !== "ALL" ? programStatus : null,
 
-        paging: false,
-      }),
-    },
-  };
-  const queryIndex = {
-    indexCases: {
-      resource: "trackedEntityInstances",
-      params: ({ programStatus }) => ({
-        program: "uYjxkTbwRNf",
-        ou: "a8QXqdXyhNr",
-        fields: [
-          "created",
-          "orgUnit",
-          "attributes",
-          "trackedEntityType",
-          "trackedEntityInstance",
-          "enrollments",
-          "lastUpdated",
-          "inactive",
-        ],
-        programStatus: programStatus !== "ALL" ? programStatus : null,
-        paging: false,
-      }),
-    },
-  };
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
     refetch: indexcaseRefetch,
   } = useDataQuery(queryIndex, option);
+
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
     refetch: contactCaseRefetch,
   } = useDataQuery(queryContact, option);
+
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch(queryIndex, option);
+      await indexcaseRefetch(option.variables);
     }
     async function fetchContact() {
-      await contactCaseRefetch(queryContact, option);
+      await contactCaseRefetch(option.variables);
     }
     if (filtered == "1") {
       fetchIndex();
@@ -107,7 +112,6 @@ const Workload = (props) => {
     );
   }
 
-  console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
