@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DatePicker, Calendar, utils } from "react-modern-calendar-datepicker";
+import DatePicker, { utils } from "react-modern-calendar-datepicker";
 
 const myLocale = {
   // months list by order
@@ -83,22 +83,54 @@ const myLocale = {
   openYearSelector: 'Open Year Selector',
   closeMonthSelector: 'Close Month Selector',
   closeYearSelector: 'Close Year Selector',
-  defaultPlaceholder: 'Select...',
 
   // used for input value when multi dates are selected
   digitSeparator: ',',
 }
 
-const ChooseDate = () => {
+const ChooseDate = (props) => {
     const [selectedDay, setSelectedDay] = useState(utils().getToday());
+
+    // formats the text of the input field
+    const formatInputValue = () => {
+      if (!selectedDay) return '';
+      if (selectedDay.day === utils().getToday().day && selectedDay.month === utils().getToday().month && selectedDay.year === utils().getToday().year) {
+        return 'Today';
+      }
+      return `${selectedDay.day}/${selectedDay.month}/${selectedDay.year}`;
+    };
+
+    // style calendar 
+    const renderCustomInput = ({ ref }) => (
+      <input
+        readOnly
+        ref={ref} 
+        value={formatInputValue()}
+        style={{
+          textAlign: 'center',
+          padding: '0.5rem 1rem',
+          border: '1px solid black',
+          width: '17.5em',
+          margin: '1em 0 0',
+          color: 'grey700',
+          fontSize: '14px',
+        }}
+      />
+    )
     
     return (
-      <Calendar
+      <DatePicker
         value={selectedDay}
+        //value={props.selectedDay}
         onChange={setSelectedDay}
+        /* onChange={function onChange(value) {
+          props.selectedDayToggle(value)
+        }} */
         inputPlaceholder="Select a day"
         shouldHighlightWeekends
         locale={myLocale}
+        minimumDate={utils().getToday()}
+        renderInput={renderCustomInput}
       />
     );
   };

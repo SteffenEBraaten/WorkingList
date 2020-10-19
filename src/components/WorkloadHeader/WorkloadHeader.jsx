@@ -66,28 +66,29 @@ const WorkloadHeader = (props) => {
             value={StatusEnum.ACTVE}
           />
         </SingleSelectField>
-        <SingleSelectField
-          label="Dates"
-          selected={selectedDay}
-          className={styles.singleSelectField}
-        >
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Today"
-            value={DateEnum.TODAY}
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Tomorrow"
-            value={DateEnum.TOMORROW}
-          />
-        </SingleSelectField>
+
+        <ChooseDate selectedDay={props.selectedDayToggle}/>
       </div>
-
-      <ChooseDate />
-
     </div>
   );
 };
 
 export default WorkloadHeader;
+
+
+{/* <SingleSelectField
+  required
+  selected="Today"
+  className={styles.singleSelectField}
+>
+  <SingleSelectOption
+    dataTest="dhis2-uicore-singleselectoption"
+    label="Today"
+    value="Today"
+  />
+  <SingleSelectOption
+    dataTest="dhis2-uicore-singleselectoption"
+    label="Tomorrow"
+    value="Tomorrow"
+  />
+</SingleSelectField> */}
