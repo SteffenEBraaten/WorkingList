@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
-import {
-  fetchContacts, generateResponse, fetchIndexcases
-} from "../../api/TrackedEnitityInstancesAPI";
 import WorkloadTable from "./WorkloadTable";
+import { useDataQuery } from "@dhis2/app-runtime";
+
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
@@ -15,20 +14,95 @@ This file is for the 'main' page that contains list element
   2: index cases
   3: contact cases
 */
+
 const Workload = (props) => {
-
   const filtered = props.indexFilterSelected;
-  const indexCasesData = fetchIndexcases(
-    "a8QXqdXyhNr"
-  );
-  const contactCasesData = fetchContacts(
-    "a8QXqdXyhNr"
-  );
+  const caseStatus = props.statusSelected;
 
-  if (indexCasesData.loading || contactCasesData.loading) {
+  const option = {
+    variables: {
+      programStatus: caseStatus,
+    },
+  };
+
+  const queryContact = {
+    contacts: {
+      resource: "trackedEntityInstances",
+      params: ({ programStatus }) => ({
+        program: "DM9n1bUw8W8",
+        ou: "a8QXqdXyhNr",
+        fields: [
+          "created",
+          "orgUnit",
+          "attributes",
+          "trackedEntityType",
+          "trackedEntityInstance",
+          "enrollments",
+          "lastUpdated",
+          "inactive",
+        ],
+        programStatus: programStatus !== "ALL" ? programStatus : null,
+
+        paging: false,
+      }),
+    },
+  };
+
+  const queryIndex = {
+    indexCases: {
+      resource: "trackedEntityInstances",
+      params: ({ programStatus }) => ({
+        program: "uYjxkTbwRNf",
+        ou: "a8QXqdXyhNr",
+        fields: [
+          "created",
+          "orgUnit",
+          "attributes",
+          "trackedEntityType",
+          "trackedEntityInstance",
+          "enrollments",
+          "lastUpdated",
+          "inactive",
+        ],
+        programStatus: programStatus !== "ALL" ? programStatus : null,
+        paging: false,
+      }),
+    },
+  };
+
+  const {
+    error: indexCaseError,
+    loading: indexCaseLoading,
+    data: indexCasesData,
+    refetch: indexcaseRefetch,
+  } = useDataQuery(queryIndex, option);
+
+  const {
+    error: contactCaseError,
+    loading: contactCaseLoading,
+    data: contactCasesData,
+    refetch: contactCaseRefetch,
+  } = useDataQuery(queryContact, option);
+
+  useEffect(() => {
+    async function fetchIndex() {
+      await indexcaseRefetch(option.variables);
+    }
+    async function fetchContact() {
+      await contactCaseRefetch(option.variables);
+    }
+    if (filtered == "1") {
+      fetchIndex();
+      fetchContact();
+    } else if (filtered == "2") fetchIndex();
+    else fetchContact();
+  }, [filtered, caseStatus]);
+
+  if (indexCaseLoading || contactCaseLoading) {
     return <CircularLoader className={styles.centerElement} />;
   }
-  if (indexCasesData.error || contactCasesData.error) {
+
+  if (indexCaseError || contactCaseError) {
     return (
       <NoticeBox
         error
@@ -40,11 +114,18 @@ const Workload = (props) => {
     );
   }
 
-  const indexCases = generateResponse(indexCasesData.data);
-  const contacts = generateResponse(contactCasesData.data);
-  const both = indexCases.concat(contacts)
+  console.log(indexCasesData);
+  const both = indexCasesData.indexCases.trackedEntityInstances.concat(
+    contactCasesData.contacts.trackedEntityInstances
+  );
 
-  const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
+  const dataToDisplay =
+    filtered == "1"
+      ? both
+      : filtered == "2"
+      ? indexCasesData.indexCases.trackedEntityInstances
+      : contactCasesData.contacts.trackedEntityInstances;
+
   return (
     <div className={styles.workloadContainer}>
       <WorkloadTable data={dataToDisplay} />

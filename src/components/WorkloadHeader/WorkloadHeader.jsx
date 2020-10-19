@@ -7,18 +7,20 @@ import {
 import styles from "./WorkloadHeader.module.css";
 
 const WorkloadHeader = (props) => {
-  const [selected, setSelected] = useState("1");
+  const [selectedFilter, setSelectedFilter] = useState("1");
+  const [status, setStatus] = useState("ALL");
+  const [selectedDay, setSelectedDay] = useState("1");
 
   return (
     <div className={styles.workloadHeader}>
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
           required
-          selected={selected}
+          selected={selectedFilter}
           className={styles.singleSelectField}
           onChange={function onChange(value) {
-            props.toggle(value.selected.toString());
-            setSelected(value.selected.toString());
+            props.toggleFilter(value.selected.toString());
+            setSelectedFilter(value.selected.toString());
           }}
         >
           <SingleSelectOption
@@ -39,39 +41,43 @@ const WorkloadHeader = (props) => {
         </SingleSelectField>
         <SingleSelectField
           required
-          selected="All"
+          selected={status}
           className={styles.singleSelectField}
+          onChange={function onChange(value) {
+            props.toggleStatus(value.selected.toString());
+            setStatus(value.selected.toString());
+          }}
         >
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="All"
-            value="All"
+            value="ALL"
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Completed"
-            value="Completed"
+            value="COMPLETED"
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Not completed"
-            value="Not completed"
+            value="ACTIVE"
           />
         </SingleSelectField>
         <SingleSelectField
           required
-          selected="Today"
+          selected={selectedDay}
           className={styles.singleSelectField}
         >
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Today"
-            value="Today"
+            value="1"
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Tomorrow"
-            value="Tomorrow"
+            value="2"
           />
         </SingleSelectField>
       </div>
