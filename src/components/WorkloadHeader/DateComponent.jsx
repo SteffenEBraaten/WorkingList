@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { utils, Calendar } from "react-modern-calendar-datepicker";
+import { 
+  SingleSelectField, 
+  _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
+} from "@dhis2/ui";
+import styles from "./WorkloadHeader.module.css";
 
 const myLocale = {
   // months list by order
@@ -87,6 +92,7 @@ const DateComponent = (props) => {
         shouldHighlightWeekends
         locale={myLocale}
         minimumDate={utils().getToday()}
+        renderInput={<SingleSelectField label="Date" className={styles.singleSelectField} />}
       />
     );
   };

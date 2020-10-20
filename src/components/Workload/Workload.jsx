@@ -4,6 +4,12 @@ import styles from "./Workload.module.css";
 import WorkloadTable from "./WorkloadTable";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
+
+import {
+  fetchContacts, generateResponse, fetchIndexcases
+} from "../../api/TrackedEnitityInstancesAPI";
+import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
@@ -132,25 +138,24 @@ const Workload = (props) => {
 
   const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
 
-  // convert date in API to DD.MM.YYYY
-  const toDateAndTimeFormat = (dateString, time = true) => {
-    const date = time
-      ? new Date(dateString).toLocaleString("no")
-      : new Date(dateString).toLocaleDateString("no");
-    return date;
-  };
-
   // filter data on selected day
   const filterOnDate = (dataToDisplay, date) => {
     const newDataToDisplay = []
-      for (var i = 0; i < dataToDisplay.length; i++){
-        const todayString = `${date.day}.${date.month}.${date.year}`
-        const selectedDate = toDateAndTimeFormat(dataToDisplay[i].incidentDate, false)
-
-        if (todayString === selectedDate){
-          newDataToDisplay.push(dataToDisplay[i])
+    
+    for (var i = 0; i < dataToDisplay.length; i++){
+      const todayString = `${date.day}.${date.month}.${date.year}`
+      const selectedDate = toDateAndTimeFormat(dataToDisplay[i].lastUpdated, false)
+      
+      for (var j = 0; j<dataToDisplay[i].events.length; j++){
+        if (dataToDisplay[i].events[j].status === "SCHEDULE"){
+          console.log(dataToDisplay[i].events[j].dueDate)
         }
-      return newDataToDisplay
+      }
+
+      /* if (todayString === selectedDate){
+        newDataToDisplay.push(dataToDisplay[i])
+      } */
+    return newDataToDisplay
     }
   }
 

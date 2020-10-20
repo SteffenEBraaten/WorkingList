@@ -8,8 +8,7 @@ const fetchContacts = (organisationUnit) => {
         program: "DM9n1bUw8W8",
         ou: organisationUnit,
         paging: false,
-        fields:
-          "created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
+        fields: "events, created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
       },
     },
   };
@@ -25,8 +24,8 @@ const fetchIndexcases = (organisationUnit) => { // Fetch index
         program: "uYjxkTbwRNf",
         ou: organisationUnit,
         paging: false,
-        fields:
-          "created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
+        fields: "events, created,orgUnit,attributes,trackedEntityType,trackedEntityInstance,enrollments,lastUpdated",
+          
       },
     },
   };
@@ -34,7 +33,8 @@ const fetchIndexcases = (organisationUnit) => { // Fetch index
 };
 
 const generateResponse = ({ allIndexCases }) => {
-  console.log(allIndexCases)
+  console.log(allIndexCases.trackedEntityInstances)
+
   return allIndexCases.trackedEntityInstances.map((indexCase) => ({
     orgUnit: indexCase.orgUnit,
     trackedEntityInstance: indexCase.trackedEntityInstance,
@@ -70,6 +70,9 @@ const generateResponse = ({ allIndexCases }) => {
     age: indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
       ? indexCase.attributes.find((item) => item.code === "patinfo_ageonset")
         .value
+      : "N/A",
+    events: indexCase.enrollments[0].events
+      ? indexCase.enrollments[0].events
       : "N/A",
   }));
 };
