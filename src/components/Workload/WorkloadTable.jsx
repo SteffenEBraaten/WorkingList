@@ -84,7 +84,7 @@ const WorkloadTable = ({ data }) => {
                   )
                 }
               >
-                Go to Tracker Capture App!
+                Tracker Capture App
               </Button>
             </TableCell>
           </TableRow>

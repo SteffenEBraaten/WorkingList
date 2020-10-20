@@ -15,7 +15,7 @@ const WorkloadHeader = (props) => {
     <div className={styles.workloadHeader}>
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
-          required
+          label="Show"
           selected={selectedFilter}
           className={styles.singleSelectField}
           onChange={function onChange(value) {
@@ -40,7 +40,7 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
         <SingleSelectField
-          required
+          label="Status"
           selected={status}
           className={styles.singleSelectField}
           onChange={function onChange(value) {
@@ -65,7 +65,7 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
         <SingleSelectField
-          required
+          label="Dates"
           selected={selectedDay}
           className={styles.singleSelectField}
         >
