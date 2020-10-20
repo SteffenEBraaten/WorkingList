@@ -76,6 +76,7 @@ const ContactsModal = (props) => {
       </NoticeBox>
     );
   }
+
   if (contactCaseLoading) {
     return <p></p>;
   }
@@ -85,7 +86,6 @@ const ContactsModal = (props) => {
     return <CircularLoader className={styles.centerElement} />;
   }
 */
-
   const listContacts = filterContacts(
     contactCasesData.contacts.trackedEntityInstances,
     relationshipEntityInstance
