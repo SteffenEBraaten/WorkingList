@@ -3,7 +3,7 @@ import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import WorkloadTable from "./WorkloadTable";
 import { useDataQuery } from "@dhis2/app-runtime";
-
+import { CaseEnum, StatusEnum } from "../Enum/Enum";
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
@@ -14,6 +14,7 @@ This file is for the 'main' page that contains list element
   2: index cases
   3: contact cases
 */
+
 
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
@@ -92,13 +93,13 @@ const Workload = (props) => {
       await contactCaseRefetch(option.variables);
     }
 
-    if (filtered == "1") {
+    if (filtered === CaseEnum.ALL) {
       fetchIndex();
       fetchContact();
-    } 
-    
-    else if (filtered == "2") fetchIndex();
-    
+    }
+
+    else if (filtered === CaseEnum.INDEXES) fetchIndex();
+
     else fetchContact();
   }, [filtered, caseStatus]);
 
@@ -123,11 +124,11 @@ const Workload = (props) => {
   );
 
   const dataToDisplay =
-    filtered == "1"
+    filtered === CaseEnum.ALL
       ? both
-      : filtered == "2"
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances;
+      : filtered === CaseEnum.INDEXES
+        ? indexCasesData.indexCases.trackedEntityInstances
+        : contactCasesData.contacts.trackedEntityInstances;
 
   return (
     <div className={styles.workloadContainer}>
