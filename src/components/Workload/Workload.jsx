@@ -130,9 +130,33 @@ const Workload = (props) => {
         ? indexCasesData.indexCases.trackedEntityInstances
         : contactCasesData.contacts.trackedEntityInstances;
 
+  const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
+
+  // convert date in API to DD.MM.YYYY
+  const toDateAndTimeFormat = (dateString, time = true) => {
+    const date = time
+      ? new Date(dateString).toLocaleString("no")
+      : new Date(dateString).toLocaleDateString("no");
+    return date;
+  };
+
+  // filter data on selected day
+  const filterOnDate = (dataToDisplay, date) => {
+    const newDataToDisplay = []
+      for (var i = 0; i < dataToDisplay.length; i++){
+        const todayString = `${date.day}.${date.month}.${date.year}`
+        const selectedDate = toDateAndTimeFormat(dataToDisplay[i].incidentDate, false)
+
+        if (todayString === selectedDate){
+          newDataToDisplay.push(dataToDisplay[i])
+        }
+      return newDataToDisplay
+    }
+  }
+
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={dataToDisplay} />
+      <WorkloadTable data={filterOnDate(dataToDisplay, props.selectedDay)} selectedDay={props.selectedDay} />
     </div>
   );
 };

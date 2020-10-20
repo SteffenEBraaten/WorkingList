@@ -3,15 +3,26 @@ import {
   SingleSelectField,
   SingleSelectOption,
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
+  DropdownButton
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
 import ChooseDate from "./ChooseDate.jsx";
+import DateComponent from "./DateComponent";
 
 const WorkloadHeader = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ALL);
-  const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
+  //const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
+
+  const formatInputValue = (selectedDay) => {
+    const today = new Date()
+    if ((selectedDay.day === today.getDate()) && (selectedDay.month === today.getMonth() + 1) && (selectedDay.year === today.getFullYear())) {
+      return 'Today';
+    }
+    return `${selectedDay.day}/${selectedDay.month}/${selectedDay.year}`;
+  };
+
   return (
     <div className={styles.workloadHeader}>
       <div className={styles.singleSelectFieldContainer}>
@@ -67,28 +78,17 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
 
-        <ChooseDate selectedDay={props.selectedDayToggle}/>
       </div>
+        <DropdownButton
+          secondary
+          className={styles.dropdownButton}
+          component={<DateComponent selectedDayToggle={props.selectedDayToggle} selectedDay={props.selectedDay}/>}
+          dataTest="dhis2-uicore-dropdownbutton"
+        >
+          {formatInputValue(props.selectedDay)}
+        </DropdownButton>
     </div>
   );
 };
 
 export default WorkloadHeader;
-
-
-{/* <SingleSelectField
-  required
-  selected="Today"
-  className={styles.singleSelectField}
->
-  <SingleSelectOption
-    dataTest="dhis2-uicore-singleselectoption"
-    label="Today"
-    value="Today"
-  />
-  <SingleSelectOption
-    dataTest="dhis2-uicore-singleselectoption"
-    label="Tomorrow"
-    value="Tomorrow"
-  />
-</SingleSelectField> */}
