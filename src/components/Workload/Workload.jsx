@@ -91,10 +91,14 @@ const Workload = (props) => {
     async function fetchContact() {
       await contactCaseRefetch(option.variables);
     }
+
     if (filtered == "1") {
       fetchIndex();
       fetchContact();
-    } else if (filtered == "2") fetchIndex();
+    } 
+    
+    else if (filtered == "2") fetchIndex();
+    
     else fetchContact();
   }, [filtered, caseStatus]);
 
@@ -114,7 +118,6 @@ const Workload = (props) => {
     );
   }
 
-  console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
