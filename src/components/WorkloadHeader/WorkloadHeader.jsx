@@ -5,12 +5,12 @@ import {
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
+import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
 
 const WorkloadHeader = (props) => {
-  const [selectedFilter, setSelectedFilter] = useState("1");
-  const [status, setStatus] = useState("ALL");
-  const [selectedDay, setSelectedDay] = useState("1");
-
+  const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
+  const [status, setStatus] = useState(StatusEnum.ALL);
+  const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
   return (
     <div className={styles.workloadHeader}>
       <div className={styles.singleSelectFieldContainer}>
@@ -26,17 +26,17 @@ const WorkloadHeader = (props) => {
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Index cases and contacts"
-            value="1"
+            value={CaseEnum.ALL}
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Index cases"
-            value="2"
+            value={CaseEnum.INDEXES}
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Contacts"
-            value="3"
+            value={CaseEnum.CONTACTS}
           />
         </SingleSelectField>
         <SingleSelectField
@@ -51,17 +51,18 @@ const WorkloadHeader = (props) => {
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="All"
-            value="ALL"
+            value={StatusEnum.ALL}
+
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Completed"
-            value="COMPLETED"
+            value={StatusEnum.COMPLETED}
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Not completed"
-            value="ACTIVE"
+            value={StatusEnum.ACTVE}
           />
         </SingleSelectField>
         <SingleSelectField
@@ -72,12 +73,12 @@ const WorkloadHeader = (props) => {
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Today"
-            value="1"
+            value={DateEnum.TODAY}
           />
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Tomorrow"
-            value="2"
+            value={DateEnum.TOMORROW}
           />
         </SingleSelectField>
       </div>

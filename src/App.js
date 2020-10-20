@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import styles from "./App.module.css";
 import Workload from "./components/Workload/Workload.jsx";
 import WorkloadHeader from "./components/WorkloadHeader/WorkloadHeader.jsx";
+import { CaseEnum, StatusEnum, DateEnum } from "./components/Enum/Enum";
 
 const MyApp = () => {
-  const [filterIndexCase, setFilterIndexCase] = useState("1");
-  const [filterStatus, setFilterStatus] = useState("ALL");
-  const [filterDate, setFilterDate] = useState("1");
+  const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
+  const [filterStatus, setFilterStatus] = useState(StatusEnum.ALL);
+  const [filterDate, setFilterDate] = useState(DateEnum.TODAY);
 
   const filterToggle = (value) => {
     setFilterIndexCase(value);
