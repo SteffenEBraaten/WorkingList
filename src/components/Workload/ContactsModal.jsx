@@ -91,11 +91,14 @@ const ContactsModal = (props) => {
     relationshipEntityInstance
   );
 
+  const numberOfContacts = listContacts.length;
+
   //ta inn props så vi vet hvilken index case kontaktene tilhører
   return (
     <Modal dataTest="dhis2-uicore-modal" position="middle" id="modalContacts">
       <ModalTitle dataTest="dhis2-uicore-modaltitle">
-        {props.item.first_name} {props.item.surname}'s contacts
+        {props.item.first_name} {props.item.surname}'s contacts (
+        {numberOfContacts})
       </ModalTitle>
       <ModalContent dataTest="dhis2-uicore-modalcontent">
         <Table>
