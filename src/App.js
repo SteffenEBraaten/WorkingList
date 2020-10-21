@@ -8,7 +8,8 @@ import { utils } from "react-modern-calendar-datepicker";
 const MyApp = () => {
   const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
   const [filterStatus, setFilterStatus] = useState(StatusEnum.ALL);
-  const [filterDate, setFilterDate] = useState(utils().getToday());
+  const [filterDateRange, setFilterDate] = useState({from:utils().getToday(), to:null});
+  const [numberOfCases, setNumberOfCases] = useState(0);
 
   const filterToggle = (value) => {
     setFilterIndexCase(value);
@@ -27,11 +28,13 @@ const MyApp = () => {
         toggleStatus={statusToggle}
         toggleDate={dateToggle}
         dateSelected={filterDate}
+        numberOfCases={numberOfCases}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
         dateSelected={filterDate}
+        setNumberOfCases={setNumberOfCases}
       />
     </div>
   );

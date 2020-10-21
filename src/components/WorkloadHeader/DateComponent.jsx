@@ -86,8 +86,8 @@ const DateComponent = (props) => {
     return (
       <Calendar
         value={props.dateSelected}
-        onChange={function onChange(value) {
-          props.toggleDate(value)
+        onChange={function onChange(to, from) {
+          props.toggleDate(to, from)
         }}
         shouldHighlightWeekends
         locale={myLocale}
