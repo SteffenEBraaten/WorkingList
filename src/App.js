@@ -27,13 +27,13 @@ const MyApp = () => {
         toggleFilter={filterToggle}
         toggleStatus={statusToggle}
         toggleDate={dateToggle}
-        dateSelected={filterDate}
+        datesSelected={filterDateRange}
         numberOfCases={numberOfCases}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
-        dateSelected={filterDate}
+        datesSelected={filterDateRange}
         setNumberOfCases={setNumberOfCases}
       />
     </div>
