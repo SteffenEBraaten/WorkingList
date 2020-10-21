@@ -22,8 +22,17 @@ const MyApp = () => {
 
   return (
     <div className={styles.container}>
-      <WorkloadHeader toggleFilter={filterToggle} toggleStatus={statusToggle} toggleDate={dateToggle} dateSelected={filterDate} />
-      <Workload indexFilterSelected={filterIndexCase} statusSelected={filterStatus} dateSelected={filterDate} />
+      <WorkloadHeader
+        toggleFilter={filterToggle}
+        toggleStatus={statusToggle}
+        toggleDate={dateToggle}
+        dateSelected={filterDate}
+      />
+      <Workload
+        indexFilterSelected={filterIndexCase}
+        statusSelected={filterStatus}
+        dateSelected={filterDate}
+      />
     </div>
   );
 };

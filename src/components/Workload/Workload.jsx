@@ -16,7 +16,6 @@ This file is for the 'main' page that contains list element
   3: contact cases
 */
 
-
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
@@ -34,12 +33,13 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "DM9n1bUw8W8",
         ou: "a8QXqdXyhNr",
-        fields: [ 
+        fields: [
           "created",
           "orgUnit",
           "attributes",
           "trackedEntityType",
           "trackedEntityInstance",
+          "relationships",
           "enrollments",
           "lastUpdated",
           "inactive",
@@ -58,13 +58,14 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "uYjxkTbwRNf",
         ou: "a8QXqdXyhNr",
-        fields: [ 
+        fields: [
           "created",
           "orgUnit",
           "attributes",
           "trackedEntityType",
           "trackedEntityInstance",
           "enrollments",
+          "relationships",
           "lastUpdated",
           "inactive",
           "events",
@@ -100,10 +101,7 @@ const Workload = (props) => {
     if (filtered === CaseEnum.ALL) {
       fetchIndex();
       fetchContact();
-    }
-
-    else if (filtered === CaseEnum.INDEXES) fetchIndex();
-
+    } else if (filtered === CaseEnum.INDEXES) fetchIndex();
     else fetchContact();
   }, [filtered, caseStatus]);
 
@@ -123,6 +121,7 @@ const Workload = (props) => {
     );
   }
 
+  console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
@@ -131,33 +130,33 @@ const Workload = (props) => {
     filtered === CaseEnum.ALL
       ? both
       : filtered === CaseEnum.INDEXES
-        ? indexCasesData.indexCases.trackedEntityInstances
-        : contactCasesData.contacts.trackedEntityInstances;
+      ? indexCasesData.indexCases.trackedEntityInstances
+      : contactCasesData.contacts.trackedEntityInstances;
 
   // filter data on selected date
   const filterOnDate = (dataToDisplay, date) => {
-    const newDataToDisplay = []
-    const todayString = `${date.day}.${date.month}.${date.year}`
+    const newDataToDisplay = [];
+    const todayString = `${date.day}.${date.month}.${date.year}`;
 
     // loop through data
-    for (var i = 0; i < dataToDisplay.length; i++){
+    for (var i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
-        const event = dataToDisplay[i].enrollments[0].events[j]
-        const selectedDate = toDateAndTimeFormat(event.dueDate, false)
-        
-        if (event.status === "SCHEDULE" && todayString === selectedDate){
-          newDataToDisplay.push(dataToDisplay[i])
+      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+        const event = dataToDisplay[i].enrollments[0].events[j];
+        const selectedDate = toDateAndTimeFormat(event.dueDate, false);
+
+        if (event.status === "SCHEDULE" && todayString === selectedDate) {
+          newDataToDisplay.push(dataToDisplay[i]);
           break;
         }
       }
     }
-    return newDataToDisplay
-  }
+    return newDataToDisplay;
+  };
 
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={filterOnDate(dataToDisplay, dateSelected)}/>
+      <WorkloadTable data={filterOnDate(dataToDisplay, dateSelected)} />
     </div>
   );
 };
