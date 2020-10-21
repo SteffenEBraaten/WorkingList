@@ -77,7 +77,6 @@ const ContactsModal = (props) => {
       </NoticeBox>
     );
   }
-
   if (contactCaseLoading) {
     return <p></p>;
   }
