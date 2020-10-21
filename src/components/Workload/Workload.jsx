@@ -38,7 +38,7 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "DM9n1bUw8W8",
         ou: "a8QXqdXyhNr",
-        fields: [
+        fields: [ 
           "created",
           "orgUnit",
           "attributes",
@@ -47,6 +47,7 @@ const Workload = (props) => {
           "enrollments",
           "lastUpdated",
           "inactive",
+          "events",
         ],
         programStatus: programStatus !== "ALL" ? programStatus : null,
 
@@ -61,7 +62,7 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "uYjxkTbwRNf",
         ou: "a8QXqdXyhNr",
-        fields: [
+        fields: [ 
           "created",
           "orgUnit",
           "attributes",
@@ -70,6 +71,7 @@ const Workload = (props) => {
           "enrollments",
           "lastUpdated",
           "inactive",
+          "events",
         ],
         programStatus: programStatus !== "ALL" ? programStatus : null,
         paging: false,
@@ -141,17 +143,17 @@ const Workload = (props) => {
     const newDataToDisplay = []
     const todayString = `${date.day}.${date.month}.${date.year}`
 
+    // loop through data
     for (var i = 0; i < dataToDisplay.length; i++){
-      const selectedDate = toDateAndTimeFormat(dataToDisplay[i].lastUpdated, false)
-
-      /* for (var j = 0; j<dataToDisplay[i].events.length; j++){
-        if (dataToDisplay[i].events[j].status === "SCHEDULE"){
-          console.log(dataToDisplay[i].events[j].dueDate)
+      // loop through events
+      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
+        const event = dataToDisplay[i].enrollments[0].events[j]
+        const selectedDate = toDateAndTimeFormat(event.dueDate, false)
+        
+        if (event.status === "SCHEDULE" && todayString === selectedDate){
+          newDataToDisplay.push(dataToDisplay[i])
+          break;
         }
-      } */
-
-      if (todayString === selectedDate){
-        newDataToDisplay.push(dataToDisplay[i])
       }
     }
     return newDataToDisplay
