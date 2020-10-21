@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
-import WorkloadTable from "./WorkloadTable";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
+import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
@@ -19,6 +20,7 @@ This file is for the 'main' page that contains list element
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
+  const dateSelected = props.dateSelected;
 
   const option = {
     variables: {
@@ -32,7 +34,7 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "DM9n1bUw8W8",
         ou: "a8QXqdXyhNr",
-        fields: [
+        fields: [ 
           "created",
           "orgUnit",
           "attributes",
@@ -41,6 +43,7 @@ const Workload = (props) => {
           "enrollments",
           "lastUpdated",
           "inactive",
+          "events",
         ],
         programStatus: programStatus !== "ALL" ? programStatus : null,
 
@@ -55,7 +58,7 @@ const Workload = (props) => {
       params: ({ programStatus }) => ({
         program: "uYjxkTbwRNf",
         ou: "a8QXqdXyhNr",
-        fields: [
+        fields: [ 
           "created",
           "orgUnit",
           "attributes",
@@ -64,6 +67,7 @@ const Workload = (props) => {
           "enrollments",
           "lastUpdated",
           "inactive",
+          "events",
         ],
         programStatus: programStatus !== "ALL" ? programStatus : null,
         paging: false,
@@ -130,9 +134,30 @@ const Workload = (props) => {
         ? indexCasesData.indexCases.trackedEntityInstances
         : contactCasesData.contacts.trackedEntityInstances;
 
+  // filter data on selected date
+  const filterOnDate = (dataToDisplay, date) => {
+    const newDataToDisplay = []
+    const todayString = `${date.day}.${date.month}.${date.year}`
+
+    // loop through data
+    for (var i = 0; i < dataToDisplay.length; i++){
+      // loop through events
+      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
+        const event = dataToDisplay[i].enrollments[0].events[j]
+        const selectedDate = toDateAndTimeFormat(event.dueDate, false)
+        
+        if (event.status === "SCHEDULE" && todayString === selectedDate){
+          newDataToDisplay.push(dataToDisplay[i])
+          break;
+        }
+      }
+    }
+    return newDataToDisplay
+  }
+
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={dataToDisplay} />
+      <WorkloadTable data={filterOnDate(dataToDisplay, dateSelected)}/>
     </div>
   );
 };

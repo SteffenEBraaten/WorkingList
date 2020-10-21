@@ -12,7 +12,6 @@ const StatusEnum = Object.freeze({
 });
 const DateEnum = Object.freeze({
     TODAY: "TODAY",
-    TOMORROW: "TOMORROW",
 });
 
 

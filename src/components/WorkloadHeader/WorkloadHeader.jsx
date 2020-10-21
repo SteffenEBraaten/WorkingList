@@ -3,14 +3,25 @@ import {
   SingleSelectField,
   SingleSelectOption,
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
+  DropdownButton
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
+import DateComponent from "./DateComponent";
 
 const WorkloadHeader = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ALL);
-  const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
+  //const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
+
+  const formatInputValue = (selectedDay) => {
+    const today = new Date()
+    if ((selectedDay.day === today.getDate()) && (selectedDay.month === today.getMonth() + 1) && (selectedDay.year === today.getFullYear())) {
+      return 'Today';
+    }
+    return `${selectedDay.day}/${selectedDay.month}/${selectedDay.year}`;
+  };
+
   return (
     <div className={styles.workloadHeader}>
       <div className={styles.singleSelectFieldContainer}>
@@ -65,23 +76,16 @@ const WorkloadHeader = (props) => {
             value={StatusEnum.ACTVE}
           />
         </SingleSelectField>
-        <SingleSelectField
-          label="Dates"
-          selected={selectedDay}
-          className={styles.singleSelectField}
-        >
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Today"
-            value={DateEnum.TODAY}
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Tomorrow"
-            value={DateEnum.TOMORROW}
-          />
-        </SingleSelectField>
+
       </div>
+        <DropdownButton
+          secondary
+          className={styles.dropdownButton}
+          component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.dateSelected}/>}
+          dataTest="dhis2-uicore-dropdownbutton"
+        >
+          {formatInputValue(props.dateSelected)}
+        </DropdownButton>
     </div>
   );
 };

@@ -94,4 +94,4 @@ const WorkloadTable = ({ data }) => {
   );
 };
 
-export default WorkloadTable;
+export { WorkloadTable, toDateAndTimeFormat };
