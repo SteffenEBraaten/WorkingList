@@ -3,10 +3,6 @@ import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
-
-import {
-  fetchContacts, generateResponse, fetchIndexcases
-} from "../../api/TrackedEnitityInstancesAPI";
 import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 /*
