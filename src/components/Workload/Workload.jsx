@@ -121,6 +121,7 @@ const Workload = (props) => {
     );
   }
 
+  console.log("CONTACTCASEDATA: ", contactCasesData);
   console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances

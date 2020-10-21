@@ -80,8 +80,23 @@ const ContactsModal = (props) => {
   if (contactCaseLoading) {
     return <p></p>;
   }
-
   /*
+  useEffect(() => {
+    const tempFiltered = [];
+    contactCasesData.map((item) => {
+      if (item.relationships.length !== 0) {
+        if (
+          item.relationships[0].to.trackedEntityInstance
+            .trackedEntityInstance === relationshipEntityInstance
+        ) {
+          tempFiltered.push(item);
+        }
+      }
+    });
+    console.log(tempFiltered);
+  }, [relationshipEntityInstance]);
+
+  
   if (contactCaseLoading) {
     return <CircularLoader className={styles.centerElement} />;
   }
@@ -93,13 +108,23 @@ const ContactsModal = (props) => {
   );
 
   const numberOfContacts = listContacts.length;
+  console.log("CONTACTCASEDATA -- MODAL: ", contactCasesData);
 
-  //ta inn props så vi vet hvilken index case kontaktene tilhører
+  let titleOfContacts = JSON.stringify(
+    props.item.first_name +
+      " " +
+      props.item.surname +
+      "'s contacts" +
+      " (" +
+      numberOfContacts +
+      ")"
+  );
+  titleOfContacts = titleOfContacts.substring(1, titleOfContacts.length - 1);
+
   return (
     <Modal dataTest="dhis2-uicore-modal" position="middle" id="modalContacts">
       <ModalTitle dataTest="dhis2-uicore-modaltitle">
-        {props.item.first_name} {props.item.surname}'s contacts (
-        {numberOfContacts})
+        {titleOfContacts}
       </ModalTitle>
       <ModalContent dataTest="dhis2-uicore-modalcontent">
         <Table>
