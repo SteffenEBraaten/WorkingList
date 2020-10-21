@@ -36,6 +36,7 @@ const queryContact = {
 const filterContacts = (contacts, relationshipEntityInstance) => {
   // kom ikke på bedre løsning, filtrer slik at trackedentetyinstance er same
   const tempFiltered = [];
+
   contacts.map((item) => {
     if (item.relationships.length !== 0) {
       if (
@@ -85,7 +86,8 @@ const ContactsModal = (props) => {
   if (contactCaseLoading) {
     return <CircularLoader className={styles.centerElement} />;
   }
-*/
+  */
+
   const listContacts = filterContacts(
     contactCasesData.contacts.trackedEntityInstances,
     relationshipEntityInstance
@@ -112,8 +114,8 @@ const ContactsModal = (props) => {
             </TableRowHead>
           </TableHead>
           <TableBody>
-            {listContacts.map((item) => (
-              <TableRow>
+            {listContacts.map((item, key) => (
+              <TableRow key={key}>
                 <TableCell>Contact</TableCell>
                 <TableCell>
                   {findValue(item.attributes, "first_name")}
