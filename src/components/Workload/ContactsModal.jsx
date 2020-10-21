@@ -108,7 +108,6 @@ const ContactsModal = (props) => {
   );
 
   const numberOfContacts = listContacts.length;
-  console.log("CONTACTCASEDATA -- MODAL: ", contactCasesData);
 
   let titleOfContacts = JSON.stringify(
     props.item.first_name +
