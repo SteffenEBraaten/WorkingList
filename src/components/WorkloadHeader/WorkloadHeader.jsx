@@ -7,7 +7,6 @@ import {
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
-import ChooseDate from "./ChooseDate.jsx";
 import DateComponent from "./DateComponent";
 
 const WorkloadHeader = (props) => {
@@ -82,10 +81,10 @@ const WorkloadHeader = (props) => {
         <DropdownButton
           secondary
           className={styles.dropdownButton}
-          component={<DateComponent selectedDayToggle={props.selectedDayToggle} selectedDay={props.selectedDay}/>}
+          component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.dateSelected}/>}
           dataTest="dhis2-uicore-dropdownbutton"
         >
-          {formatInputValue(props.selectedDay)}
+          {formatInputValue(props.dateSelected)}
         </DropdownButton>
     </div>
   );

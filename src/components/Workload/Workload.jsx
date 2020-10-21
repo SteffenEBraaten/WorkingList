@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
-import WorkloadTable from "./WorkloadTable";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 
@@ -25,6 +24,7 @@ This file is for the 'main' page that contains list element
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
+  const dateSelected = props.dateSelected;
 
   const option = {
     variables: {
@@ -136,32 +136,30 @@ const Workload = (props) => {
         ? indexCasesData.indexCases.trackedEntityInstances
         : contactCasesData.contacts.trackedEntityInstances;
 
-  const dataToDisplay = filtered == "1" ? both : (filtered == "2" ? indexCases : contacts)
-
-  // filter data on selected day
+  // filter data on selected date
   const filterOnDate = (dataToDisplay, date) => {
     const newDataToDisplay = []
-    
+    const todayString = `${date.day}.${date.month}.${date.year}`
+
     for (var i = 0; i < dataToDisplay.length; i++){
-      const todayString = `${date.day}.${date.month}.${date.year}`
       const selectedDate = toDateAndTimeFormat(dataToDisplay[i].lastUpdated, false)
-      
-      for (var j = 0; j<dataToDisplay[i].events.length; j++){
+
+      /* for (var j = 0; j<dataToDisplay[i].events.length; j++){
         if (dataToDisplay[i].events[j].status === "SCHEDULE"){
           console.log(dataToDisplay[i].events[j].dueDate)
         }
-      }
-
-      /* if (todayString === selectedDate){
-        newDataToDisplay.push(dataToDisplay[i])
       } */
-    return newDataToDisplay
+
+      if (todayString === selectedDate){
+        newDataToDisplay.push(dataToDisplay[i])
+      }
     }
+    return newDataToDisplay
   }
 
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={filterOnDate(dataToDisplay, props.selectedDay)} selectedDay={props.selectedDay} />
+      <WorkloadTable data={filterOnDate(dataToDisplay, dateSelected)}/>
     </div>
   );
 };

@@ -85,14 +85,14 @@ const myLocale = {
 const DateComponent = (props) => {    
     return (
       <Calendar
-        value={props.selectedDay}
+        value={props.dateSelected}
         onChange={function onChange(value) {
-          props.selectedDayToggle(value)
+          props.toggleDate(value)
         }}
         shouldHighlightWeekends
         locale={myLocale}
-        minimumDate={utils().getToday()}
-        renderInput={<SingleSelectField label="Date" className={styles.singleSelectField} />}
+        //minimumDate={utils().getToday()}
+        //renderInput={<SingleSelectField label="Date" className={styles.singleSelectField} />}
       />
     );
   };
