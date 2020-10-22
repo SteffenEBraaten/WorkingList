@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDataQuery } from "@dhis2/app-runtime";
+import Relationship from "./Relationship";
 import { findValue } from "../../api/APIUtils";
 import styles from "./Workload.module.css";
 import {
@@ -16,127 +16,50 @@ import {
   Button,
   ButtonStrip,
   ModalActions,
+  CenteredContent,
   CircularLoader,
   NoticeBox,
 } from "@dhis2/ui";
 
-const queryContact = {
-  contacts: {
-    resource: "trackedEntityInstances",
-    params: ({ trackedEntityInstance }) => ({
-      program: "DM9n1bUw8W8",
-      trackedEntityInstance: trackedEntityInstance,
-      ou: "a8QXqdXyhNr",
-      fields: ["attributes", "relationships", "enrollments"],
-      paging: false,
-    }),
-  },
-};
+const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
+  const indexCaseId = indexCase.trackedEntityInstance;
+  const teiEnrollments = indexCase.enrollments;
+  const teiAttributes = indexCase.attributes;
+  const teiRelationships = indexCase.relationships;
+  const numberOfContacts = teiRelationships.length;
+  const modalTitle = `${firstName} ${surname}'s contacts (${numberOfContacts})`;
 
-const filterContacts = (contacts, relationshipEntityInstance) => {
-  // kom ikke på bedre løsning, filtrer slik at trackedentetyinstance er same
-  const tempFiltered = [];
-
-  contacts.map((item) => {
-    if (item.relationships.length !== 0) {
-      if (
-        item.relationships[0].to.trackedEntityInstance.trackedEntityInstance ===
-        relationshipEntityInstance
-      ) {
-        tempFiltered.push(item);
-      }
-    }
-  });
-  return tempFiltered;
-};
-
-const ContactsModal = (props) => {
-  const relationshipEntityInstance = props.item.relationshipEntityInstance;
-
-  const option = {
-    variables: {
-      programStatus: relationshipEntityInstance,
-    },
-  };
-
-  const {
-    error: contactCaseError,
-    loading: contactCaseLoading,
-    data: contactCasesData,
-  } = useDataQuery(queryContact, option);
-
-  if (contactCaseError) {
-    return (
-      <NoticeBox
-        error
-        title="Could not get contact modal"
-        className={styles.centerElement}
-      >
-        Could not get the contact list for this index case. Please try again
-        later.
-      </NoticeBox>
-    );
-  }
-  if (contactCaseLoading) {
-    return <p></p>;
-  }
-
-  /*
-  if (contactCaseLoading) {
-    return <CircularLoader className={styles.centerElement} />;
-  }
-  */
-
-  const listContacts = filterContacts(
-    contactCasesData.contacts.trackedEntityInstances,
-    relationshipEntityInstance
-  );
-
-  const numberOfContacts = listContacts.length;
-
-  //ta inn props så vi vet hvilken index case kontaktene tilhører
   return (
-    <Modal dataTest="dhis2-uicore-modal" position="middle" id="modalContacts">
-      <ModalTitle dataTest="dhis2-uicore-modaltitle">
-        {props.item.first_name} {props.item.surname}'s contacts (
-        {numberOfContacts})
-      </ModalTitle>
-      <ModalContent dataTest="dhis2-uicore-modalcontent">
-        <Table>
-          <TableHead>
-            <TableRowHead>
-              <TableCellHead>Type</TableCellHead>
-              <TableCellHead>First Name</TableCellHead>
-              <TableCellHead>Last Name</TableCellHead>
-              <TableCellHead>Phone Number</TableCellHead>
-              <TableCellHead>Status</TableCellHead>
-            </TableRowHead>
-          </TableHead>
-          <TableBody>
-            {listContacts.map((item, key) => (
-              <TableRow key={key}>
-                <TableCell>Contact</TableCell>
-                <TableCell>
-                  {findValue(item.attributes, "first_name")}
-                </TableCell>
-                <TableCell>{findValue(item.attributes, "surname")}</TableCell>
-                <TableCell>
-                  {findValue(item.attributes, "phone_local")}
-                </TableCell>
-                <TableCell>{item.enrollments[0].status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+    <Modal position="middle" id="modalContacts">
+      <ModalTitle>{modalTitle}</ModalTitle>
+      <ModalContent>
+        {teiRelationships.length > 0 ? (
+          <Table>
+            <TableHead>
+              <TableRowHead>
+                <TableCellHead>Type</TableCellHead>
+                <TableCellHead>First Name</TableCellHead>
+                <TableCellHead>Last Name</TableCellHead>
+                <TableCellHead>Phone Number</TableCellHead>
+              </TableRowHead>
+            </TableHead>
+            <TableBody>
+              {teiRelationships.map((item, key) => (
+                <Relationship key={key} id={item.relationship} />
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <NoticeBox>This index case has no contacts</NoticeBox>
+        )}
       </ModalContent>
-      <ModalActions dataTest="dhis2-uicore-modalactions">
-        <ButtonStrip dataTest="dhis2-uicore-buttonstrip" end>
+
+      <ModalActions>
+        <ButtonStrip end>
           <Button
             data-dismiss="modalContacts"
-            dataTest="dhis2-uicore-button"
-            primary
             type="button"
-            onClick={() => props.item.hideModal(false)}
+            onClick={hideModal}
           >
             Cancel
           </Button>

@@ -134,24 +134,37 @@ const Workload = (props) => {
 
   // filter data on selected date
   const filterOnDate = (dataToDisplay, dates) => {
-    const newDataToDisplay = []
+    const newDataToDisplay = [];
 
-    const from = dates.from
-    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`)
+    const from = dates.from;
+    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`);
 
-    const to = dates.to
-    const toDate = to === null ? fromDate : new Date(`${to.year}`, `${to.month}`, `${to.day}`)
+    const to = dates.to;
+    const toDate =
+      to === null
+        ? fromDate
+        : new Date(`${to.year}`, `${to.month}`, `${to.day}`);
 
     // loop through data
     for (var i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
-        const event = dataToDisplay[i].enrollments[0].events[j]
-        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(".")
-        const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
-        
-        if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
-          newDataToDisplay.push(dataToDisplay[i])
+      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+        const event = dataToDisplay[i].enrollments[0].events[j];
+        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(
+          "."
+        );
+        const dueDate = new Date(
+          dueDateList[2],
+          dueDateList[1],
+          dueDateList[0]
+        ); // formate Date object to prepare for comparing
+
+        if (
+          event.status === DueDateEnum.SCHEDULE &&
+          dueDate >= fromDate &&
+          dueDate <= toDate
+        ) {
+          newDataToDisplay.push(dataToDisplay[i]);
           break;
         }
       }
@@ -159,12 +172,12 @@ const Workload = (props) => {
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterOnDate(dataToDisplay, datesSelected)
-  props.setNumberOfCases(dataToDisplay.length)
+  dataToDisplay = filterOnDate(dataToDisplay, datesSelected);
+  props.setNumberOfCases(dataToDisplay.length);
 
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={dataToDisplay}/>
+      <WorkloadTable data={dataToDisplay} />
     </div>
   );
 };
