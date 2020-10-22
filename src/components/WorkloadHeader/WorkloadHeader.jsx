@@ -24,69 +24,70 @@ const WorkloadHeader = (props) => {
 
   return (
     <div className={styles.workloadHeader}>
-      <div className={styles.singleSelectFieldContainer}>
-        <SingleSelectField
-          label="Show"
-          selected={selectedFilter}
-          className={styles.singleSelectField}
-          onChange={function onChange(value) {
-            props.toggleFilter(value.selected.toString());
-            setSelectedFilter(value.selected.toString());
-          }}
-        >
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Index cases and contacts"
-            value={CaseEnum.ALL}
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Index cases"
-            value={CaseEnum.INDEXES}
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Contacts"
-            value={CaseEnum.CONTACTS}
-          />
-        </SingleSelectField>
-        <SingleSelectField
-          label="Status"
-          selected={status}
-          className={styles.singleSelectField}
-          onChange={function onChange(value) {
-            props.toggleStatus(value.selected.toString());
-            setStatus(value.selected.toString());
-          }}
-        >
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="All"
-            value={StatusEnum.ALL}
+      {/* <div className={styles.singleSelectFieldContainer}> */}
+      <SingleSelectField
+        label="Show"
+        selected={selectedFilter}
+        className={styles.singleSelectField}
+        onChange={function onChange(value) {
+          props.toggleFilter(value.selected.toString());
+          setSelectedFilter(value.selected.toString());
+        }}
+      >
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="Index cases and contacts"
+          value={CaseEnum.ALL}
+        />
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="Index cases"
+          value={CaseEnum.INDEXES}
+        />
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="Contacts"
+          value={CaseEnum.CONTACTS}
+        />
+      </SingleSelectField>
+      <SingleSelectField
+        label="Status"
+        selected={status}
+        className={styles.singleSelectField}
+        onChange={function onChange(value) {
+          props.toggleStatus(value.selected.toString());
+          setStatus(value.selected.toString());
+        }}
+      >
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="All"
+          value={StatusEnum.ALL}
 
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Completed"
-            value={StatusEnum.COMPLETED}
-          />
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label="Not completed"
-            value={StatusEnum.ACTVE}
-          />
-        </SingleSelectField>
+        />
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="Completed"
+          value={StatusEnum.COMPLETED}
+        />
+        <SingleSelectOption
+          dataTest="dhis2-uicore-singleselectoption"
+          label="Not completed"
+          value={StatusEnum.ACTVE}
+        />
+      </SingleSelectField>
 
-      </div>
-        <DropdownButton
-          secondary
-          className={styles.dropdownButton}
-          component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.dateSelected}/>}
-          dataTest="dhis2-uicore-dropdownbutton"
-        >
-          {formatInputValue(props.dateSelected)}
-        </DropdownButton>
+      <DropdownButton
+        label="Date"
+        secondary
+        className={styles.dropdownButton}
+        component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.dateSelected} />}
+        dataTest="dhis2-uicore-dropdownbutton"
+      >
+        {formatInputValue(props.dateSelected)}
+      </DropdownButton>
     </div>
+    // </div>
   );
 };
 
