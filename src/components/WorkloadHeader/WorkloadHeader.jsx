@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import {
   SingleSelectField,
   SingleSelectOption,
-  _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
-  DropdownButton
+  DropdownButton,
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
@@ -39,9 +38,6 @@ const WorkloadHeader = (props) => {
 
   return (
     <div className={styles.workloadHeader}>
-
-      {/* How to get number of follow up cases AND number of health checks: {props.numberOfCases} */}
-
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
           label="Show"

@@ -1,9 +1,6 @@
 import React from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
-import { 
-  _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
-} from "@dhis2/ui";
+import { Calendar, utils } from "react-modern-calendar-datepicker";
 
 const myLocale = {
   // months list by order
