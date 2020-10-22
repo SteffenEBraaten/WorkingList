@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import styles from "./App.module.css";
 import Workload from "./components/Workload/Workload.jsx";
 import WorkloadHeader from "./components/WorkloadHeader/WorkloadHeader.jsx";
-import { CaseEnum, StatusEnum, DateEnum } from "./components/Enum/Enum";
+import { CaseEnum, StatusEnum } from "./components/Enum/Enum";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { utils } from "react-modern-calendar-datepicker";
 const MyApp = () => {
   const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
   const [filterStatus, setFilterStatus] = useState(StatusEnum.ALL);
-  const [filterDate, setFilterDate] = useState(utils().getToday());
+  const [filterDateRange, setFilterDate] = useState({from:utils().getToday(), to:null});
+  const [numberOfCases, setNumberOfCases] = useState(0);
 
   const filterToggle = (value) => {
     setFilterIndexCase(value);
@@ -26,12 +27,14 @@ const MyApp = () => {
         toggleFilter={filterToggle}
         toggleStatus={statusToggle}
         toggleDate={dateToggle}
-        dateSelected={filterDate}
+        datesSelected={filterDateRange}
+        numberOfCases={numberOfCases}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
-        dateSelected={filterDate}
+        datesSelected={filterDateRange}
+        setNumberOfCases={setNumberOfCases}
       />
     </div>
   );
