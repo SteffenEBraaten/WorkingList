@@ -10,9 +10,9 @@ const StatusEnum = Object.freeze({
     ACTVE: "ACTIVE",
     COMPLETED: "COMPLETED",
 });
-const DateEnum = Object.freeze({
-    TODAY: "TODAY",
+const DueDateEnum = Object.freeze({
+    SCHEDULE: "SCHEDULE",
 });
 
 
-export { CaseEnum, StatusEnum, DateEnum };
+export { CaseEnum, StatusEnum, DueDateEnum };

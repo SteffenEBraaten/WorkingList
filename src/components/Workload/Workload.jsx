@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum, StatusEnum } from "../Enum/Enum";
+import { CaseEnum, StatusEnum, DueDateEnum } from "../Enum/Enum";
 import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 /*
@@ -121,7 +121,6 @@ const Workload = (props) => {
     );
   }
 
-  console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
@@ -151,7 +150,7 @@ const Workload = (props) => {
         const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(".")
         const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
         
-        if (event.status === "SCHEDULE" && (dueDate >= fromDate && dueDate <= toDate)){
+        if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
           newDataToDisplay.push(dataToDisplay[i])
           break;
         }

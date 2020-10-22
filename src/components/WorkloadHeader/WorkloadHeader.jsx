@@ -6,7 +6,7 @@ import {
   DropdownButton
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
-import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
+import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
 
 const WorkloadHeader = (props) => {
@@ -40,7 +40,7 @@ const WorkloadHeader = (props) => {
   return (
     <div className={styles.workloadHeader}>
 
-      <h1>Number of follow ups in this range: {props.numberOfCases}</h1>
+      {/* How to get number of follow up cases AND number of health checks: {props.numberOfCases} */}
 
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
