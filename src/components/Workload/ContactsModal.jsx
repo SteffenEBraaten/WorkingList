@@ -108,8 +108,8 @@ const ContactsModal = (props) => {
   );
 
   const numberOfContacts = listContacts.length;
-
-  let titleOfContacts = JSON.stringify(
+  let titleOfContacts = `${props.item.first_name} ${props.item.surname}'s contacts (${numberOfContacts}) `;
+  /*let titleOfContacts = JSON.stringify(
     props.item.first_name +
       " " +
       props.item.surname +
@@ -118,7 +118,7 @@ const ContactsModal = (props) => {
       numberOfContacts +
       ")"
   );
-  titleOfContacts = titleOfContacts.substring(1, titleOfContacts.length - 1);
+  titleOfContacts = titleOfContacts.substring(1, titleOfContacts.length - 1);*/
 
   return (
     <Modal dataTest="dhis2-uicore-modal" position="middle" id="modalContacts">
