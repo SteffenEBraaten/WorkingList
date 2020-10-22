@@ -4,9 +4,16 @@
   margin-bottom: 2em;
   justify-content: center;
   align-content: center;
+  flex-direction: column;
 }
 
 .centerElement {
   align-self: center;
   justify-self: center;
+}
+
+.searchComponent {
+  padding-left: 15em;
+  padding-right: 15em;
+  padding-bottom: 2em;
 }

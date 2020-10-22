@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum, DueDateEnum } from "../Enum/Enum";
 import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
 import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
+import SearchComponent from "./SearchComponent";
+import { findValue } from "../../api/APIUtils";
 /*
 This file is for the 'main' page that contains list element 
 (index cases ) and number of contacts
@@ -20,6 +22,7 @@ const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
   const datesSelected = props.datesSelected;
+  const [searchValue, setSearchValue] = useState("")
 
   const option = {
     variables: {
@@ -133,13 +136,13 @@ const Workload = (props) => {
       : contactCasesData.contacts.trackedEntityInstances;
 
   // filter data on selected date
-  const filterOnDate = (dataToDisplay, dates) => {
+  const filterData = (dataToDisplay) => {
     const newDataToDisplay = []
 
-    const from = dates.from
+    const from = datesSelected.from
     const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`)
 
-    const to = dates.to
+    const to = datesSelected.to
     const toDate = to === null ? fromDate : new Date(`${to.year}`, `${to.month}`, `${to.day}`)
 
     // loop through data
@@ -151,7 +154,21 @@ const Workload = (props) => {
         const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
         
         if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
-          newDataToDisplay.push(dataToDisplay[i])
+          // filter on search bar
+          if (searchValue !== "") {
+            const firstName = findValue(dataToDisplay[i].attributes, "first_name").toLowerCase()
+            const lastName = findValue(dataToDisplay[i].attributes, "surname").toLowerCase()
+            const fullName = firstName.concat(" ", lastName)
+
+            if (firstName.startsWith(searchValue) || lastName.startsWith(searchValue) || fullName.startsWith(searchValue)){
+              newDataToDisplay.push(dataToDisplay[i])
+            }
+          }
+
+          // if not user search, view full list
+          else {
+            newDataToDisplay.push(dataToDisplay[i])
+          }
           break;
         }
       }
@@ -159,11 +176,12 @@ const Workload = (props) => {
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterOnDate(dataToDisplay, datesSelected)
+  dataToDisplay = filterData(dataToDisplay)
   props.setNumberOfCases(dataToDisplay.length)
 
   return (
     <div className={styles.workloadContainer}>
+      <SearchComponent setSearchValue={setSearchValue}/>
       <WorkloadTable data={dataToDisplay}/>
     </div>
   );

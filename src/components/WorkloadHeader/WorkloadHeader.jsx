@@ -3,7 +3,7 @@ import {
   SingleSelectField,
   SingleSelectOption,
   _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
-  DropdownButton
+  DropdownButton,
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
