@@ -45,7 +45,7 @@ const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
             </TableHead>
             <TableBody>
               {teiRelationships.map((item, key) => (
-                <Relationship key={key} id={item.relationship} />
+                <Relationship key={key} id={item.relationship} indexCaseId={indexCaseId} />
               ))}
             </TableBody>
           </Table>

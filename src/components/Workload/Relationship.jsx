@@ -10,7 +10,7 @@ const relationshipQuery = {
   },
 };
 
-const Relationship = ({ id }) => {
+const Relationship = ({ id, indexCaseId }) => {
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id,
@@ -30,16 +30,22 @@ const Relationship = ({ id }) => {
 
   const relationship = data.relationship;
   const type = relationship.relationshipName;
+
+  const contact =
+    relationship.to.trackedEntityInstance.trackedEntityInstance !== indexCaseId
+      ? relationship.to
+      : relationship.from;
+
   const firstName = findValue(
-    relationship.to.trackedEntityInstance.attributes,
+    contact.trackedEntityInstance.attributes,
     "first_name"
   );
   const surname = findValue(
-    relationship.to.trackedEntityInstance.attributes,
+    contact.trackedEntityInstance.attributes,
     "surname"
   );
   const phoneLocal = findValue(
-    relationship.to.trackedEntityInstance.attributes,
+    contact.trackedEntityInstance.attributes,
     "phone_local"
   );
 
