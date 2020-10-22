@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useConfig } from "@dhis2/app-runtime";
 import {
   Table,
   TableHead,
@@ -9,7 +10,6 @@ import {
   TableCell,
   Button
 } from "@dhis2/ui";
-import trackerCaptureURL from "../../api/Urls";
 import { findValue } from "../../api/APIUtils";
 import ContactsModal from "./ContactsModal.jsx";
 
@@ -32,42 +32,39 @@ const mapProgramIDToName = programID => {
   return name;
 };
 
-const goToTrackerCaptureApp = (trackedEntityInstance, programID, orgUnit) => {
-  setTimeout(function() {
-    window.open(
-      `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`,
-      "_blank"
-    );
-  }, 200);
+const isIndexCase = (tei) => 
+mapProgramIDToName(tei.enrollments[0].program) === "Index case";
+
+const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
+trackedEntityInstance,
+programID,
+orgUnit
+) => {
+const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`;
+window.open(url, "_blank");
 };
 
 const WorkloadTable = ({ data }) => {
+  const { baseUrl } = useConfig();
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
+
+  const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
+    `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
+  );
   const showContactsModal = (
-    program,
-    first_name,
+    firstName,
     surname,
-    relationshipEntityInstance,
+    trackedEntityInstance,
     hideModal
   ) => {
-    let entityInstance = relationshipEntityInstance;
-    if (program == "Index case") {
-      if (relationshipEntityInstance.length !== 0) {
-        entityInstance =
-          relationshipEntityInstance[0].to.trackedEntityInstance
-            .trackedEntityInstance;
-      }
-
       setObject({
-        first_name: first_name,
-        surname: surname,
-        relationshipEntityInstance: entityInstance,
-        hideModal: hideModal
+        firstName,
+        surname,
+        trackedEntityInstance,
       });
       setShowModal(true);
-    }
-  };
+    };
 
   return (
     <>
@@ -104,17 +101,14 @@ const WorkloadTable = ({ data }) => {
               <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
               <TableCell>{item.enrollments[0].status}</TableCell>
               <TableCell>
-                {mapProgramIDToName(item.enrollments[0].program) ===
-                "Contact" ? null : (
+              {isIndexCase(item) && (
                   <Button
                     primary
                     onClick={() =>
                       showContactsModal(
-                        mapProgramIDToName(item.enrollments[0].program),
                         findValue(item.attributes, "first_name"),
                         findValue(item.attributes, "surname"),
-                        item.relationships,
-                        setShowModal
+                        item
                       )
                     }
                   >
@@ -124,7 +118,6 @@ const WorkloadTable = ({ data }) => {
               </TableCell>
               <TableCell>
                 <Button
-                  primary
                   onClick={() =>
                     goToTrackerCaptureApp(
                       item.trackedEntityInstance,
@@ -140,7 +133,14 @@ const WorkloadTable = ({ data }) => {
           ))}
         </TableBody>
       </Table>
-      {showModal && <ContactsModal item={modalObject} />}
+      {showModal && (
+        <ContactsModal
+          indexCase={modalObject.trackedEntityInstance}
+          firstName={modalObject.firstName}
+          surname={modalObject.surname}
+          hideModal={() => setShowModal(false)}
+        />
+      )}
     </>
   );
 };
