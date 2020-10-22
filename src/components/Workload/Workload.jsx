@@ -2,21 +2,10 @@ import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum, StatusEnum, DueDateEnum } from "../Enum/Enum";
+import { CaseEnum, DueDateEnum } from "../Enum/Enum";
 import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
-import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 import SearchComponent from "./SearchComponent";
 import { findValue } from "../../api/APIUtils";
-/*
-This file is for the 'main' page that contains list element 
-(index cases ) and number of contacts
-*/
-
-/*
-  1: index cases and contacts
-  2: index cases
-  3: contact cases
-*/
 
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
@@ -160,7 +149,7 @@ const Workload = (props) => {
             const lastName = findValue(dataToDisplay[i].attributes, "surname").toLowerCase()
             const fullName = firstName.concat(" ", lastName)
 
-            if (firstName.startsWith(searchValue) || lastName.startsWith(searchValue) || fullName.startsWith(searchValue)){
+            if (fullName.includes(searchValue)){
               newDataToDisplay.push(dataToDisplay[i])
             }
           }

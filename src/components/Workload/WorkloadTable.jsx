@@ -7,7 +7,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Button,
+  Button
 } from "@dhis2/ui";
 import trackerCaptureURL from "../../api/Urls";
 import { findValue } from "../../api/APIUtils";
@@ -22,10 +22,10 @@ const toDateAndTimeFormat = (dateString, time = true) => {
 
 const programDictonary = {
   uYjxkTbwRNf: "Index case",
-  DM9n1bUw8W8: "Contact",
+  DM9n1bUw8W8: "Contact"
 };
 
-const mapProgramIDToName = (programID) => {
+const mapProgramIDToName = programID => {
   const name = programDictonary[programID]
     ? programDictonary[programID]
     : programID;
@@ -33,7 +33,7 @@ const mapProgramIDToName = (programID) => {
 };
 
 const goToTrackerCaptureApp = (trackedEntityInstance, programID, orgUnit) => {
-  setTimeout(function () {
+  setTimeout(function() {
     window.open(
       `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`,
       "_blank"
@@ -53,7 +53,7 @@ const WorkloadTable = ({ data }) => {
   ) => {
     let entityInstance = relationshipEntityInstance;
     if (program == "Index case") {
-      if (relationshipEntityInstance.length != 0) {
+      if (relationshipEntityInstance.length !== 0) {
         entityInstance =
           relationshipEntityInstance[0].to.trackedEntityInstance
             .trackedEntityInstance;
@@ -63,7 +63,7 @@ const WorkloadTable = ({ data }) => {
         first_name: first_name,
         surname: surname,
         relationshipEntityInstance: entityInstance,
-        hideModal: hideModal,
+        hideModal: hideModal
       });
       setShowModal(true);
     }
@@ -104,20 +104,23 @@ const WorkloadTable = ({ data }) => {
               <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
               <TableCell>{item.enrollments[0].status}</TableCell>
               <TableCell>
-                <Button
-                  primary
-                  onClick={() =>
-                    showContactsModal(
-                      mapProgramIDToName(item.enrollments[0].program),
-                      findValue(item.attributes, "first_name"),
-                      findValue(item.attributes, "surname"),
-                      item.relationships,
-                      setShowModal
-                    )
-                  }
-                >
-                  See contacts
-                </Button>
+                {mapProgramIDToName(item.enrollments[0].program) ===
+                "Contact" ? null : (
+                  <Button
+                    primary
+                    onClick={() =>
+                      showContactsModal(
+                        mapProgramIDToName(item.enrollments[0].program),
+                        findValue(item.attributes, "first_name"),
+                        findValue(item.attributes, "surname"),
+                        item.relationships,
+                        setShowModal
+                      )
+                    }
+                  >
+                    See contacts
+                  </Button>
+                )}
               </TableCell>
               <TableCell>
                 <Button
@@ -130,7 +133,7 @@ const WorkloadTable = ({ data }) => {
                     )
                   }
                 >
-                  Go to Tracker Capture App!
+                  Tracker Capture App
                 </Button>
               </TableCell>
             </TableRow>
