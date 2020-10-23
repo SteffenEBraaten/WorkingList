@@ -15,6 +15,7 @@
 .dropdownButton{
   margin: 1em 0 0;
   width: 20vw;
+  align-self: center;
 }
 
 
@@ -23,9 +24,9 @@
     flex-direction: row;
   }
   .singleSelectField {
-    margin: 1em 1em 0 0;
+    margin: 1vh 1vh 0 0;
   }
   .dropdownButton{
-    margin: 3em 0 0 0;
+    margin: 4vh 0 0 0;
   }
 }
