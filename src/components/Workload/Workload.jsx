@@ -121,8 +121,8 @@ const Workload = (props) => {
     filtered === CaseEnum.ALL
       ? both
       : filtered === CaseEnum.INDEXES
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances;
+        ? indexCasesData.indexCases.trackedEntityInstances
+        : contactCasesData.contacts.trackedEntityInstances;
 
   // filter data on selected date
   const filterData = (dataToDisplay) => {
@@ -137,20 +137,21 @@ const Workload = (props) => {
     // loop through data
     for (var i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
+      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j]
         const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(".")
         const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
-        
-        if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
+
+        if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)) {
           // filter on search bar
           if (searchValue !== "") {
             const firstName = findValue(dataToDisplay[i].attributes, "first_name").toLowerCase()
             const lastName = findValue(dataToDisplay[i].attributes, "surname").toLowerCase()
             const fullName = firstName.concat(" ", lastName)
 
-            if (fullName.includes(searchValue)){
-              newDataToDisplay.push(dataToDisplay[i])
+            if (fullName.includes(searchValue)) {
+              dataToDisplay[i].fullName = <b>dataToDisplay[i].fullName </b>;
+              newDataToDisplay.push(dataToDisplay[i]);
             }
           }
 
@@ -170,8 +171,8 @@ const Workload = (props) => {
 
   return (
     <div className={styles.workloadContainer}>
-      <SearchComponent setSearchValue={setSearchValue}/>
-      <WorkloadTable data={dataToDisplay}/>
+      <SearchComponent setSearchValue={setSearchValue} />
+      <WorkloadTable data={dataToDisplay} />
     </div>
   );
 };

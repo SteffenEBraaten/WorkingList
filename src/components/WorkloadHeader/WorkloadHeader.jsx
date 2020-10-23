@@ -38,7 +38,6 @@ const WorkloadHeader = (props) => {
 
   return (
     <div className={styles.workloadHeader}>
-      {/* <div className={styles.singleSelectFieldContainer}> */}
       <SingleSelectField
         label="Show"
         selected={selectedFilter}

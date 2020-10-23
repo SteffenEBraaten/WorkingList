@@ -6,23 +6,14 @@
   margin-top:2em;
 }
 
-.singleSelectFieldContainer {
-  margin: 3em 0 5em;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  /* align-items: center; */
-}
 
 .singleSelectField {
   margin: 1em 1em 0;
   width: 30vw;
-   /* flex-grow:3; */
-}
+  }
 
 .dropdownButton{
   margin: 1em 0 0;
-  align-self: flex-end;
   width: 20vw;
 }
 
@@ -31,18 +22,10 @@
   .workloadHeader {
     flex-direction: row;
   }
-
-  .singleSelectFieldContainer {
-    flex-wrap: nowrap;
-    margin: 3em 2em;
-  }
-
   .singleSelectField {
     margin: 1em 1em 0 0;
   }
   .dropdownButton{
     margin: 3em 0 0 0;
-    flex-grow:1;
-
   }
 }
