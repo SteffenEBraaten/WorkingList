@@ -93,13 +93,13 @@ const ContactsModal = (props) => {
   );
 
   const numberOfContacts = listContacts.length;
+  const titleOfContacts = `${props.item.first_name} ${props.item.surname}'s contacts (${numberOfContacts})`;
 
   //ta inn props så vi vet hvilken index case kontaktene tilhører
   return (
     <Modal dataTest="dhis2-uicore-modal" position="middle" id="modalContacts">
       <ModalTitle dataTest="dhis2-uicore-modaltitle">
-        {props.item.first_name} {props.item.surname}'s contacts (
-        {numberOfContacts})
+        {titleOfContacts}
       </ModalTitle>
       <ModalContent dataTest="dhis2-uicore-modalcontent">
         <Table>

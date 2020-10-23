@@ -1,7 +1,7 @@
 .workloadHeader {
   display: flex;
   /* align-items: center; */
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom:2em;
   margin-top:2em;
 }
@@ -16,7 +16,7 @@
 
 .singleSelectField {
   margin: 1em 1em 0;
-  width: 25vw;
+  width: 30vw;
    /* flex-grow:3; */
 }
 

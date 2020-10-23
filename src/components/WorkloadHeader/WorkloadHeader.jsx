@@ -2,24 +2,38 @@ import React, { useState } from "react";
 import {
   SingleSelectField,
   SingleSelectOption,
-  _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
-  DropdownButton
+  DropdownButton,
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
-import { CaseEnum, StatusEnum, DateEnum } from "../Enum/Enum";
+import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
 
 const WorkloadHeader = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ALL);
-  //const [selectedDay, setSelectedDay] = useState(DateEnum.TODAY);
 
-  const formatInputValue = (selectedDay) => {
+  const isToday = (date) => {
     const today = new Date()
-    if ((selectedDay.day === today.getDate()) && (selectedDay.month === today.getMonth() + 1) && (selectedDay.year === today.getFullYear())) {
-      return 'Today';
-    }
-    return `${selectedDay.day}/${selectedDay.month}/${selectedDay.year}`;
+
+    if (date.day === today.getDate() && date.month === today.getMonth() + 1 && date.year === today.getFullYear()) return true
+    return false
+  };
+
+  const formatInputValue = (selectedDates) => {
+    const from = selectedDates.from
+    const to = selectedDates.to
+
+    let fromString = ""
+    if (isToday(from)) fromString += "Today"
+    else fromString += `${from.day}/${from.month}/${from.year}`
+
+    let toString = ""
+    if (to === null) { }
+    else if (isToday(to)) toString += "Today"
+    else toString += `${to.day}/${to.month}/${to.year}`
+
+    if (fromString === toString || toString === "") return fromString
+    return `${fromString} - ${toString}`;
   };
 
   return (
@@ -78,16 +92,14 @@ const WorkloadHeader = (props) => {
       </SingleSelectField>
 
       <DropdownButton
-        label="Date"
         secondary
         className={styles.dropdownButton}
-        component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.dateSelected} />}
+        component={<DateComponent toggleDate={props.toggleDate} dateSelected={props.datesSelected} />}
         dataTest="dhis2-uicore-dropdownbutton"
       >
-        {formatInputValue(props.dateSelected)}
+        {formatInputValue(props.datesSelected)}
       </DropdownButton>
-    </div>
-    // </div>
+    </div >
   );
 };
 

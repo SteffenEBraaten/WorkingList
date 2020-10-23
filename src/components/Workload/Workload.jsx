@@ -1,25 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum, StatusEnum } from "../Enum/Enum";
+import { CaseEnum, DueDateEnum } from "../Enum/Enum";
 import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
-import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
-/*
-This file is for the 'main' page that contains list element 
-(index cases ) and number of contacts
-*/
-
-/*
-  1: index cases and contacts
-  2: index cases
-  3: contact cases
-*/
+import SearchComponent from "./SearchComponent";
+import { findValue } from "../../api/APIUtils";
 
 const Workload = (props) => {
   const filtered = props.indexFilterSelected;
   const caseStatus = props.statusSelected;
-  const dateSelected = props.dateSelected;
+  const datesSelected = props.datesSelected;
+  const [searchValue, setSearchValue] = useState("")
 
   const option = {
     variables: {
@@ -121,12 +113,11 @@ const Workload = (props) => {
     );
   }
 
-  console.log(indexCasesData);
   const both = indexCasesData.indexCases.trackedEntityInstances.concat(
     contactCasesData.contacts.trackedEntityInstances
   );
 
-  const dataToDisplay =
+  let dataToDisplay =
     filtered === CaseEnum.ALL
       ? both
       : filtered === CaseEnum.INDEXES
@@ -134,19 +125,39 @@ const Workload = (props) => {
       : contactCasesData.contacts.trackedEntityInstances;
 
   // filter data on selected date
-  const filterOnDate = (dataToDisplay, date) => {
-    const newDataToDisplay = [];
-    const todayString = `${date.day}.${date.month}.${date.year}`;
+  const filterData = (dataToDisplay) => {
+    const newDataToDisplay = []
+
+    const from = datesSelected.from
+    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`)
+
+    const to = datesSelected.to
+    const toDate = to === null ? fromDate : new Date(`${to.year}`, `${to.month}`, `${to.day}`)
 
     // loop through data
     for (var i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
-        const event = dataToDisplay[i].enrollments[0].events[j];
-        const selectedDate = toDateAndTimeFormat(event.dueDate, false);
+      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
+        const event = dataToDisplay[i].enrollments[0].events[j]
+        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(".")
+        const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
+        
+        if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
+          // filter on search bar
+          if (searchValue !== "") {
+            const firstName = findValue(dataToDisplay[i].attributes, "first_name").toLowerCase()
+            const lastName = findValue(dataToDisplay[i].attributes, "surname").toLowerCase()
+            const fullName = firstName.concat(" ", lastName)
 
-        if (event.status === "SCHEDULE" && todayString === selectedDate) {
-          newDataToDisplay.push(dataToDisplay[i]);
+            if (fullName.includes(searchValue)){
+              newDataToDisplay.push(dataToDisplay[i])
+            }
+          }
+
+          // if not user search, view full list
+          else {
+            newDataToDisplay.push(dataToDisplay[i])
+          }
           break;
         }
       }
@@ -154,9 +165,13 @@ const Workload = (props) => {
     return newDataToDisplay;
   };
 
+  dataToDisplay = filterData(dataToDisplay)
+  props.setNumberOfCases(dataToDisplay.length)
+
   return (
     <div className={styles.workloadContainer}>
-      <WorkloadTable data={filterOnDate(dataToDisplay, dateSelected)} />
+      <SearchComponent setSearchValue={setSearchValue}/>
+      <WorkloadTable data={dataToDisplay}/>
     </div>
   );
 };
