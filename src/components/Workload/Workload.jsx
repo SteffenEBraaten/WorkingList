@@ -126,21 +126,27 @@ const Workload = (props) => {
 
   // filter data on selected date
   const filterData = (dataToDisplay) => {
-    const newDataToDisplay = []
+    const newDataToDisplay = [];
 
-    const from = datesSelected.from
-    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`)
+    const from = datesSelected.from;
+    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`);
 
-    const to = datesSelected.to
-    const toDate = to === null ? fromDate : new Date(`${to.year}`, `${to.month}`, `${to.day}`)
+    const to = datesSelected.to;
+    const toDate = to === null ? fromDate : new Date(`${to.year}`, `${to.month}`, `${to.day}`);
 
     // loop through data
     for (var i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j<dataToDisplay[i].enrollments[0].events.length; j++){
-        const event = dataToDisplay[i].enrollments[0].events[j]
-        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(".")
-        const dueDate = new Date(dueDateList[2], dueDateList[1], dueDateList[0]) // formate Date object to prepare for comparing
+      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+        const event = dataToDisplay[i].enrollments[0].events[j];
+        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(
+          "."
+        );
+        const dueDate = new Date(
+          dueDateList[2],
+          dueDateList[1],
+          dueDateList[0]
+        ); // formate Date object to prepare for comparing
         
         if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
           // filter on search bar
@@ -165,13 +171,13 @@ const Workload = (props) => {
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterData(dataToDisplay)
-  props.setNumberOfCases(dataToDisplay.length)
+  dataToDisplay = filterData(dataToDisplay);
+  props.setNumberOfCases(dataToDisplay.length);
 
   return (
     <div className={styles.workloadContainer}>
       <SearchComponent setSearchValue={setSearchValue}/>
-      <WorkloadTable data={dataToDisplay}/>
+      <WorkloadTable data={dataToDisplay} />
     </div>
   );
 };
