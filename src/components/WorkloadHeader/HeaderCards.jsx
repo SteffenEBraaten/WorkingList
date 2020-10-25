@@ -32,7 +32,7 @@ const HeaderCards = (props) => {
     </NoticeBox>
   }
 
-
+  // Viser begge boksene
   if (props.displayText == "ALL") {
     return (
       <div className={styles.cards}>
@@ -68,6 +68,7 @@ const HeaderCards = (props) => {
     );
   }
 
+  // Viser bare index case boksen
   if (props.displayText == "INDEXES") {
     return (
       <div className={styles.cards}>
@@ -93,6 +94,7 @@ const HeaderCards = (props) => {
     );
   }
 
+  //Viser bare contacts boksen
   if (props.displayText == "CONTACTS") {
     return (
       <div className={styles.cards}>
