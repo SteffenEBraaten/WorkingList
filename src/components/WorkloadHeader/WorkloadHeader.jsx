@@ -40,13 +40,11 @@ const WorkloadHeader = (props) => {
 
   return (
     <div className={styles.workloadHeader}>
-
       <HeaderCards
         numberOfCalls={props.numberOfCases}
         numberOfIndexCases={props.numberOfIndexCases}
         displayText={selectedFilter}
       />
-
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
           label="Show"

@@ -4,8 +4,6 @@ import { Card, CircularLoader, NoticeBox } from "@dhis2/ui";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CovidIllustration } from "./svg/CovidIllustration.jsx";
 
-
-
 const HeaderCards = (props) => {
 
   const query = {
@@ -13,9 +11,8 @@ const HeaderCards = (props) => {
       resource: 'me',
     },
   }
-
+  //Henter total lengde av tabellen og trekker fra antall index cases.
   const numberOfContacts = props.numberOfCalls - props.numberOfIndexCases;
-
   const { error, loading, data } = useDataQuery(query);
 
   if (loading) {
