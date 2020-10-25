@@ -11,6 +11,8 @@ const MyApp = () => {
   const [filterDateRange, setFilterDate] = useState({from:utils().getToday(), to:null});
   const [numberOfCases, setNumberOfCases] = useState(0);
 
+  const [numberOfIndexCases, setNumberOfIndexCases] = useState(0);
+
   const filterToggle = (value) => {
     setFilterIndexCase(value);
   };
@@ -29,12 +31,14 @@ const MyApp = () => {
         toggleDate={dateToggle}
         datesSelected={filterDateRange}
         numberOfCases={numberOfCases}
+        numberOfIndexCases={numberOfIndexCases}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
         datesSelected={filterDateRange}
         setNumberOfCases={setNumberOfCases}
+        setNumberOfIndexCases={setNumberOfIndexCases}
       />
     </div>
   );

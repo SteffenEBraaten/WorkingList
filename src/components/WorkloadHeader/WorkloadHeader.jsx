@@ -7,6 +7,8 @@ import {
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
+import HeaderCards from "./HeaderCards";
+
 
 const WorkloadHeader = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
@@ -22,7 +24,7 @@ const WorkloadHeader = (props) => {
   const formatInputValue = (selectedDates) => {
     const from = selectedDates.from
     const to = selectedDates.to
-    
+
     let fromString = ""
     if (isToday(from)) fromString += "Today"
     else fromString += `${from.day}/${from.month}/${from.year}`
@@ -31,13 +33,20 @@ const WorkloadHeader = (props) => {
     if (to === null) {}
     else if (isToday(to)) toString += "Today"
     else toString += `${to.day}/${to.month}/${to.year}`
-    
+
     if (fromString === toString || toString === "") return fromString
     return `${fromString} - ${toString}`;
   };
 
   return (
     <div className={styles.workloadHeader}>
+
+      <HeaderCards
+        numberOfCalls={props.numberOfCases}
+        numberOfIndexCases={props.numberOfIndexCases}
+        displayText={selectedFilter}
+      />
+
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
           label="Show"
@@ -91,7 +100,6 @@ const WorkloadHeader = (props) => {
           />
         </SingleSelectField>
 
-      </div>
         <DropdownButton
           secondary
           className={styles.dropdownButton}
@@ -100,6 +108,7 @@ const WorkloadHeader = (props) => {
         >
           {formatInputValue(props.datesSelected)}
         </DropdownButton>
+      </div>
     </div>
   );
 };
