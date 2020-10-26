@@ -191,7 +191,7 @@ const Workload = (props) => {
 
 
   let teller = 0;
-  for (var i = 0; i < dataToDisplay.length; i++) {
+  for (let i = 0; i < dataToDisplay.length; i++) {
     if(isIndexCase(dataToDisplay[i])) teller++;
   }
 

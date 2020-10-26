@@ -9,7 +9,6 @@
   display: flex;
   justify-content: space-around;
   width: 60%;
-  margin: 1em;
 }
 
 .singleCard {
@@ -19,6 +18,7 @@
   max-height: 14em;
   min-width: 200px;
   padding: 0 1em 0 1em;
+  margin: 1em;
 }
 
 .cardContent {

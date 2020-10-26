@@ -44,6 +44,7 @@ const WorkloadHeader = (props) => {
         numberOfCalls={props.numberOfCases}
         numberOfIndexCases={props.numberOfIndexCases}
         displayText={selectedFilter}
+        filter={props.indexFilterSelected}
       />
       <div className={styles.singleSelectFieldContainer}>
         <SingleSelectField
