@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useConfig } from "@dhis2/app-runtime";
+import styles from "./Workload.module.css";
 import {
   Table,
   TableHead,
@@ -8,6 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  NoticeBox,
   Button
 } from "@dhis2/ui";
 import { findValue } from "../../api/APIUtils";
@@ -68,6 +70,7 @@ const WorkloadTable = ({ data }) => {
 
   return (
     <>
+    {data.length > 0 ? (
       <Table>
         <TableHead>
           <TableRowHead>
@@ -133,6 +136,9 @@ const WorkloadTable = ({ data }) => {
           ))}
         </TableBody>
       </Table>
+      ) : (
+          <NoticeBox className={styles.noticeAllDone}>No heath checks or follow-up calls for today!</NoticeBox>
+      )}
       {showModal && (
         <ContactsModal
           indexCase={modalObject.trackedEntityInstance}
