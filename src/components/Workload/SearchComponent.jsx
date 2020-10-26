@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./Workload.module.css";
 import { 
-    _dhis2_d2_i18n__WEBPACK_IMPORTED_MODULE_5___default,
     Input, 
   } from "@dhis2/ui";
 

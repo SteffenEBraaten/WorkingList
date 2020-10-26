@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Relationship from "./Relationship";
-import { findValue } from "../../api/APIUtils";
-import styles from "./Workload.module.css";
 import {
   Modal,
   ModalTitle,
@@ -11,13 +9,9 @@ import {
   TableRowHead,
   TableCellHead,
   TableBody,
-  TableRow,
-  TableCell,
   Button,
   ButtonStrip,
   ModalActions,
-  CenteredContent,
-  CircularLoader,
   NoticeBox,
 } from "@dhis2/ui";
 
