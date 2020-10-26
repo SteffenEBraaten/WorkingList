@@ -1,0 +1,13 @@
+.statusTableCell {
+    max-width: 168px;
+}
+
+.statusTagContainer {
+    margin: 8px 0;
+}
+
+.noticeAllDone {
+    align-self: center;
+    width: 67%;
+  }
+  

@@ -104,7 +104,7 @@ const WorkloadHeader = ({
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Not completed"
-            value={StatusEnum.ACTVE}
+            value={StatusEnum.ACTIVE}
           />
         </SingleSelectField>
 

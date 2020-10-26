@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum, DueDateEnum } from "../Enum/Enum";
-import { WorkloadTable, toDateAndTimeFormat } from "./WorkloadTable";
+import { CaseEnum, StatusEnum } from "../Enum/Enum";
+import { WorkloadTable } from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
-import { findValue } from "../../api/APIUtils";
+import { findValue, isWithinRange } from "../../utils/APIUtils";
+import { toDateObject, dueDateToDateObject } from "../../utils/MapperUtils";
 
 const Workload = ({
   indexFilterSelected,
@@ -40,7 +41,7 @@ const Workload = ({
           "inactive",
           "events"
         ],
-        programStatus: programStatus !== "ALL" ? programStatus : null,
+        programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
 
         paging: false
       })
@@ -65,10 +66,10 @@ const Workload = ({
           "inactive",
           "events"
         ],
-        programStatus: programStatus !== "ALL" ? programStatus : null,
-        paging: false
-      })
-    }
+        programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
+        paging: false,
+      }),
+    },
   };
 
   const {
@@ -131,32 +132,30 @@ const Workload = ({
   const filterData = dataToDisplay => {
     const newDataToDisplay = [];
 
-    const from = datesSelected.from;
-    const fromDate = new Date(`${from.year}`, `${from.month}`, `${from.day}`);
+    const fromDate = toDateObject(
+      datesSelected.from.year,
+      datesSelected.from.month,
+      datesSelected.from.day
+    );
 
-    const to = datesSelected.to;
-    const toDate =
-      to === null
-        ? fromDate
-        : new Date(`${to.year}`, `${to.month}`, `${to.day}`);
+    const toDate = datesSelected.to
+      ? toDateObject(
+          datesSelected.to.year,
+          datesSelected.to.month,
+          datesSelected.to.day
+        )
+      : fromDate;
 
     // loop through data
-    for (var i = 0; i < dataToDisplay.length; i++) {
+    for (let i = 0; i < dataToDisplay.length; i++) {
       // loop through events
-      for (var j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+      for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
-        const dueDateList = toDateAndTimeFormat(event.dueDate, false).split(
-          "."
-        );
-        const dueDate = new Date(
-          dueDateList[2],
-          dueDateList[1],
-          dueDateList[0]
-        ); // formate Date object to prepare for comparing
+
+        const dueDate = dueDateToDateObject(event.dueDate)
 
         if (
-          event.status === DueDateEnum.SCHEDULE &&
-          dueDate >= fromDate && dueDate <= toDate
+          isWithinRange(fromDate, toDate, dueDate)
         ) {
           // filter on search bar
           if (searchValue !== "") {
@@ -189,10 +188,10 @@ const Workload = ({
 
   const programDictonary = {
     uYjxkTbwRNf: "Index case",
-    DM9n1bUw8W8: "Contact"
+    DM9n1bUw8W8: "Contact",
   };
 
-  const mapProgramIDToName = programID => {
+  const mapProgramIDToName = (programID) => {
     const name = programDictonary[programID]
       ? programDictonary[programID]
       : programID;
@@ -203,18 +202,18 @@ const Workload = ({
     mapProgramIDToName(tei.enrollments[0].program) === "Index case";
   };
 
-  let teller = 0;
+  let counter = 0;
   for (let i = 0; i < dataToDisplay.length; i++) {
-    if (isIndexCase(dataToDisplay[i])) teller++;
+    if (isIndexCase(dataToDisplay[i])) counter++;
   }
 
-  setNumberOfIndexCases(teller);
+  setNumberOfIndexCases(counter);
   setNumberOfCases(dataToDisplay.length);
 
   return (
     <div className={styles.workloadContainer}>
       <SearchComponent setSearchValue={setSearchValue} />
-      <WorkloadTable data={dataToDisplay} filter={indexFilterSelected} />
+      <WorkloadTable data={dataToDisplay} dates={datesSelected} showFilter={indexFilterSelected} statusFilter={statusSelected} />
     </div>
   );
 };

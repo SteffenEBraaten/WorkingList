@@ -5,12 +5,12 @@ const CaseEnum = Object.freeze({
 });
 
 const StatusEnum = Object.freeze({
-  ALL: "ALL",
-  ACTVE: "ACTIVE",
-  COMPLETED: "COMPLETED"
-});
-const DueDateEnum = Object.freeze({
-  SCHEDULE: "SCHEDULE"
+    ALL: "ALL",
+    ACTIVE: "ACTIVE",
+    SCHEDULE: "SCHEDULE",
+    OVERDUE: "OVERDUE",
+    COMPLETED: "COMPLETED",
 });
 
-export { CaseEnum, StatusEnum, DueDateEnum };
+
+export { CaseEnum, StatusEnum };
