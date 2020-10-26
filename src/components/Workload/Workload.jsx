@@ -197,11 +197,10 @@ const Workload = (props) => {
 
   props.setNumberOfIndexCases(teller);
 
-
   return (
     <div className={styles.workloadContainer}>
       <SearchComponent setSearchValue={setSearchValue}/>
-      <WorkloadTable data={dataToDisplay} />
+      <WorkloadTable data={dataToDisplay} filter={filtered}/>
     </div>
   );
 };

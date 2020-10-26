@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useConfig } from "@dhis2/app-runtime";
 import styles from "./Workload.module.css";
+import { CaseEnum } from "../Enum/Enum";
 import {
   Table,
   TableHead,
@@ -46,7 +47,7 @@ const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programI
 window.open(url, "_blank");
 };
 
-const WorkloadTable = ({ data }) => {
+const WorkloadTable = ({ data, filter }) => {
   const { baseUrl } = useConfig();
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
@@ -68,6 +69,8 @@ const WorkloadTable = ({ data }) => {
       setShowModal(true);
     };
 
+    console.log(filter)
+
   return (
     <>
     {data.length > 0 ? (
@@ -82,7 +85,9 @@ const WorkloadTable = ({ data }) => {
             <TableCellHead>Incident Date</TableCellHead>
             <TableCellHead>Last updated</TableCellHead>
             <TableCellHead>Status</TableCellHead>
+            {filter !== CaseEnum.CONTACTS ? (
             <TableCellHead>Contacts</TableCellHead>
+            ) : (<></>)}
             <TableCellHead>Link to Tracker Capture App</TableCellHead>
           </TableRowHead>
         </TableHead>
@@ -103,6 +108,7 @@ const WorkloadTable = ({ data }) => {
               </TableCell>
               <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
               <TableCell>{item.enrollments[0].status}</TableCell>
+              {filter !== CaseEnum.CONTACTS ? (
               <TableCell>
               {isIndexCase(item) && (
                   <Button
@@ -119,6 +125,7 @@ const WorkloadTable = ({ data }) => {
                   </Button>
                 )}
               </TableCell>
+              ) : (<></>)}
               <TableCell>
                 <Button
                   onClick={() =>
