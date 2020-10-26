@@ -69,8 +69,6 @@ const WorkloadTable = ({ data, filter }) => {
       setShowModal(true);
     };
 
-    console.log(filter)
-
   return (
     <>
     {data.length > 0 ? (
@@ -109,22 +107,22 @@ const WorkloadTable = ({ data, filter }) => {
               <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
               <TableCell>{item.enrollments[0].status}</TableCell>
               {filter !== CaseEnum.CONTACTS ? (
-              <TableCell>
-              {isIndexCase(item) && (
-                  <Button
-                    primary
-                    onClick={() =>
-                      showContactsModal(
-                        findValue(item.attributes, "first_name"),
-                        findValue(item.attributes, "surname"),
-                        item
-                      )
-                    }
-                  >
-                    See contacts
-                  </Button>
-                )}
-              </TableCell>
+                <TableCell>
+                {isIndexCase(item) && (
+                    <Button
+                      primary
+                      onClick={() =>
+                        showContactsModal(
+                          findValue(item.attributes, "first_name"),
+                          findValue(item.attributes, "surname"),
+                          item
+                        )
+                      }
+                    >
+                      See contacts
+                    </Button>
+                  )}
+                </TableCell>
               ) : (<></>)}
               <TableCell>
                 <Button
