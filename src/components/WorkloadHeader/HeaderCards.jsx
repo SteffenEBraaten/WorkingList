@@ -15,7 +15,6 @@ const HeaderCards = (props) => {
   //Henter total lengde av tabellen og trekker fra antall index cases.
   const numberOfContacts = props.numberOfCalls - props.numberOfIndexCases;
   const { error, loading, data } = useDataQuery(query);
-  const filter = props.filter;
 
   if (loading) {
     return <CircularLoader />;
@@ -115,7 +114,6 @@ const HeaderCards = (props) => {
           </div>
         </Card>
       </div>
-
     );
   }
 

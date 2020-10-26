@@ -32,7 +32,6 @@ const MyApp = () => {
         datesSelected={filterDateRange}
         numberOfCases={numberOfCases}
         numberOfIndexCases={numberOfIndexCases}
-        indexFilterSelected={filterIndexCase}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
