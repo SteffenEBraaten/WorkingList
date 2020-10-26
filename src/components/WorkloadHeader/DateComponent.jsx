@@ -47,10 +47,10 @@ const myLocale = {
       isWeekend: true,
     },
     {
-        name: 'Sunday',
-        short: 'S',
-        isWeekend: true,
-      },
+      name: 'Sunday', 
+      short: 'S',
+      isWeekend: true,
+    },
   ],
 
   // just play around with this number between 0 and 6
@@ -87,6 +87,10 @@ const DateComponent = (props) => {
         shouldHighlightWeekends
         locale={myLocale}
         //minimumDate={utils().getToday()}
+
+        colorPrimary="#00695C"
+        colorPrimaryLight="#91c9c0"
+        box-shadow="0 1em 3em #E8EDF2"
       />
     );
   };
