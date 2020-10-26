@@ -147,7 +147,7 @@ const Workload = (props) => {
           dueDateList[1],
           dueDateList[0]
         ); // formate Date object to prepare for comparing
-        
+
         if (event.status === DueDateEnum.SCHEDULE && (dueDate >= fromDate && dueDate <= toDate)){
           // filter on search bar
           if (searchValue !== "") {
@@ -173,6 +173,30 @@ const Workload = (props) => {
 
   dataToDisplay = filterData(dataToDisplay);
   props.setNumberOfCases(dataToDisplay.length);
+
+  const programDictonary = {
+    uYjxkTbwRNf: "Index case",
+    DM9n1bUw8W8: "Contact"
+  };
+
+  const mapProgramIDToName = programID => {
+    const name = programDictonary[programID]
+      ? programDictonary[programID]
+      : programID;
+    return name;
+  };
+
+  const isIndexCase = (tei) =>
+  mapProgramIDToName(tei.enrollments[0].program) === "Index case";
+
+
+  let teller = 0;
+  for (let i = 0; i < dataToDisplay.length; i++) {
+    if(isIndexCase(dataToDisplay[i])) teller++;
+  }
+
+  props.setNumberOfIndexCases(teller);
+
 
   return (
     <div className={styles.workloadContainer}>

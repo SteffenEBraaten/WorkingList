@@ -54,7 +54,7 @@ const myLocale = {
   ],
 
   // just play around with this number between 0 and 6
-  weekStartingIndex: 6, 
+  weekStartingIndex: 6,
 
   // return a { year: number, month: number, day: number } object
   getToday(gregorainTodayObject) {
@@ -77,7 +77,7 @@ const myLocale = {
   },
 }
 
-const DateComponent = (props) => {    
+const DateComponent = (props) => {
     return (
       <Calendar
         value={props.dateSelected}
