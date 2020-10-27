@@ -1,11 +1,9 @@
 import React from "react";
 import { useConfig } from "@dhis2/app-runtime";
-import { StatusEnum } from "../../../Enum/Enum";
-import { CaseEnum } from "../../../Enum/Enum";
+import { StatusEnum, CaseEnum } from "../../../Enum/Enum";
 import {
   findValue,
   isOverdue,
-  isWithinRange,
   isHealthScheckOrFollowUp,
 } from "../../../../utils/APIUtils";
 import {
@@ -16,6 +14,7 @@ import {
 } from "../../../../utils/MapperUtils";
 import { TableRow, TableCell, Button, Tag } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
+import { mapProgramStageIdToName } from "../../../../utils/APIUtils";
 
 const eventTagMapper = (eventStatus, eventDueDate) => {
   if (
@@ -41,7 +40,12 @@ const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
   window.open(url, "_blank");
 };
 
-export const WorkloadTableRows = ({ data, showContactsModal, statusFilter, showFilter }) => {
+export const WorkloadTableRows = ({
+  data,
+  showContactsModal,
+  statusFilter,
+  showFilter,
+}) => {
   const { baseUrl } = useConfig();
 
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
@@ -49,7 +53,7 @@ export const WorkloadTableRows = ({ data, showContactsModal, statusFilter, showF
   );
 
   const isIndexCase = (tei) =>
-  mapProgramIDToName(tei.enrollments[0].program) === "Index case";
+    mapProgramIDToName(tei.enrollments[0].program) === "Index case";
 
   return data.map((item, key) =>
     item.enrollments[0].events.filter((item) =>
@@ -64,52 +68,22 @@ export const WorkloadTableRows = ({ data, showContactsModal, statusFilter, showF
         <TableCell>
           {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
         </TableCell>
-        <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
         <TableCell className={styles.statusTableCell}>
-          {item.enrollments[0].events.map((thisEvent, key) =>
-              statusFilter === StatusEnum.COMPLETED ? (
-                thisEvent.status === StatusEnum.COMPLETED ? (
-                  <div key={key} className={styles.statusTagContainer}>
-                    <Tag
-                      {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}
-                    >
-                      {`${toDateAndTimeFormat(thisEvent.dueDate, false)} ${
-                        isOverdue(thisEvent.dueDate) &&
-                        thisEvent.status === StatusEnum.SCHEDULE
-                          ? StatusEnum.OVERDUE
-                          : thisEvent.status
-                      }`}
-                    </Tag>
-                  </div>
-                ) : null
-              ) : statusFilter === StatusEnum.ACTIVE ? (
-                thisEvent.status !== StatusEnum.COMPLETED ? (
-                  <div key={key} className={styles.statusTagContainer}>
-                    <Tag
-                      {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}
-                    >
-                      {`${toDateAndTimeFormat(thisEvent.dueDate, false)} ${
-                        isOverdue(thisEvent.dueDate) &&
-                        thisEvent.status === StatusEnum.SCHEDULE
-                          ? StatusEnum.OVERDUE
-                          : thisEvent.status
-                      }`}
-                    </Tag>
-                  </div>
-                ) : null
-              ) : (
-                <div key={key} className={styles.statusTagContainer}>
-                  <Tag {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}>
-                    {`${toDateAndTimeFormat(thisEvent.dueDate, false)} ${
-                      isOverdue(thisEvent.dueDate) &&
-                      thisEvent.status === StatusEnum.SCHEDULE
-                        ? StatusEnum.OVERDUE
-                        : thisEvent.status
-                    }`}
-                  </Tag>
-                </div>
-              )
-          )}
+          {item.enrollments[0].events.map((thisEvent, key) => (
+            <div key={key} className={styles.statusTagContainer}>
+              <Tag {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}>
+                {`${toDateAndTimeFormat(
+                  thisEvent.dueDate,
+                  false
+                )} ${mapProgramStageIdToName(thisEvent.programStage)} ${
+                  isOverdue(thisEvent.dueDate) &&
+                  thisEvent.status === StatusEnum.SCHEDULE
+                    ? StatusEnum.OVERDUE
+                    : thisEvent.status
+                }`}
+              </Tag>
+            </div>
+          ))}
         </TableCell>
         {showFilter !== CaseEnum.CONTACTS ? (
           <TableCell>
@@ -124,7 +98,7 @@ export const WorkloadTableRows = ({ data, showContactsModal, statusFilter, showF
                   )
                 }
               >
-                See contacts
+                Contacts
               </Button>
             )}
           </TableCell>

@@ -78,7 +78,6 @@ const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
               <TableCellHead>Phone Number</TableCellHead>
               <TableCellHead>Age</TableCellHead>
               <TableCellHead>Incident Date</TableCellHead>
-              <TableCellHead>Last updated</TableCellHead>
               <TableCellHead>Status</TableCellHead>
               {showFilter !== CaseEnum.CONTACTS ? (
                 <TableCellHead>Contacts</TableCellHead>

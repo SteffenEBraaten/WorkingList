@@ -6,13 +6,20 @@ export const findValue = (listToSearch, code) => {
     : "N/A";
 };
 
-const eventIdDictornary = {
+const programStageDictonary = {
   oqsk2Jv4k3s: "Health status",
   sAV9jAajr8x: "Follow-up",
 };
 
+export const mapProgramStageIdToName = (programStageId) => {
+  const name = programStageDictonary[programStageId]
+    ? programStageDictonary[programStageId]
+    : programStageId;
+  return name;
+};
+
 export const isHealthScheckOrFollowUp = (programStage) => {
-  return eventIdDictornary[programStage] ? true : false;
+  return programStageDictonary[programStage] ? true : false;
 };
 
 export const isOverdue = (dueDate) => {
@@ -52,4 +59,5 @@ export default {
   isWithinRange,
   isHealthScheckOrFollowUp,
   evaluateFilter,
+  mapProgramStageIdToName
 };
