@@ -1,3 +1,5 @@
+import { StatusEnum } from "../components/Enum/Enum.jsx";
+
 export const findValue = (listToSearch, code) => {
   return listToSearch.find((item) => item.code === code)
     ? listToSearch.find((item) => item.code === code).value
@@ -30,4 +32,24 @@ export const isWithinRange = (fromDate, toDate, dueDate) => {
   );
 };
 
-export default { findValue, isOverdue, isWithinRange, isHealthScheckOrFollowUp };
+export const evaluateFilter = (eventStatus, filterStatus) => {
+  return filterStatus === StatusEnum.ALL
+    ? true
+    : filterStatus === StatusEnum.ACTIVE
+    ? eventStatus !== StatusEnum.COMPLETED
+      ? true
+      : false
+    : filterStatus === StatusEnum.COMPLETED
+    ? eventStatus === StatusEnum.COMPLETED
+      ? true
+      : false
+    : false;
+};
+
+export default {
+  findValue,
+  isOverdue,
+  isWithinRange,
+  isHealthScheckOrFollowUp,
+  evaluateFilter,
+};

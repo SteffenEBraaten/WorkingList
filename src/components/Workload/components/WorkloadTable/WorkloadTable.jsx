@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useConfig } from "@dhis2/app-runtime";
-import { CaseEnum } from "../../../Enum/Enum";
+import { CaseEnum, StatusEnum } from "../../../Enum/Enum";
 import {
   Table,
   TableHead,
@@ -13,8 +12,7 @@ import {
   Button,
   Tag,
 } from "@dhis2/ui";
-import { findValue, isOverdue } from "../../../../utils/APIUtils";
-import { StatusEnum } from "../../../Enum/Enum";
+import { evaluateFilter } from "../../../../utils/APIUtils";
 import ContactsModal from "./ContactsModal.jsx";
 import styles from "./WorkloadTable.module.css";
 import {
@@ -23,43 +21,15 @@ import {
   toDateObject,
   dueDateToDateObject,
 } from "../../../../utils/MapperUtils";
-import { isWithinRange, isHealthScheckOrFollowUp } from "../../../../utils/APIUtils";
-
-const eventTagMapper = (eventStatus, eventDueDate) => {
-  if (
-    (eventStatus === StatusEnum.SCHEDULE && isOverdue(eventDueDate)) ||
-    eventStatus === StatusEnum.OVERDUE
-  ) {
-    return { negative: true };
-  }
-  if (eventStatus === StatusEnum.SCHEDULE) {
-    return { neutral: true };
-  }
-  if (eventStatus === StatusEnum.COMPLETED) {
-    return { positive: true };
-  } else return {};
-};
-
-const isIndexCase = (tei) =>
-  mapProgramIDToName(tei.enrollments[0].program) === "Index case";
-
-const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
-  trackedEntityInstance,
-  programID,
-  orgUnit
-) => {
-  const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`;
-  window.open(url, "_blank");
-};
+import {
+  isWithinRange,
+  isHealthScheckOrFollowUp,
+} from "../../../../utils/APIUtils";
+import { WorkloadTableRows } from "./WokloadTableRows";
 
 const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
-  const { baseUrl } = useConfig();
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
-
-  const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
-    `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
-  );
 
   const showContactsModal = (
     firstName,
@@ -74,6 +44,27 @@ const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
     });
     setShowModal(true);
   };
+
+  const filteredData = data.map((item) => ({
+    ...item,
+    enrollments: [
+      {
+        ...item.enrollments[0],
+        events: item.enrollments[0].events.filter(
+          (item) =>
+            isHealthScheckOrFollowUp(item.programStage) &&
+            isWithinRange(
+              toDateObject(dates.from.year, dates.from.month, dates.from.day),
+              dates.to
+                ? toDateObject(dates.to.year, dates.to.month, dates.to.day)
+                : null,
+              dueDateToDateObject(item.dueDate)
+            ) &&
+            evaluateFilter(item.status, statusFilter)
+        ),
+      },
+    ],
+  }));
 
   return (
     <>
@@ -96,140 +87,12 @@ const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
             </TableRowHead>
           </TableHead>
           <TableBody>
-            {data.map((item, key) => (
-              <TableRow key={key}>
-                <TableCell>
-                  {mapProgramIDToName(item.enrollments[0].program)}
-                </TableCell>
-                <TableCell>
-                  {findValue(item.attributes, "first_name")}
-                </TableCell>
-                <TableCell>{findValue(item.attributes, "surname")}</TableCell>
-                <TableCell>
-                  {findValue(item.attributes, "phone_local")}
-                </TableCell>
-                <TableCell>
-                  {findValue(item.attributes, "patinfo_ageonset")}
-                </TableCell>
-                <TableCell>
-                  {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
-                </TableCell>
-                <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
-                 <TableCell className={styles.statusTableCell}>
-                  {item.enrollments[0].events.map((thisEvent, key) =>
-                    isWithinRange(
-                      toDateObject(
-                        dates.from.year,
-                        dates.from.month,
-                        dates.from.day
-                      ),
-                      dates.to
-                        ? toDateObject(
-                            dates.to.year,
-                            dates.to.month,
-                            dates.to.day
-                          )
-                        : null,
-                      dueDateToDateObject(thisEvent.dueDate)
-                    ) && isHealthScheckOrFollowUp(thisEvent.programStage) ? (
-                      statusFilter === StatusEnum.COMPLETED ? (
-                        thisEvent.status === StatusEnum.COMPLETED ?
-                        <div key={key} className={styles.statusTagContainer}>
-                          <Tag
-                            {...eventTagMapper(
-                              thisEvent.status,
-                              thisEvent.dueDate
-                            )}
-                          >
-                            {`${toDateAndTimeFormat(
-                              thisEvent.dueDate,
-                              false
-                            )} ${
-                              isOverdue(thisEvent.dueDate) &&
-                              thisEvent.status === StatusEnum.SCHEDULE
-                                ? StatusEnum.OVERDUE
-                                : thisEvent.status
-                            }`}
-                          </Tag>
-                        </div>
-                        : null
-                      ) : statusFilter === StatusEnum.ACTIVE ? (
-                        thisEvent.status !== StatusEnum.COMPLETED ?
-                        <div key={key} className={styles.statusTagContainer}>
-                          <Tag
-                            {...eventTagMapper(
-                              thisEvent.status,
-                              thisEvent.dueDate
-                            )}
-                          >
-                            {`${toDateAndTimeFormat(
-                              thisEvent.dueDate,
-                              false
-                            )} ${
-                              isOverdue(thisEvent.dueDate) &&
-                              thisEvent.status === StatusEnum.SCHEDULE
-                                ? StatusEnum.OVERDUE
-                                : thisEvent.status
-                            }`}
-                          </Tag>
-                        </div>
-                        :null
-                      ) : (
-                        <div key={key} className={styles.statusTagContainer}>
-                          <Tag
-                            {...eventTagMapper(
-                              thisEvent.status,
-                              thisEvent.dueDate
-                            )}
-                          >
-                            {`${toDateAndTimeFormat(
-                              thisEvent.dueDate,
-                              false
-                            )} ${
-                              isOverdue(thisEvent.dueDate) &&
-                              thisEvent.status === StatusEnum.SCHEDULE
-                                ? StatusEnum.OVERDUE
-                                : thisEvent.status
-                            }`}
-                          </Tag>
-                        </div>
-                      )
-                    ) : null
-                  )}
-                </TableCell>
-                {showFilter !== CaseEnum.CONTACTS ? (
-                  <TableCell>
-                    {isIndexCase(item) && (
-                      <Button
-                        primary
-                        onClick={() =>
-                          showContactsModal(
-                            findValue(item.attributes, "first_name"),
-                            findValue(item.attributes, "surname"),
-                            item
-                          )
-                        }
-                      >
-                        See contacts
-                      </Button>
-                    )}
-                  </TableCell>
-                ) : null}
-                <TableCell>
-                  <Button
-                    onClick={() =>
-                      goToTrackerCaptureApp(
-                        item.trackedEntityInstance,
-                        item.enrollments[0].program,
-                        item.orgUnit
-                      )
-                    }
-                  >
-                    Tracker Capture App
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            <WorkloadTableRows
+              data={filteredData}
+              showContactsModal={showContactsModal}
+              showFilter={showFilter}
+              statusFilter={statusFilter}
+            />
           </TableBody>
         </Table>
       ) : (
