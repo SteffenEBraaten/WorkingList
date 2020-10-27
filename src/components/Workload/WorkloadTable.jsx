@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useConfig } from "@dhis2/app-runtime";
+import styles from "./Workload.module.css";
+import { CaseEnum } from "../Enum/Enum";
 import {
   Table,
   TableHead,
@@ -8,6 +10,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  NoticeBox,
   Button
 } from "@dhis2/ui";
 import { findValue } from "../../api/APIUtils";
@@ -44,7 +47,7 @@ const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programI
 window.open(url, "_blank");
 };
 
-const WorkloadTable = ({ data }) => {
+const WorkloadTable = ({ data, filter }) => {
   const { baseUrl } = useConfig();
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
@@ -68,6 +71,7 @@ const WorkloadTable = ({ data }) => {
 
   return (
     <>
+    {data.length > 0 ? (
       <Table>
         <TableHead>
           <TableRowHead>
@@ -79,7 +83,9 @@ const WorkloadTable = ({ data }) => {
             <TableCellHead>Incident Date</TableCellHead>
             <TableCellHead>Last updated</TableCellHead>
             <TableCellHead>Status</TableCellHead>
+            {filter !== CaseEnum.CONTACTS ? (
             <TableCellHead>Contacts</TableCellHead>
+            ) : (<></>)}
             <TableCellHead>Link to Tracker Capture App</TableCellHead>
           </TableRowHead>
         </TableHead>
@@ -100,22 +106,24 @@ const WorkloadTable = ({ data }) => {
               </TableCell>
               <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
               <TableCell>{item.enrollments[0].status}</TableCell>
-              <TableCell>
-              {isIndexCase(item) && (
-                  <Button
-                    primary
-                    onClick={() =>
-                      showContactsModal(
-                        findValue(item.attributes, "first_name"),
-                        findValue(item.attributes, "surname"),
-                        item
-                      )
-                    }
-                  >
-                    See contacts
-                  </Button>
-                )}
-              </TableCell>
+              {filter !== CaseEnum.CONTACTS ? (
+                <TableCell>
+                {isIndexCase(item) && (
+                    <Button
+                      primary
+                      onClick={() =>
+                        showContactsModal(
+                          findValue(item.attributes, "first_name"),
+                          findValue(item.attributes, "surname"),
+                          item
+                        )
+                      }
+                    >
+                      See contacts
+                    </Button>
+                  )}
+                </TableCell>
+              ) : (<></>)}
               <TableCell>
                 <Button
                   onClick={() =>
@@ -133,6 +141,9 @@ const WorkloadTable = ({ data }) => {
           ))}
         </TableBody>
       </Table>
+      ) : (
+          <NoticeBox className={styles.noticeAllDone}>No heath checks or follow-up calls for today!</NoticeBox>
+      )}
       {showModal && (
         <ContactsModal
           indexCase={modalObject.trackedEntityInstance}
