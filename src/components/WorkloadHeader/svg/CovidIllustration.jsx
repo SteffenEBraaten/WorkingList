@@ -1,14 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-export function CovidIllustration(props) {
+export function CovidIllustration() {
   return (
-    <svg
-      width={100}
-      height={100}
-      viewBox="32 38 110 110"
-      fill="none"
-      {...props}
-    >
+    <svg width={100} height={100} viewBox="32 38 110 110" fill="none">
       <path fill="url(#prefix__pattern0)" d="M0 0h1000v1000H0z" />
       <defs>
         <pattern
@@ -27,7 +21,7 @@ export function CovidIllustration(props) {
         />
       </defs>
     </svg>
-  )
+  );
 }
 
 export default CovidIllustration;

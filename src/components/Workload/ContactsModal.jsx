@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Relationship from "./Relationship";
-import { findValue } from "../../api/APIUtils";
-import styles from "./Workload.module.css";
 import {
   Modal,
   ModalTitle,
@@ -11,14 +9,10 @@ import {
   TableRowHead,
   TableCellHead,
   TableBody,
-  TableRow,
-  TableCell,
   Button,
   ButtonStrip,
   ModalActions,
-  CenteredContent,
-  CircularLoader,
-  NoticeBox,
+  NoticeBox
 } from "@dhis2/ui";
 
 const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
@@ -45,7 +39,11 @@ const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
             </TableHead>
             <TableBody>
               {teiRelationships.map((item, key) => (
-                <Relationship key={key} id={item.relationship} indexCaseId={indexCaseId} />
+                <Relationship
+                  key={key}
+                  id={item.relationship}
+                  indexCaseId={indexCaseId}
+                />
               ))}
             </TableBody>
           </Table>

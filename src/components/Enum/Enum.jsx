@@ -1,18 +1,16 @@
 const CaseEnum = Object.freeze({
-    ALL: "ALL",
-    INDEXES: "INDEXES",
-    CONTACTS: "CONTACTS",
+  ALL: "ALL",
+  INDEXES: "INDEXES",
+  CONTACTS: "CONTACTS"
 });
-
 
 const StatusEnum = Object.freeze({
-    ALL: "ALL",
-    ACTVE: "ACTIVE",
-    COMPLETED: "COMPLETED",
+  ALL: "ALL",
+  ACTVE: "ACTIVE",
+  COMPLETED: "COMPLETED"
 });
 const DueDateEnum = Object.freeze({
-    SCHEDULE: "SCHEDULE",
+  SCHEDULE: "SCHEDULE"
 });
-
 
 export { CaseEnum, StatusEnum, DueDateEnum };
