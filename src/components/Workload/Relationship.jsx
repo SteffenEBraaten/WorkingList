@@ -6,15 +6,15 @@ import { findValue } from "../../api/APIUtils";
 const relationshipQuery = {
   relationship: {
     resource: "relationships",
-    id: ({ id }) => id,
-  },
+    id: ({ id }) => id
+  }
 };
 
 const Relationship = ({ id, indexCaseId }) => {
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
-      id,
-    },
+      id
+    }
   });
 
   if (loading) {
