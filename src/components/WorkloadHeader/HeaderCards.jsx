@@ -5,7 +5,7 @@ import { useDataQuery } from "@dhis2/app-runtime";
 import { CovidIllustration } from "./svg/CovidIllustration.jsx";
 import { CaseEnum } from "../Enum/Enum";
 
-const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
+const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) => {
   const query = {
     me: {
       resource: "me",
@@ -13,7 +13,6 @@ const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
   };
 
   //Henter total lengde av tabellen og trekker fra antall index cases.
-  const numberOfContacts = numberOfCalls - numberOfIndexCases;
   const { error, loading, data } = useDataQuery(query);
 
   if (loading) {
@@ -42,7 +41,7 @@ const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
 
         <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
           <div className={styles.cardContent}>
-            <h1>{numberOfIndexCases}</h1>
+            <h1>{numberOfHealthChecks}</h1>
             <p> Health checks that needs to be performed </p>
           </div>
         </Card>
@@ -62,7 +61,7 @@ const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
 
         <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
           <div className={styles.cardContent}>
-            <h1>{numberOfContacts}</h1>
+            <h1>{numberOfFollowUps}</h1>
             <p> Contacts that needs to be contacted </p>
           </div>
         </Card>
@@ -81,14 +80,14 @@ const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
 
         <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
           <div className={styles.cardContent}>
-            <h1>{numberOfIndexCases}</h1>
+            <h1>{numberOfHealthChecks}</h1>
             <p> Health checks that needs to be performed </p>
           </div>
         </Card>
 
         <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
           <div className={styles.cardContent}>
-            <h1>{numberOfContacts}</h1>
+            <h1>{numberOfFollowUps}</h1>
             <p> Contacts that needs to be contacted </p>
           </div>
         </Card>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum } from "../Enum/Enum";
+import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import { WorkloadTable } from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
 import {
@@ -19,8 +19,8 @@ const Workload = ({
   indexFilterSelected,
   statusSelected,
   datesSelected,
-  setNumberOfCases,
-  setNumberOfIndexCases,
+  setNumberOfFollowUps,
+  setNumberOfHealthChecks,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -222,13 +222,18 @@ const Workload = ({
   const isIndexCase = (tei) =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
 
-  let counter = 0;
-  for (let i = 0; i < dataToDisplay.length; i++) {
-    if (isIndexCase(dataToDisplay[i])) counter++;
+    let followUpCounter = 0;
+    let healthCheckCounter = 0;
+    for (let i = 0; i < dataToDisplay.length; i++) {
+      for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+        const thisEvent = dataToDisplay[i].enrollments[0].events[j];
+        if(isIndexCase(dataToDisplay[i]) && thisEvent.status !== StatusEnum.COMPLETED) healthCheckCounter++;
+        if(!isIndexCase(dataToDisplay[i]) && thisEvent.status !== StatusEnum.COMPLETED) followUpCounter++;
+    }
   }
 
-  setNumberOfIndexCases(counter);
-  setNumberOfCases(dataToDisplay.length);
+  setNumberOfHealthChecks(healthCheckCounter);
+  setNumberOfFollowUps(followUpCounter);
 
   return (
     <div className={styles.workloadContainer}>

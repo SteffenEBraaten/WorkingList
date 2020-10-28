@@ -13,8 +13,8 @@ const MyApp = () => {
     from: utils().getToday(),
     to: null
   });
-  const [numberOfCases, setNumberOfCases] = useState(0);
-  const [numberOfIndexCases, setNumberOfIndexCases] = useState(0);
+  const [numberOfFollowUps, setNumberOfFollowUps] = useState(0);
+  const [numberOfHealthChecks, setNumberOfHealthChecks] = useState(0);
 
   const filterToggle = value => {
     setFilterIndexCase(value);
@@ -33,15 +33,15 @@ const MyApp = () => {
         toggleStatus={statusToggle}
         toggleDate={dateToggle}
         datesSelected={filterDateRange}
-        numberOfCases={numberOfCases}
-        numberOfIndexCases={numberOfIndexCases}
+        numberOfFollowUps={numberOfFollowUps}
+        numberOfHealthChecks={numberOfHealthChecks}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
         datesSelected={filterDateRange}
-        setNumberOfCases={setNumberOfCases}
-        setNumberOfIndexCases={setNumberOfIndexCases}
+        setNumberOfFollowUps={setNumberOfFollowUps}
+        setNumberOfHealthChecks={setNumberOfHealthChecks}
       />
     </div>
   );
