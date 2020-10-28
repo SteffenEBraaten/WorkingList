@@ -38,7 +38,6 @@ const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
 export const WorkloadTableRows = ({
   data,
   showContactsModal,
-  statusFilter,
   showFilter,
 }) => {
   const { baseUrl } = useConfig();

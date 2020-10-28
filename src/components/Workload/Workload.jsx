@@ -235,9 +235,7 @@ const Workload = ({
       <SearchComponent setSearchValue={setSearchValue} />
       <WorkloadTable
         data={dataToDisplay}
-        dates={datesSelected}
         showFilter={indexFilterSelected}
-        statusFilter={statusSelected}
       />
     </div>
   );
