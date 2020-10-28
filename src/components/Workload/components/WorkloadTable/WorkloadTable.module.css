@@ -27,3 +27,7 @@
 .tag {
   max-width: 100% !important;
 }
+
+.div {
+  width: 100%;
+}
