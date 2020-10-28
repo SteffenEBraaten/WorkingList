@@ -40,7 +40,7 @@ const Workload = ({
           "enrollments",
           "lastUpdated",
           "inactive",
-          "events",
+          "events"
         ],
 
         paging: false,
@@ -64,7 +64,7 @@ const Workload = ({
           "relationships",
           "lastUpdated",
           "inactive",
-          "events",
+          "events"
         ],
         paging: false,
       },
@@ -100,35 +100,24 @@ const Workload = ({
     else fetchContact();
   }, [indexFilterSelected]);
 
-  if (indexCaseLoading || contactCaseLoading) {
-    return <CircularLoader className={styles.centerElement} />;
-  }
+  const hasData = indexCasesData && contactCasesData;
 
-  if (indexCaseError || contactCaseError) {
-    return (
-      <NoticeBox
-        error
-        title="Could not get working list"
-        className={styles.centerElement}
-      >
-        Could not get the working list. Please try again later.
-      </NoticeBox>
+  const both =
+    hasData &&
+    indexCasesData.indexCases.trackedEntityInstances.concat(
+      contactCasesData.contacts.trackedEntityInstances
     );
-  }
 
-  const both = indexCasesData.indexCases.trackedEntityInstances.concat(
-    contactCasesData.contacts.trackedEntityInstances
-  );
-
-  let dataToDisplay =
-    indexFilterSelected === CaseEnum.ALL
+  let dataToDisplay = hasData
+    ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
       ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances;
+      : contactCasesData.contacts.trackedEntityInstances
+    : [];
 
   // filter data on selected date
-  const filterData = (dataToDisplay) => {
+  const filterData = dataToDisplay => {
     const newDataToDisplay = [];
 
     const fromDate = toDateObject(
@@ -182,13 +171,13 @@ const Workload = ({
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterData(dataToDisplay).map((item) => ({
+  dataToDisplay = filterData(dataToDisplay).map(item => ({
     ...item,
     enrollments: [
       {
         ...item.enrollments[0],
         events: item.enrollments[0].events.filter(
-          (item) =>
+          item =>
             isHealthScheckOrFollowUp(item.programStage) &&
             isWithinRange(
               toDateObject(
@@ -206,12 +195,12 @@ const Workload = ({
               dueDateToDateObject(item.dueDate)
             ) &&
             evaluateFilter(item.status, statusSelected)
-        ),
-      },
-    ],
+        )
+      }
+    ]
   }));
 
-  const isIndexCase = (tei) =>
+  const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
 
     let followUpCounter = 0;
@@ -224,16 +213,31 @@ const Workload = ({
     }
   }
 
-  setNumberOfHealthChecks(healthCheckCounter);
+  useEffect(() => {
+    setNumberOfHealthChecks(healthCheckCounter);
   setNumberOfFollowUps(followUpCounter);
+  }, [healthCheckCounter, followUpCounter]);
+
+  if (indexCaseLoading || contactCaseLoading) {
+    return <CircularLoader className={styles.centerElement} />
+  }
+
+  if (indexCaseError || contactCaseError) {
+    return (
+      <NoticeBox
+        error
+        title="Could not get working list"
+        className={styles.centerElement}
+      >
+        Could not get the working list. Please try again later.
+      </NoticeBox>
+    )
+  }
 
   return (
     <div className={styles.workloadContainer}>
       <SearchComponent setSearchValue={setSearchValue} />
-      <WorkloadTable
-        data={dataToDisplay}
-        showFilter={indexFilterSelected}
-      />
+      <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );
 };
