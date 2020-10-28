@@ -12,7 +12,7 @@ import {
   Button,
   ButtonStrip,
   ModalActions,
-  NoticeBox
+  NoticeBox,
 } from "@dhis2/ui";
 
 const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {

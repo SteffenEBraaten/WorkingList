@@ -8,8 +8,8 @@ import { CaseEnum } from "../Enum/Enum";
 const HeaderCards = ({ numberOfCalls, numberOfIndexCases, displayText }) => {
   const query = {
     me: {
-      resource: "me"
-    }
+      resource: "me",
+    },
   };
 
   //Henter total lengde av tabellen og trekker fra antall index cases.

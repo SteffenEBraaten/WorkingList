@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   SingleSelectField,
   SingleSelectOption,
-  DropdownButton
+  DropdownButton,
 } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
@@ -15,12 +15,12 @@ const WorkloadHeader = ({
   toggleDate,
   datesSelected,
   numberOfCases,
-  numberOfIndexCases
+  numberOfIndexCases,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ALL);
 
-  const isToday = date => {
+  const isToday = (date) => {
     const today = new Date();
 
     if (
@@ -32,7 +32,7 @@ const WorkloadHeader = ({
     return false;
   };
 
-  const formatInputValue = selectedDates => {
+  const formatInputValue = (selectedDates) => {
     const from = selectedDates.from;
     const to = selectedDates.to;
 
@@ -104,7 +104,7 @@ const WorkloadHeader = ({
           <SingleSelectOption
             dataTest="dhis2-uicore-singleselectoption"
             label="Not completed"
-            value={StatusEnum.ACTVE}
+            value={StatusEnum.ACTIVE}
           />
         </SingleSelectField>
 

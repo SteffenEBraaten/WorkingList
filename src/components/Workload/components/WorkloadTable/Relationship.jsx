@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { TableRow, TableCell } from "@dhis2/ui";
-import { findValue } from "../../api/APIUtils";
+import { findValue } from "../../../../utils/APIUtils";
 
 const relationshipQuery = {
   relationship: {
