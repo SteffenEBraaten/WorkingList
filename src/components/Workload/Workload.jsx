@@ -20,7 +20,7 @@ const Workload = ({
   statusSelected,
   datesSelected,
   setNumberOfFollowUps,
-  setNumberOfHealthChecks,
+  setNumberOfHealthChecks
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -211,23 +211,31 @@ const Workload = ({
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
 
-    let followUpCounter = 0;
-    let healthCheckCounter = 0;
-    for (let i = 0; i < dataToDisplay.length; i++) {
-      for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
-        const thisEvent = dataToDisplay[i].enrollments[0].events[j];
-        if(isIndexCase(dataToDisplay[i]) && thisEvent.status !== StatusEnum.COMPLETED) healthCheckCounter++;
-        if(!isIndexCase(dataToDisplay[i]) && thisEvent.status !== StatusEnum.COMPLETED) followUpCounter++;
+  let followUpCounter = 0;
+  let healthCheckCounter = 0;
+  for (let i = 0; i < dataToDisplay.length; i++) {
+    for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
+      const thisEvent = dataToDisplay[i].enrollments[0].events[j];
+      if (
+        isIndexCase(dataToDisplay[i]) &&
+        thisEvent.status !== StatusEnum.COMPLETED
+      )
+        healthCheckCounter++;
+      if (
+        !isIndexCase(dataToDisplay[i]) &&
+        thisEvent.status !== StatusEnum.COMPLETED
+      )
+        followUpCounter++;
     }
   }
 
   useEffect(() => {
     setNumberOfHealthChecks(healthCheckCounter);
-  setNumberOfFollowUps(followUpCounter);
+    setNumberOfFollowUps(followUpCounter);
   }, [healthCheckCounter, followUpCounter]);
 
   if (indexCaseLoading || contactCaseLoading) {
-    return <CircularLoader className={styles.centerElement} />
+    return <CircularLoader className={styles.centerElement} />;
   }
 
   if (indexCaseError || contactCaseError) {
@@ -239,7 +247,7 @@ const Workload = ({
       >
         Could not get the working list. Please try again later.
       </NoticeBox>
-    )
+    );
   }
 
   return (
