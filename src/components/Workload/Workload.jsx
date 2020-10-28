@@ -2,25 +2,32 @@ import React, { useEffect, useState } from "react";
 import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { CaseEnum, StatusEnum } from "../Enum/Enum";
+import { CaseEnum } from "../Enum/Enum";
 import { WorkloadTable } from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
-import { findValue, isWithinRange } from "../../utils/APIUtils";
-import { toDateObject, dueDateToDateObject } from "../../utils/MapperUtils";
+import {
+  findValue,
+  isIndexCase,
+  isHealthScheckOrFollowUp,
+  evaluateFilter,
+  dueDateToDateObject,
+  isWithinRange,
+  toDateObject,
+} from "../../utils/APIUtils";
 
 const Workload = ({
   indexFilterSelected,
   statusSelected,
   datesSelected,
   setNumberOfCases,
-  setNumberOfIndexCases
+  setNumberOfIndexCases,
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const option = {
     variables: {
-      programStatus: statusSelected
-    }
+      programStatus: statusSelected,
+    },
   };
 
   const queryContact = {
@@ -39,13 +46,13 @@ const Workload = ({
           "enrollments",
           "lastUpdated",
           "inactive",
-          "events"
+          "events",
         ],
         programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
 
-        paging: false
-      })
-    }
+        paging: false,
+      }),
+    },
   };
 
   const queryIndex = {
@@ -64,7 +71,7 @@ const Workload = ({
           "relationships",
           "lastUpdated",
           "inactive",
-          "events"
+          "events",
         ],
         programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
         paging: false,
@@ -76,14 +83,14 @@ const Workload = ({
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
-    refetch: indexcaseRefetch
+    refetch: indexcaseRefetch,
   } = useDataQuery(queryIndex, option);
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
-    refetch: contactCaseRefetch
+    refetch: contactCaseRefetch,
   } = useDataQuery(queryContact, option);
 
   useEffect(() => {
@@ -129,7 +136,7 @@ const Workload = ({
       : contactCasesData.contacts.trackedEntityInstances;
 
   // filter data on selected date
-  const filterData = dataToDisplay => {
+  const filterData = (dataToDisplay) => {
     const newDataToDisplay = [];
 
     const fromDate = toDateObject(
@@ -152,11 +159,9 @@ const Workload = ({
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
 
-        const dueDate = dueDateToDateObject(event.dueDate)
+        const dueDate = dueDateToDateObject(event.dueDate);
 
-        if (
-          isWithinRange(fromDate, toDate, dueDate)
-        ) {
+        if (isWithinRange(fromDate, toDate, dueDate)) {
           // filter on search bar
           if (searchValue !== "") {
             const firstName = findValue(
@@ -184,23 +189,35 @@ const Workload = ({
     }
     return newDataToDisplay;
   };
-  dataToDisplay = filterData(dataToDisplay);
 
-  const programDictonary = {
-    uYjxkTbwRNf: "Index case",
-    DM9n1bUw8W8: "Contact",
-  };
-
-  const mapProgramIDToName = (programID) => {
-    const name = programDictonary[programID]
-      ? programDictonary[programID]
-      : programID;
-    return name;
-  };
-
-  const isIndexCase = tei => {
-    mapProgramIDToName(tei.enrollments[0].program) === "Index case";
-  };
+  dataToDisplay = filterData(dataToDisplay).map((item) => ({
+    ...item,
+    enrollments: [
+      {
+        ...item.enrollments[0],
+        events: item.enrollments[0].events.filter(
+          (item) =>
+            isHealthScheckOrFollowUp(item.programStage) &&
+            isWithinRange(
+              toDateObject(
+                datesSelected.from.year,
+                datesSelected.from.month,
+                datesSelected.from.day
+              ),
+              datesSelected.to
+                ? toDateObject(
+                    datesSelected.to.year,
+                    datesSelected.to.month,
+                    datesSelected.to.day
+                  )
+                : null,
+              dueDateToDateObject(item.dueDate)
+            ) &&
+            evaluateFilter(item.status, statusSelected)
+        ),
+      },
+    ],
+  }));
 
   let counter = 0;
   for (let i = 0; i < dataToDisplay.length; i++) {
@@ -213,7 +230,12 @@ const Workload = ({
   return (
     <div className={styles.workloadContainer}>
       <SearchComponent setSearchValue={setSearchValue} />
-      <WorkloadTable data={dataToDisplay} dates={datesSelected} showFilter={indexFilterSelected} statusFilter={statusSelected} />
+      <WorkloadTable
+        data={dataToDisplay}
+        dates={datesSelected}
+        showFilter={indexFilterSelected}
+        statusFilter={statusSelected}
+      />
     </div>
   );
 };

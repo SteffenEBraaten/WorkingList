@@ -4,17 +4,12 @@ import { StatusEnum, CaseEnum } from "../../../Enum/Enum";
 import {
   findValue,
   isOverdue,
-  isHealthScheckOrFollowUp,
-} from "../../../../utils/APIUtils";
-import {
   toDateAndTimeFormat,
-  mapProgramIDToName,
-  toDateObject,
-  dueDateToDateObject,
-} from "../../../../utils/MapperUtils";
+  mapProgramIdToName,
+  mapProgramStageIdToName,
+} from "../../../../utils/APIUtils";
 import { TableRow, TableCell, Button, Tag } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
-import { mapProgramStageIdToName } from "../../../../utils/APIUtils";
 
 const eventTagMapper = (eventStatus, eventDueDate) => {
   if (
@@ -53,14 +48,12 @@ export const WorkloadTableRows = ({
   );
 
   const isIndexCase = (tei) =>
-    mapProgramIDToName(tei.enrollments[0].program) === "Index case";
+    mapProgramIdToName(tei.enrollments[0].program) === "Index case";
 
   return data.map((item, key) =>
-    item.enrollments[0].events.filter((item) =>
-      isHealthScheckOrFollowUp(item.programStage)
-    ).length > 0 ? (
+    item.enrollments[0].events.length > 0 ? (
       <TableRow key={key}>
-        <TableCell>{mapProgramIDToName(item.enrollments[0].program)}</TableCell>
+        <TableCell>{mapProgramIdToName(item.enrollments[0].program)}</TableCell>
         <TableCell>{findValue(item.attributes, "first_name")}</TableCell>
         <TableCell>{findValue(item.attributes, "surname")}</TableCell>
         <TableCell>{findValue(item.attributes, "phone_local")}</TableCell>

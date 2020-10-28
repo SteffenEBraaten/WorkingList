@@ -16,14 +16,11 @@ import { evaluateFilter } from "../../../../utils/APIUtils";
 import ContactsModal from "./ContactsModal.jsx";
 import styles from "./WorkloadTable.module.css";
 import {
-  toDateAndTimeFormat,
-  mapProgramIDToName,
-  toDateObject,
-  dueDateToDateObject,
-} from "../../../../utils/MapperUtils";
-import {
   isWithinRange,
   isHealthScheckOrFollowUp,
+  toDateAndTimeFormat,
+  toDateObject,
+  dueDateToDateObject,
 } from "../../../../utils/APIUtils";
 import { WorkloadTableRows } from "./WokloadTableRows";
 
@@ -44,27 +41,6 @@ const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
     });
     setShowModal(true);
   };
-
-  const filteredData = data.map((item) => ({
-    ...item,
-    enrollments: [
-      {
-        ...item.enrollments[0],
-        events: item.enrollments[0].events.filter(
-          (item) =>
-            isHealthScheckOrFollowUp(item.programStage) &&
-            isWithinRange(
-              toDateObject(dates.from.year, dates.from.month, dates.from.day),
-              dates.to
-                ? toDateObject(dates.to.year, dates.to.month, dates.to.day)
-                : null,
-              dueDateToDateObject(item.dueDate)
-            ) &&
-            evaluateFilter(item.status, statusFilter)
-        ),
-      },
-    ],
-  }));
 
   return (
     <>
@@ -87,7 +63,7 @@ const WorkloadTable = ({ data, dates, showFilter, statusFilter }) => {
           </TableHead>
           <TableBody>
             <WorkloadTableRows
-              data={filteredData}
+              data={data}
               showContactsModal={showContactsModal}
               showFilter={showFilter}
               statusFilter={statusFilter}
