@@ -7,12 +7,12 @@ import { WorkloadTable } from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
 import {
   findValue,
-  isIndexCase,
   isHealthScheckOrFollowUp,
   evaluateFilter,
   dueDateToDateObject,
   isWithinRange,
   toDateObject,
+  mapProgramIdToName
 } from "../../utils/APIUtils";
 
 const Workload = ({
@@ -218,6 +218,9 @@ const Workload = ({
       },
     ],
   }));
+
+  const isIndexCase = (tei) =>
+    mapProgramIdToName(tei.enrollments[0].program) === "Index case";
 
   let counter = 0;
   for (let i = 0; i < dataToDisplay.length; i++) {
