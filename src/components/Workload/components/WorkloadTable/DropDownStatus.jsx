@@ -25,16 +25,14 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
 
 const DropDownStatus = ({ events }) => {
   const lastEvent = events[events.length - 1];
-  const prevEvents = events.slice(0, -1)
+  const prevEvents = events.slice(0, -1);
   return (
     <DropdownButton
       className={styles.dropDownStatus}
       component={
         <Card className={styles.card}>
           <p>Previous events</p>
-
           {prevEvents.length === 0 ? <NoticeBox>No events</NoticeBox> : null}
-
           {prevEvents.map((thisEvent, key) => (
             <div key={key} className={styles.statusTagContainer}>
               <Tag
@@ -59,20 +57,22 @@ const DropDownStatus = ({ events }) => {
       name="default"
       value="nothing"
     >
-      <Tag
-        className={styles.tag}
-        {...eventTagMapper(lastEvent.status, lastEvent.dueDate)}
-      >
-        {`${toDateAndTimeFormat(
-          lastEvent.dueDate,
-          false
-        )} ${mapProgramStageIdToName(lastEvent.programStage)} ${
-          isOverdue(lastEvent.dueDate) &&
-          lastEvent.status === StatusEnum.SCHEDULE
-            ? StatusEnum.OVERDUE
-            : lastEvent.status
-        }`}
-      </Tag>
+      <div className={styles.div}>
+        <Tag
+          className={styles.tag}
+          {...eventTagMapper(lastEvent.status, lastEvent.dueDate)}
+        >
+          {`${toDateAndTimeFormat(
+            lastEvent.dueDate,
+            false
+          )} ${mapProgramStageIdToName(lastEvent.programStage)} ${
+            isOverdue(lastEvent.dueDate) &&
+            lastEvent.status === StatusEnum.SCHEDULE
+              ? StatusEnum.OVERDUE
+              : lastEvent.status
+          }`}
+        </Tag>
+      </div>
     </DropdownButton>
   );
 };
