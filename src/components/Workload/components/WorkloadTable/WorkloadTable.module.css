@@ -6,7 +6,15 @@
   margin: 8px 0;
 }
 
+.tag {
+  width: 400px;
+}
+
 .noticeAllDone {
   align-self: center;
   width: 67%;
+}
+
+.dropDownStatus {
+  width: 400px;
 }

@@ -10,6 +10,7 @@ import {
 } from "../../../../utils/APIUtils";
 import { TableRow, TableCell, Button, Tag } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
+import DropDownStatus from "./DropDownStatus"
 
 const eventTagMapper = (eventStatus, eventDueDate) => {
   if (
@@ -61,27 +62,12 @@ export const WorkloadTableRows = ({
           {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
         </TableCell>
         <TableCell className={styles.statusTableCell}>
-          {item.enrollments[0].events.map((thisEvent, key) => (
-            <div key={key} className={styles.statusTagContainer}>
-              <Tag {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}>
-                {`${toDateAndTimeFormat(
-                  thisEvent.dueDate,
-                  false
-                )} ${mapProgramStageIdToName(thisEvent.programStage)} ${
-                  isOverdue(thisEvent.dueDate) &&
-                  thisEvent.status === StatusEnum.SCHEDULE
-                    ? StatusEnum.OVERDUE
-                    : thisEvent.status
-                }`}
-              </Tag>
-            </div>
-          ))}
+          {<DropDownStatus events={item.enrollments[0].events}/>}
         </TableCell>
         {showFilter !== CaseEnum.CONTACTS ? (
           <TableCell>
             {isIndexCase(item) && (
               <Button
-                primary
                 onClick={() =>
                   showContactsModal(
                     findValue(item.attributes, "first_name"),
@@ -97,6 +83,7 @@ export const WorkloadTableRows = ({
         ) : null}
         <TableCell>
           <Button
+            primary
             onClick={() =>
               goToTrackerCaptureApp(
                 item.trackedEntityInstance,
