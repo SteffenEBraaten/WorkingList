@@ -7,6 +7,7 @@ import {
 } from "../../../../utils/APIUtils";
 import { Tag, DropdownButton, Card, NoticeBox } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
+
 const eventTagMapper = (eventStatus, eventDueDate) => {
   if (
     (eventStatus === StatusEnum.SCHEDULE && isOverdue(eventDueDate)) ||
@@ -21,6 +22,7 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
     return { positive: true };
   } else return {};
 };
+
 const DropDownStatus = ({ events }) => {
   const lastEvent = events.pop();
   return (
