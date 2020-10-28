@@ -24,7 +24,8 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
 };
 
 const DropDownStatus = ({ events }) => {
-  const lastEvent = events.pop();
+  const lastEvent = events[events.length - 1];
+  const prevEvents = events.slice(0, -1)
   return (
     <DropdownButton
       className={styles.dropDownStatus}
@@ -32,9 +33,9 @@ const DropDownStatus = ({ events }) => {
         <Card className={styles.card}>
           <p>Previous events</p>
 
-          {events.length === 0 ? <NoticeBox>No events</NoticeBox> : null}
+          {prevEvents.length === 0 ? <NoticeBox>No events</NoticeBox> : null}
 
-          {events.map((thisEvent, key) => (
+          {prevEvents.map((thisEvent, key) => (
             <div key={key} className={styles.statusTagContainer}>
               <Tag
                 className={styles.tag}
