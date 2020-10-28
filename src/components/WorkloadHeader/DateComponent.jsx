@@ -16,41 +16,41 @@ const myLocale = {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ],
 
   // week days by order
   weekDays: [
     {
       name: "Monday",
-      short: "M"
+      short: "M",
     },
     {
       name: "Tuesday",
-      short: "T"
+      short: "T",
     },
     {
       name: "Wednesday",
-      short: "W"
+      short: "W",
     },
     {
       name: "Thursday",
-      short: "T"
+      short: "T",
     },
     {
       name: "Friday",
-      short: "F"
+      short: "F",
     },
     {
       name: "Saturday",
       short: "S",
-      isWeekend: true
+      isWeekend: true,
     },
     {
       name: "Sunday",
       short: "S",
-      isWeekend: true
-    }
+      isWeekend: true,
+    },
   ],
 
   // just play around with this number between 0 and 6
@@ -74,7 +74,7 @@ const myLocale = {
   // return a transformed digit to your locale
   transformDigit(digit) {
     return digit;
-  }
+  },
 };
 
 const DateComponent = ({ toggleDate, dateSelected }) => {
