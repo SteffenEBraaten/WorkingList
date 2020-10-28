@@ -24,16 +24,10 @@ const Workload = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
-  const option = {
-    variables: {
-      programStatus: statusSelected,
-    },
-  };
-
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
-      params: ({ programStatus }) => ({
+      params: {
         program: "DM9n1bUw8W8",
         ou: "a8QXqdXyhNr",
         fields: [
@@ -48,17 +42,16 @@ const Workload = ({
           "inactive",
           "events",
         ],
-        programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
 
         paging: false,
-      }),
+      },
     },
   };
 
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
-      params: ({ programStatus }) => ({
+      params: {
         program: "uYjxkTbwRNf",
         ou: "a8QXqdXyhNr",
         fields: [
@@ -73,9 +66,8 @@ const Workload = ({
           "inactive",
           "events",
         ],
-        programStatus: programStatus !== CaseEnum.ALL ? programStatus : null,
         paging: false,
-      }),
+      },
     },
   };
 
@@ -84,21 +76,21 @@ const Workload = ({
     loading: indexCaseLoading,
     data: indexCasesData,
     refetch: indexcaseRefetch,
-  } = useDataQuery(queryIndex, option);
+  } = useDataQuery(queryIndex);
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
     refetch: contactCaseRefetch,
-  } = useDataQuery(queryContact, option);
+  } = useDataQuery(queryContact);
 
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch(option.variables);
+      await indexcaseRefetch();
     }
     async function fetchContact() {
-      await contactCaseRefetch(option.variables);
+      await contactCaseRefetch();
     }
 
     if (indexFilterSelected === CaseEnum.ALL) {
@@ -106,7 +98,7 @@ const Workload = ({
       fetchContact();
     } else if (indexFilterSelected === CaseEnum.INDEXES) fetchIndex();
     else fetchContact();
-  }, [indexFilterSelected, statusSelected]);
+  }, [indexFilterSelected]);
 
   if (indexCaseLoading || contactCaseLoading) {
     return <CircularLoader className={styles.centerElement} />;
