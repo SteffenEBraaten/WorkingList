@@ -4,12 +4,12 @@ import { CaseEnum } from "../../../Enum/Enum";
 import {
   findValue,
   toDateAndTimeFormat,
-  mapProgramIdToName,
+  mapProgramIdToName
 } from "../../../../utils/APIUtils";
 import { TableRow, TableCell, Button } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
-import DropDownStatus from "./DropDownStatus"
-const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
+import DropDownStatus from "./DropDownStatus";
+const goToTrackerCaptureAppBuilder = trackerCaptureURL => (
   trackedEntityInstance,
   programID,
   orgUnit
@@ -17,16 +17,12 @@ const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
   const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`;
   window.open(url, "_blank");
 };
-export const WorkloadTableRows = ({
-  data,
-  showContactsModal,
-  showFilter,
-}) => {
+export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
   const { baseUrl } = useConfig();
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
   );
-  const isIndexCase = (tei) =>
+  const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
   return data.map((item, key) =>
     item.enrollments[0].events.length > 0 ? (
@@ -40,7 +36,7 @@ export const WorkloadTableRows = ({
           {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
         </TableCell>
         <TableCell className={styles.statusTableCell}>
-          {<DropDownStatus events={item.enrollments[0].events}/>}
+          {<DropDownStatus events={item.enrollments[0].events} />}
         </TableCell>
         {showFilter !== CaseEnum.CONTACTS ? (
           <TableCell>
