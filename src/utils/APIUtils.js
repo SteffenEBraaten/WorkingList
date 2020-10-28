@@ -1,4 +1,5 @@
-import { StatusEnum } from "../components/Enum/Enum.jsx";
+import { StatusEnum, CaseEnum } from "../components/Enum/Enum.jsx";
+import { retrieveLocalStorage } from "../components/Workload/ProgramToLocalStorage";
 
 export const findValue = (listToSearch, code) => {
   return listToSearch.find((item) => item.code === code)
@@ -6,9 +7,12 @@ export const findValue = (listToSearch, code) => {
     : "N/A";
 };
 
+const programStageIndex = retrieveLocalStorage("programStages", CaseEnum.INDEXES)
+const programStageContact = retrieveLocalStorage("programStages", CaseEnum.CONTACTS)
+
 const programStageDictonary = {
-  oqsk2Jv4k3s: "Health status",
-  sAV9jAajr8x: "Follow-up",
+  [programStageIndex.id]: programStageIndex.displayName,
+  [programStageContact.id]: programStageContact.displayName,
 };
 
 export const mapProgramStageIdToName = (programStageId) => {
@@ -60,9 +64,12 @@ export const toDateAndTimeFormat = (dateString, time = true) => {
   return date;
 };
 
+const programIndex = retrieveLocalStorage("programs", CaseEnum.INDEXES)
+const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS)
+
 const programDictonary = {
-  uYjxkTbwRNf: "Index case",
-  DM9n1bUw8W8: "Contact",
+  [programIndex.id]: programIndex.displayName,
+  [programContact.id]: programContact.displayName,
 };
 
 export const mapProgramIdToName = (programID) => {

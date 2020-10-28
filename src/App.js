@@ -5,6 +5,8 @@ import WorkloadHeader from "./components/WorkloadHeader/WorkloadHeader.jsx";
 import { CaseEnum, StatusEnum } from "./components/Enum/Enum";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { utils } from "react-modern-calendar-datepicker";
+import DoLocalStorage from "./components/Workload/ProgramToLocalStorage";
+
 
 const MyApp = () => {
   const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
@@ -25,9 +27,10 @@ const MyApp = () => {
   const dateToggle = value => {
     setFilterDate(value);
   };
-
+  
   return (
     <div className={styles.container}>
+    {<DoLocalStorage/>}
       <WorkloadHeader
         toggleFilter={filterToggle}
         toggleStatus={statusToggle}
