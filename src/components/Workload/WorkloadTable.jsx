@@ -10,13 +10,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-<<<<<<< HEAD
   NoticeBox,
   Button
-=======
-  Button,
-  Tag,
->>>>>>> 437f20ca6c7cf1081bc49fdfbdbbb76fb721af06
 } from "@dhis2/ui";
 import { findValue, isOverdue } from "../../utils/APIUtils";
 import { StatusEnum } from "../Enum/Enum";
@@ -45,17 +40,10 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
   } else return {};
 };
 
-<<<<<<< HEAD
 const isIndexCase = tei =>
   mapProgramIDToName(tei.enrollments[0].program) === "Index case";
 
 const goToTrackerCaptureAppBuilder = trackerCaptureURL => (
-=======
-const isIndexCase = (tei) =>
-  mapProgramIDToName(tei.enrollments[0].program) === "Index case";
-
-const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
->>>>>>> 437f20ca6c7cf1081bc49fdfbdbbb76fb721af06
   trackedEntityInstance,
   programID,
   orgUnit
@@ -64,11 +52,7 @@ const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
   window.open(url, "_blank");
 };
 
-<<<<<<< HEAD
 const WorkloadTable = ({ data, filter }) => {
-=======
-const WorkloadTable = ({ data, dates }) => {
->>>>>>> 437f20ca6c7cf1081bc49fdfbdbbb76fb721af06
   const { baseUrl } = useConfig();
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
@@ -86,18 +70,13 @@ const WorkloadTable = ({ data, dates }) => {
     setObject({
       firstName,
       surname,
-<<<<<<< HEAD
       trackedEntityInstance
-=======
-      trackedEntityInstance,
->>>>>>> 437f20ca6c7cf1081bc49fdfbdbbb76fb721af06
     });
     setShowModal(true);
   };
 
   return (
     <>
-<<<<<<< HEAD
       {data.length > 0 ? (
         <Table>
           <TableHead>
@@ -160,73 +139,6 @@ const WorkloadTable = ({ data, dates }) => {
                   <></>
                 )}
                 <TableCell>
-=======
-      <Table>
-        <TableHead>
-          <TableRowHead>
-            <TableCellHead>Type</TableCellHead>
-            <TableCellHead>First Name</TableCellHead>
-            <TableCellHead>Last Name</TableCellHead>
-            <TableCellHead>Phone Number</TableCellHead>
-            <TableCellHead>Age</TableCellHead>
-            <TableCellHead>Incident Date</TableCellHead>
-            <TableCellHead>Last updated</TableCellHead>
-            <TableCellHead>Status</TableCellHead>
-            <TableCellHead>Contacts</TableCellHead>
-            <TableCellHead>Link to Tracker Capture App</TableCellHead>
-          </TableRowHead>
-        </TableHead>
-        <TableBody>
-          {data.map((item, key) => (
-            <TableRow key={key}>
-              <TableCell>
-                {mapProgramIDToName(item.enrollments[0].program)}
-              </TableCell>
-              <TableCell>{findValue(item.attributes, "first_name")}</TableCell>
-              <TableCell>{findValue(item.attributes, "surname")}</TableCell>
-              <TableCell>{findValue(item.attributes, "phone_local")}</TableCell>
-              <TableCell>
-                {findValue(item.attributes, "patinfo_ageonset")}
-              </TableCell>
-              <TableCell>
-                {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
-              </TableCell>
-              <TableCell>{toDateAndTimeFormat(item.lastUpdated)}</TableCell>
-              <TableCell className={styles.statusTableCell}>
-                {item.enrollments[0].events.map((thisEvent, key) =>
-                  isWithinRange(
-                    toDateObject(
-                      dates.from.year,
-                      dates.from.month,
-                      dates.from.day
-                    ),
-                    dates.to
-                      ? toDateObject(
-                          dates.to.year,
-                          dates.to.month,
-                          dates.to.day
-                        )
-                      : null,
-                    dueDateToDateObject(thisEvent.dueDate)
-                  ) ? (
-                    <div key={key} className={styles.statusTagContainer}>
-                      <Tag
-                        {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}
-                      >
-                        {`${toDateAndTimeFormat(thisEvent.dueDate, false)} ${
-                          isOverdue(thisEvent.dueDate) &&
-                          thisEvent.status === StatusEnum.SCHEDULE
-                            ? StatusEnum.OVERDUE
-                            : thisEvent.status
-                        }`}
-                      </Tag>
-                    </div>
-                  ) : null
-                )}
-              </TableCell>
-              <TableCell>
-                {isIndexCase(item) && (
->>>>>>> 437f20ca6c7cf1081bc49fdfbdbbb76fb721af06
                   <Button
                     onClick={() =>
                       goToTrackerCaptureApp(
