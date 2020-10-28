@@ -19,6 +19,7 @@ const addLocalStorage = (list, program) => {
 }
 
 export const retrieveLocalStorage = (program, type) => {
+    console.log(localStorage[program])
     switch(type){
         case CaseEnum.INDEXES:
             return JSON.parse(localStorage[program])[0];
@@ -29,7 +30,7 @@ export const retrieveLocalStorage = (program, type) => {
 } 
 
 
-const DoLocalStorage = () => {
+export const DoLocalStorage = () => {
     const queryPrograms = {
         programs: {
           resource: "programs",

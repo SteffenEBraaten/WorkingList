@@ -11,6 +11,8 @@ const relationshipQuery = {
 };
 
 const Relationship = ({ id, indexCaseId }) => {
+  console.log("kommer inn i relationships");
+
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id

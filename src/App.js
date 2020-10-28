@@ -9,6 +9,7 @@ import DoLocalStorage from "./components/Workload/ProgramToLocalStorage";
 
 
 const MyApp = () => {
+  console.log("kommer inn i APPS.js")
   const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
   const [filterStatus, setFilterStatus] = useState(StatusEnum.ALL);
   const [filterDateRange, setFilterDate] = useState({
@@ -30,7 +31,7 @@ const MyApp = () => {
   
   return (
     <div className={styles.container}>
-    {<DoLocalStorage/>}
+      <DoLocalStorage/>
       <WorkloadHeader
         toggleFilter={filterToggle}
         toggleStatus={statusToggle}
@@ -51,3 +52,5 @@ const MyApp = () => {
 };
 
 export default MyApp;
+
+

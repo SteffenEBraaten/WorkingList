@@ -1,5 +1,7 @@
+import React, { useEffect } from "react";
 import { StatusEnum, CaseEnum } from "../components/Enum/Enum.jsx";
 import { retrieveLocalStorage } from "../components/Workload/ProgramToLocalStorage";
+import { DoLocalStorage } from "../components/Workload/ProgramToLocalStorage";
 
 export const findValue = (listToSearch, code) => {
   return listToSearch.find((item) => item.code === code)
@@ -7,13 +9,22 @@ export const findValue = (listToSearch, code) => {
     : "N/A";
 };
 
-const programStageIndex = retrieveLocalStorage("programStages", CaseEnum.INDEXES)
+console.log("kommer inn i APIUTILS");
+
+/*const programStageIndex = retrieveLocalStorage("programStages", CaseEnum.INDEXES)
 const programStageContact = retrieveLocalStorage("programStages", CaseEnum.CONTACTS)
 
 const programStageDictonary = {
   [programStageIndex.id]: programStageIndex.displayName,
   [programStageContact.id]: programStageContact.displayName,
 };
+
+
+console.log(programStageDictonary)*/
+ const programStageDictonary = {
+  oqsk2Jv4k3s: "Health status",
+  sAV9jAajr8x: "Follow-up",
+}; 
 
 export const mapProgramStageIdToName = (programStageId) => {
   const name = programStageDictonary[programStageId]
@@ -64,12 +75,20 @@ export const toDateAndTimeFormat = (dateString, time = true) => {
   return date;
 };
 
+/* 
 const programIndex = retrieveLocalStorage("programs", CaseEnum.INDEXES)
-const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS)
+const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS) 
 
 const programDictonary = {
   [programIndex.id]: programIndex.displayName,
   [programContact.id]: programContact.displayName,
+};
+
+*/
+
+const programDictonary = {
+  uYjxkTbwRNf: "Index case",
+  DM9n1bUw8W8: "Contact",
 };
 
 export const mapProgramIdToName = (programID) => {

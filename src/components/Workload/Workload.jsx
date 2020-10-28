@@ -22,6 +22,7 @@ const Workload = ({
   setNumberOfFollowUps,
   setNumberOfHealthChecks
 }) => {
+  console.log("kommer inn i Workload")
   const [searchValue, setSearchValue] = useState("");
 
   const queryContact = {
