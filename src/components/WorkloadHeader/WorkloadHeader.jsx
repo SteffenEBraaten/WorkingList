@@ -14,8 +14,8 @@ const WorkloadHeader = ({
   toggleStatus,
   toggleDate,
   datesSelected,
-  numberOfCases,
-  numberOfIndexCases,
+  numberOfFollowUps,
+  numberOfHealthChecks,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ALL);
@@ -52,8 +52,8 @@ const WorkloadHeader = ({
   return (
     <div className={styles.workloadHeader}>
       <HeaderCards
-        numberOfCalls={numberOfCases}
-        numberOfIndexCases={numberOfIndexCases}
+        numberOfFollowUps={numberOfFollowUps}
+        numberOfHealthChecks={numberOfHealthChecks}
         displayText={selectedFilter}
       />
       <div className={styles.singleSelectFieldContainer}>
