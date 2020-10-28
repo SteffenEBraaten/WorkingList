@@ -23,3 +23,7 @@
   border: 0 !important;
   background-color: inherit !important;
 }
+
+.tag {
+  max-width: 100% !important;
+}

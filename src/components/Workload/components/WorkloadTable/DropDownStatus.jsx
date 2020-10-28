@@ -36,7 +36,10 @@ const DropDownStatus = ({ events }) => {
 
           {events.map((thisEvent, key) => (
             <div key={key} className={styles.statusTagContainer}>
-              <Tag {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}>
+              <Tag
+                className={styles.tag}
+                {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}
+              >
                 {`${toDateAndTimeFormat(
                   thisEvent.dueDate,
                   false
@@ -55,7 +58,10 @@ const DropDownStatus = ({ events }) => {
       name="default"
       value="nothing"
     >
-      <Tag {...eventTagMapper(lastEvent.status, lastEvent.dueDate)}>
+      <Tag
+        className={styles.tag}
+        {...eventTagMapper(lastEvent.status, lastEvent.dueDate)}
+      >
         {`${toDateAndTimeFormat(
           lastEvent.dueDate,
           false
