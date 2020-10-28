@@ -13,7 +13,7 @@
 }
 
 .searchComponent {
-  padding-left: 15em;
-  padding-right: 15em;
-  padding-bottom: 2em;
+  margin-bottom: 2vh;
+  width:50vw;
+  align-self: center;
 }

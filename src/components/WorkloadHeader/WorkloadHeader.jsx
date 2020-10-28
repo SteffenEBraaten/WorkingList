@@ -56,7 +56,7 @@ const WorkloadHeader = ({
         numberOfHealthChecks={numberOfHealthChecks}
         displayText={selectedFilter}
       />
-      <div className={styles.singleSelectFieldContainer}>
+      <div className={styles.filterContainer}>
         <SingleSelectField
           label="Show"
           selected={selectedFilter}
@@ -106,8 +106,8 @@ const WorkloadHeader = ({
             label="Not completed"
             value={StatusEnum.ACTIVE}
           />
-        </SingleSelectField>
 
+        </SingleSelectField>
         <DropdownButton
           secondary
           className={styles.dropdownButton}
@@ -122,6 +122,7 @@ const WorkloadHeader = ({
           {formatInputValue(datesSelected)}
         </DropdownButton>
       </div>
+
     </div>
   );
 };
