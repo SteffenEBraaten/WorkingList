@@ -197,7 +197,7 @@ const Workload = ({
         )
       }
     ]
-  }));
+  })).filter((item) => item.enrollments[0].events.length > 0);
 
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
