@@ -101,7 +101,6 @@ const Workload = ({
   }, [indexFilterSelected]);
 
   const hasData = indexCasesData && contactCasesData;
-  console.log("HAsdata:", hasData)
   const both =
     hasData &&
     indexCasesData.indexCases.trackedEntityInstances.concat(
