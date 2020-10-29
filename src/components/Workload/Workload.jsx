@@ -112,8 +112,8 @@ const Workload = ({
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances
+        ? indexCasesData.indexCases.trackedEntityInstances
+        : contactCasesData.contacts.trackedEntityInstances
     : [];
 
   // filter data on selected date
@@ -128,10 +128,10 @@ const Workload = ({
 
     const toDate = datesSelected.to
       ? toDateObject(
-          datesSelected.to.year,
-          datesSelected.to.month,
-          datesSelected.to.day
-        )
+        datesSelected.to.year,
+        datesSelected.to.month,
+        datesSelected.to.day
+      )
       : fromDate;
 
     // loop through data
@@ -187,10 +187,10 @@ const Workload = ({
               ),
               datesSelected.to
                 ? toDateObject(
-                    datesSelected.to.year,
-                    datesSelected.to.month,
-                    datesSelected.to.day
-                  )
+                  datesSelected.to.year,
+                  datesSelected.to.month,
+                  datesSelected.to.day
+                )
                 : null,
               dueDateToDateObject(item.dueDate)
             ) &&
@@ -198,7 +198,7 @@ const Workload = ({
         )
       }
     ]
-  }));
+  })).filter((item) => item.enrollments[0].events.length > 0);
 
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
