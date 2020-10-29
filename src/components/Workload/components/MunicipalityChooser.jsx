@@ -35,7 +35,7 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
   return (
     <div className={styles.MunicipalityChooser}>
       <SingleSelect
-        className="select"
+        label="Choose municipality"
         dataTest="dhis2-uicore-singleselect"
         onChange={function onChange(value) {
           setSelected(value.selected);
