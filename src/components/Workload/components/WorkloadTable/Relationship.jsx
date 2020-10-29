@@ -1,7 +1,9 @@
 import React from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { TableRow, TableCell } from "@dhis2/ui";
+import { TableRow, TableCell, Button } from "@dhis2/ui";
 import { findValue } from "../../../../utils/APIUtils";
+import { useConfig } from "@dhis2/app-runtime";
+import { goToTrackerCaptureAppBuilder } from "./WokloadTableRows";
 
 const relationshipQuery = {
   relationship: {
@@ -10,7 +12,7 @@ const relationshipQuery = {
   }
 };
 
-const Relationship = ({ id, indexCaseId }) => {
+const Relationship = ({ id, indexCaseId, item }) => {
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id
@@ -21,6 +23,7 @@ const Relationship = ({ id, indexCaseId }) => {
     return (
       <TableRow>
         <TableCell>Loading</TableCell>
+        <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
@@ -49,12 +52,31 @@ const Relationship = ({ id, indexCaseId }) => {
     "phone_local"
   );
 
+  const { baseUrl } = useConfig();
+  const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
+    `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
+  );
+
   return (
     <TableRow>
       <TableCell>{type}</TableCell>
       <TableCell>{firstName}</TableCell>
       <TableCell>{surname}</TableCell>
       <TableCell>{phoneLocal}</TableCell>
+      <TableCell>
+        <Button
+          primary
+          onClick={() =>
+            goToTrackerCaptureApp(
+              item.trackedEntityInstance,
+              item.enrollments[0].program,
+              item.orgUnit
+            )
+          }
+        >
+          Tracker Capture App
+        </Button>
+      </TableCell>
     </TableRow>
   );
 };

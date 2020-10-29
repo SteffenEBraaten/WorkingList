@@ -9,6 +9,7 @@ import {
 import { TableRow, TableCell, Button } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
 import DropDownStatus from "./DropDownStatus";
+
 const goToTrackerCaptureAppBuilder = trackerCaptureURL => (
   trackedEntityInstance,
   programID,
@@ -17,7 +18,8 @@ const goToTrackerCaptureAppBuilder = trackerCaptureURL => (
   const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`;
   window.open(url, "_blank");
 };
-export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
+
+const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
   const { baseUrl } = useConfig();
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
@@ -73,3 +75,5 @@ export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
     ) : null
   );
 };
+
+export { WorkloadTableRows, goToTrackerCaptureAppBuilder };

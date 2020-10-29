@@ -12,7 +12,7 @@ import {
   Button,
   ButtonStrip,
   ModalActions,
-  NoticeBox,
+  NoticeBox
 } from "@dhis2/ui";
 
 const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
@@ -35,11 +35,13 @@ const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
                 <TableCellHead>First Name</TableCellHead>
                 <TableCellHead>Last Name</TableCellHead>
                 <TableCellHead>Phone Number</TableCellHead>
+                <TableCellHead>Link to Tracker Capture App</TableCellHead>
               </TableRowHead>
             </TableHead>
             <TableBody>
               {teiRelationships.map((item, key) => (
                 <Relationship
+                  item={indexCase}
                   key={key}
                   id={item.relationship}
                   indexCaseId={indexCaseId}
