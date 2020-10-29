@@ -1,32 +1,15 @@
 import React from "react";
 import { useConfig } from "@dhis2/app-runtime";
-import { StatusEnum, CaseEnum } from "../../../Enum/Enum";
+import { CaseEnum } from "../../../Enum/Enum";
 import {
   findValue,
-  isOverdue,
   toDateAndTimeFormat,
-  mapProgramIdToName,
-  mapProgramStageIdToName,
+  mapProgramIdToName
 } from "../../../../utils/APIUtils";
-import { TableRow, TableCell, Button, Tag } from "@dhis2/ui";
+import { TableRow, TableCell, Button } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
-
-const eventTagMapper = (eventStatus, eventDueDate) => {
-  if (
-    (eventStatus === StatusEnum.SCHEDULE && isOverdue(eventDueDate)) ||
-    eventStatus === StatusEnum.OVERDUE
-  ) {
-    return { negative: true };
-  }
-  if (eventStatus === StatusEnum.SCHEDULE) {
-    return { neutral: true };
-  }
-  if (eventStatus === StatusEnum.COMPLETED) {
-    return { positive: true };
-  } else return {};
-};
-
-const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
+import DropDownStatus from "./DropDownStatus";
+const goToTrackerCaptureAppBuilder = trackerCaptureURL => (
   trackedEntityInstance,
   programID,
   orgUnit
@@ -34,21 +17,13 @@ const goToTrackerCaptureAppBuilder = (trackerCaptureURL) => (
   const url = `${trackerCaptureURL}tei=${trackedEntityInstance}&program=${programID}&ou=${orgUnit}`;
   window.open(url, "_blank");
 };
-
-export const WorkloadTableRows = ({
-  data,
-  showContactsModal,
-  showFilter,
-}) => {
+export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
   const { baseUrl } = useConfig();
-
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
   );
-
-  const isIndexCase = (tei) =>
+  const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case";
-
   return data.map((item, key) =>
     item.enrollments[0].events.length > 0 ? (
       <TableRow key={key}>
@@ -61,27 +36,12 @@ export const WorkloadTableRows = ({
           {toDateAndTimeFormat(item.enrollments[0].incidentDate, false)}
         </TableCell>
         <TableCell className={styles.statusTableCell}>
-          {item.enrollments[0].events.map((thisEvent, key) => (
-            <div key={key} className={styles.statusTagContainer}>
-              <Tag {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}>
-                {`${toDateAndTimeFormat(
-                  thisEvent.dueDate,
-                  false
-                )} ${mapProgramStageIdToName(thisEvent.programStage)} ${
-                  isOverdue(thisEvent.dueDate) &&
-                  thisEvent.status === StatusEnum.SCHEDULE
-                    ? StatusEnum.OVERDUE
-                    : thisEvent.status
-                }`}
-              </Tag>
-            </div>
-          ))}
+          {<DropDownStatus events={item.enrollments[0].events} />}
         </TableCell>
         {showFilter !== CaseEnum.CONTACTS ? (
           <TableCell>
             {isIndexCase(item) && (
               <Button
-                primary
                 onClick={() =>
                   showContactsModal(
                     findValue(item.attributes, "first_name"),
@@ -97,6 +57,7 @@ export const WorkloadTableRows = ({
         ) : null}
         <TableCell>
           <Button
+            primary
             onClick={() =>
               goToTrackerCaptureApp(
                 item.trackedEntityInstance,

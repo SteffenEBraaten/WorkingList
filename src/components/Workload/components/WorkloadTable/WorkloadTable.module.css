@@ -1,5 +1,5 @@
 .statusTableCell {
-  max-width: 256px;
+  max-width: 300px;
 }
 
 .statusTagContainer {
@@ -9,4 +9,25 @@
 .noticeAllDone {
   align-self: center;
   width: 67%;
+}
+
+.card {
+  width: 300px !important;
+  padding-left: 15px;
+  padding-right: 32px;
+  padding-bottom: 10px;
+}
+
+.dropDownStatus {
+  width: 300px;
+  border: 0 !important;
+  background-color: inherit !important;
+}
+
+.tag {
+  max-width: 100% !important;
+}
+
+.div {
+  width: 100%;
 }
