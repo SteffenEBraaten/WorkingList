@@ -11,6 +11,7 @@ const relationshipQuery = {
 };
 
 const Relationship = ({ id, indexCaseId }) => {
+
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id

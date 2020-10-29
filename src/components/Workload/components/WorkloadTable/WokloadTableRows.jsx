@@ -22,8 +22,10 @@ export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
   );
-  const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case";
+
+  const isIndexCase = (tei) =>
+    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
+
   return data.map((item, key) =>
     item.enrollments[0].events.length > 0 ? (
       <TableRow key={key}>
@@ -39,7 +41,7 @@ export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
           {<DropDownStatus events={item.enrollments[0].events} />}
         </TableCell>
         {showFilter !== CaseEnum.CONTACTS ? (
-          <TableCell>
+          < TableCell >
             {isIndexCase(item) && (
               <Button
                 onClick={() =>
@@ -69,7 +71,7 @@ export const WorkloadTableRows = ({ data, showContactsModal, showFilter }) => {
             Tracker Capture App
           </Button>
         </TableCell>
-      </TableRow>
+      </TableRow >
     ) : null
   );
 };

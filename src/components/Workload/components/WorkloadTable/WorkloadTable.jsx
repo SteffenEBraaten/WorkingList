@@ -10,9 +10,6 @@ import {
 } from "@dhis2/ui";
 import ContactsModal from "./ContactsModal.jsx";
 import styles from "./WorkloadTable.module.css";
-import {
-  toDateAndTimeFormat,
-} from "../../../../utils/APIUtils";
 import { WorkloadTableRows } from "./WokloadTableRows";
 
 const WorkloadTable = ({ data, showFilter }) => {
@@ -61,10 +58,10 @@ const WorkloadTable = ({ data, showFilter }) => {
           </TableBody>
         </Table>
       ) : (
-        <NoticeBox className={styles.noticeAllDone}>
-          No heath checks or follow-up calls for today!
+          <NoticeBox className={styles.noticeAllDone}>
+            No heath checks or follow-up calls for today!
         </NoticeBox>
-      )}
+        )}
       {showModal && (
         <ContactsModal
           indexCase={modalObject.trackedEntityInstance}
@@ -77,4 +74,4 @@ const WorkloadTable = ({ data, showFilter }) => {
   );
 };
 
-export { WorkloadTable, toDateAndTimeFormat };
+export default WorkloadTable;

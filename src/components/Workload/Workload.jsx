@@ -3,7 +3,7 @@ import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
-import { WorkloadTable } from "./components/WorkloadTable/WorkloadTable";
+import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
 import {
   findValue,
@@ -101,7 +101,6 @@ const Workload = ({
   }, [indexFilterSelected]);
 
   const hasData = indexCasesData && contactCasesData;
-
   const both =
     hasData &&
     indexCasesData.indexCases.trackedEntityInstances.concat(
@@ -112,8 +111,8 @@ const Workload = ({
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances
+        ? indexCasesData.indexCases.trackedEntityInstances
+        : contactCasesData.contacts.trackedEntityInstances
     : [];
 
   // filter data on selected date
@@ -128,10 +127,10 @@ const Workload = ({
 
     const toDate = datesSelected.to
       ? toDateObject(
-          datesSelected.to.year,
-          datesSelected.to.month,
-          datesSelected.to.day
-        )
+        datesSelected.to.year,
+        datesSelected.to.month,
+        datesSelected.to.day
+      )
       : fromDate;
 
     // loop through data
@@ -187,10 +186,10 @@ const Workload = ({
               ),
               datesSelected.to
                 ? toDateObject(
-                    datesSelected.to.year,
-                    datesSelected.to.month,
-                    datesSelected.to.day
-                  )
+                  datesSelected.to.year,
+                  datesSelected.to.month,
+                  datesSelected.to.day
+                )
                 : null,
               dueDateToDateObject(item.dueDate)
             ) &&
@@ -201,7 +200,7 @@ const Workload = ({
   }));
 
   const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case";
+    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
 
   let followUpCounter = 0;
   let healthCheckCounter = 0;
