@@ -2,7 +2,7 @@
 
 **Group members:**
 * Tine Margretha Vister (tinemv@ifi.uio.no)
-* Steffen Ekeberg Bråten (steffeb@ifi.uio.no)
+* Steffen Ekeberg Bråten (steeffeb@ifi.uio.no)
 * Thao Tran (thanht@ifi.uio.no)
 * Steven Hoang Giang Nguyen (shnguyen@ifi.uio.no)
 * Susanne Semsøy (susansem@ifi.uio.no)
@@ -34,16 +34,14 @@ This project was bootstrapped with [DHIS2 Application Platform](https://github.c
 
 In the project directory, you can run:
 
+### `yarn install`
+
+Must be done in order for `yarn start` to work.
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `yarn test`
-
-Launches the test runner and runs all available tests found in `/src`.<br />
-
-See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
 
 ### `yarn build`
 
