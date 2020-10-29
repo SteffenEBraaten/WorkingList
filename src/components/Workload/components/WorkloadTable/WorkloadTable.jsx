@@ -62,7 +62,7 @@ const WorkloadTable = ({ data, showFilter }) => {
         </Table>
       ) : (
         <NoticeBox className={styles.noticeAllDone}>
-          No heath checks or follow-up calls for today!
+          No health checks or follow-up calls for today!
         </NoticeBox>
       )}
       {showModal && (
