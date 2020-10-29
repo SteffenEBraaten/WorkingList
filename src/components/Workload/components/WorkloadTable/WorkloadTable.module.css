@@ -28,10 +28,10 @@
   max-width: 100% !important;
 }
 
-.div {
-  width: 100%;
+.table {
+  width: 50vw;
 }
 
-.trackerAppCell{
-  width: fit-content;
+.modal {
+  width: fit-content !important;
 }
