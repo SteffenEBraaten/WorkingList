@@ -4,8 +4,9 @@ import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
-import SearchComponent from "./SearchComponent";
+import SearchComponent from "./components/SearchComponent";
 import { retrieveLocalStorage } from "./ProgramToLocalStorage";
+import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -44,9 +45,9 @@ const Workload = ({
           "events"
         ],
 
-        paging: false,
-      },
-    },
+        paging: false
+      }
+    }
   };
 
   const queryIndex = {
@@ -67,23 +68,23 @@ const Workload = ({
           "inactive",
           "events"
         ],
-        paging: false,
-      },
-    },
+        paging: false
+      }
+    }
   };
 
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
-    refetch: indexcaseRefetch,
+    refetch: indexcaseRefetch
   } = useDataQuery(queryIndex);
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
-    refetch: contactCaseRefetch,
+    refetch: contactCaseRefetch
   } = useDataQuery(queryContact);
 
   useEffect(() => {
@@ -244,7 +245,10 @@ const Workload = ({
 
   return (
     <div className={styles.workloadContainer}>
-      <SearchComponent setSearchValue={setSearchValue} />
+      <div className={styles.tableHeaderWrapper}>
+        <SearchComponent setSearchValue={setSearchValue} />
+        <MunicipalityChooser />
+      </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );

@@ -15,6 +15,8 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
   //Henter total lengde av tabellen og trekker fra antall index cases.
   const { error, loading, data } = useDataQuery(query);
 
+  console.log(data)
+
   if (loading) {
     return <CircularLoader />;
   }
