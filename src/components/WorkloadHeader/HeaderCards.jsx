@@ -29,8 +29,18 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
     </NoticeBox>;
   }
 
-  // Viser bare index case boksen
-  if (displayText === CaseEnum.INDEXES) {
+  //Sjekker om index cases eller contacts er valgt
+  if (displayText === CaseEnum.INDEXES ||  displayText === CaseEnum.CONTACTS) {
+
+    let displayNumber = numberOfHealthChecks;
+    let displayMessage = " Health checks that needs to be performed ";
+
+    if (displayText === CaseEnum.CONTACTS){
+      displayNumber = numberOfFollowUps;
+      displayMessage = " Contacts that needs to be contacted "
+    }
+
+    // Viser enten index cases eller contacts
     return (
       <div className={styles.headerCards}>
         <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
@@ -39,36 +49,17 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
           <p> Keep up the good work! </p>
         </Card>
 
-        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
-          <div className={styles.headerCardContent}>
-            <h1 className={styles.headerCardsH1}>{numberOfHealthChecks}</h1>
-            <p> Health checks that needs to be performed </p>
+        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
+          <div className={styles.cardContent}>
+            <h1>{displayNumber}</h1>
+            <p>{displayMessage}</p>
           </div>
         </Card>
       </div>
     );
   }
 
-  //Viser bare contacts boksen
-  if (displayText === CaseEnum.CONTACTS) {
-    return (
-      <div className={styles.headerCards}>
-        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
-          <h3>{`Hello ${data.me.firstName}!`}</h3>
-          <CovidIllustration />
-          <p> Keep up the good work! </p>
-        </Card>
-
-        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
-          <div className={styles.headerCardContent}>
-            <h1 className={styles.headerCardsH1}>{numberOfFollowUps}</h1>
-            <p> Contacts that needs to be contacted </p>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-  // Viser begge boksene
+  // Viser både index cases og contacts
   else {
     return (
       <div className={styles.headerCards}>
