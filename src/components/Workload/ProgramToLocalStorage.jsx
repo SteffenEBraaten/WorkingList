@@ -2,12 +2,12 @@ import React from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { NoticeBox, CircularLoader} from "@dhis2/ui";
 import { CaseEnum } from "../Enum/Enum";
+import { RetrieveProgram, RetrieveProgramStage} from "../../utils/APIUtils"
 
 
 const addLocalStorage = (list, program) => {
     if (localStorage[program] == undefined) {
         localStorage.setItem(program, JSON.stringify([]))
-        console.log("kommer inn")
     
         const tempStorage = JSON.parse(localStorage[program]);
 
@@ -18,8 +18,8 @@ const addLocalStorage = (list, program) => {
     } 
 }
 
-export const retrieveLocalStorage = (program, type) => {
-    console.log(localStorage[program])
+export const retrieveLocalStorage =  (program, type) => {
+    console.log("Retrieving in programtolocalStorage.jsx")
     switch(type){
         case CaseEnum.INDEXES:
             return JSON.parse(localStorage[program])[0];
@@ -30,7 +30,7 @@ export const retrieveLocalStorage = (program, type) => {
 } 
 
 
-export const DoLocalStorage = () => {
+const DoLocalStorage = () => {
     const queryPrograms = {
         programs: {
           resource: "programs",
@@ -56,13 +56,14 @@ export const DoLocalStorage = () => {
     } = useDataQuery(queryProgramStages);
     
     if (loadingProgram | loadingStages) {
+        console.log("loading e rror ", loadingProgram, loadingStages)
         return <CircularLoader />;
     }
-
+    
     if (errorProgram | errorStages) {
+        console.log("rror ", errorProgram, errorStages);
         <NoticeBox error>Could not retrieve from storage</NoticeBox>;
     }
-    
     addLocalStorage(
         dataStages.programStages.programStages.filter(e => e.displayName == "Health status" || e.displayName == "Follow-up"),
         "programStages"
@@ -72,8 +73,12 @@ export const DoLocalStorage = () => {
         dataProgram.programs.programs.filter( e => e.displayName.includes("Index case") || e.displayName.includes("Contact")),
         "programs"
     ); 
-
-    return (null)
+    RetrieveProgramStage();
+    RetrieveProgram();
+    return (
+        <>
+        </>
+    )
 }
 
 export default DoLocalStorage;

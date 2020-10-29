@@ -1,40 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useState , useEffect} from "react";
 import { StatusEnum, CaseEnum } from "../components/Enum/Enum.jsx";
 import { retrieveLocalStorage } from "../components/Workload/ProgramToLocalStorage";
-import { DoLocalStorage } from "../components/Workload/ProgramToLocalStorage";
-
-export const findValue = (listToSearch, code) => {
+const findValue = (listToSearch, code) => {
   return listToSearch.find((item) => item.code === code)
-    ? listToSearch.find((item) => item.code === code).value
-    : "N/A";
+  ? listToSearch.find((item) => item.code === code).value
+  : "N/A";
 };
 
-console.log("kommer inn i APIUTILS");
-
-/*const programStageIndex = retrieveLocalStorage("programStages", CaseEnum.INDEXES)
-const programStageContact = retrieveLocalStorage("programStages", CaseEnum.CONTACTS)
-
-const programStageDictonary = {
-  [programStageIndex.id]: programStageIndex.displayName,
-  [programStageContact.id]: programStageContact.displayName,
-};
+let programStageDictionary = {};
+let programDictionary = {};
 
 
-console.log(programStageDictonary)*/
- const programStageDictonary = {
-  oqsk2Jv4k3s: "Health status",
-  sAV9jAajr8x: "Follow-up",
-}; 
+const RetrieveProgramStage = () => {
+  const programStageIndex = retrieveLocalStorage("programStages", CaseEnum.INDEXES)
+  const programStageContact = retrieveLocalStorage("programStages", CaseEnum.CONTACTS)
+  
+  programStageDictionary = {
+    [programStageIndex.id]: programStageIndex.displayName,
+    [programStageContact.id]: programStageContact.displayName,
+  };
+  return null;
+}
+
+const RetrieveProgram = () => {
+  const programIndex = retrieveLocalStorage("programs", CaseEnum.INDEXES)
+  const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS) 
+  
+  programDictionary = {
+    [programIndex.id]: programIndex.displayName,
+    [programContact.id]: programContact.displayName,
+  };
+  
+}
 
 export const mapProgramStageIdToName = (programStageId) => {
-  const name = programStageDictonary[programStageId]
-    ? programStageDictonary[programStageId]
+  const name = programStageDictionary[programStageId]
+    ? programStageDictionary[programStageId]
     : programStageId;
   return name;
 };
 
 export const isHealthScheckOrFollowUp = (programStage) => {
-  return programStageDictonary[programStage] ? true : false;
+  return programStageDictionary[programStage] ? true : false;
 };
 
 export const isOverdue = (dueDate) => {
@@ -44,7 +51,7 @@ export const isOverdue = (dueDate) => {
   return today > dueDateFormatted;
 };
 
-export const isWithinRange = (fromDate, toDate, dueDate) => {
+export  const isWithinRange = (fromDate, toDate, dueDate) => {
   const dueDateFormatted = new Date(dueDate);
   const fromDateFormatted = new Date(fromDate);
   const toDateFormatted = toDate ? new Date(toDate) : fromDateFormatted;
@@ -75,25 +82,10 @@ export const toDateAndTimeFormat = (dateString, time = true) => {
   return date;
 };
 
-/* 
-const programIndex = retrieveLocalStorage("programs", CaseEnum.INDEXES)
-const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS) 
-
-const programDictonary = {
-  [programIndex.id]: programIndex.displayName,
-  [programContact.id]: programContact.displayName,
-};
-
-*/
-
-const programDictonary = {
-  uYjxkTbwRNf: "Index case",
-  DM9n1bUw8W8: "Contact",
-};
 
 export const mapProgramIdToName = (programID) => {
-  const name = programDictonary[programID]
-    ? programDictonary[programID]
+  const name = programDictionary[programID]
+    ? programDictionary[programID]
     : programID;
   return name;
 };
@@ -108,7 +100,7 @@ export const dueDateToDateObject = (dueDate) => {
   return toDateObject(dueDateList[2], dueDateList[1], dueDateList[0]);
 };
 
-export default {
+export {
   findValue,
   isOverdue,
   isWithinRange,
@@ -119,4 +111,6 @@ export default {
   mapProgramIdToName,
   toDateObject,
   dueDateToDateObject,
+  RetrieveProgramStage,
+  RetrieveProgram
 };
