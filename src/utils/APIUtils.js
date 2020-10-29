@@ -42,7 +42,13 @@ const mapProgramStageIdToName = (programStageId) => {
 const isHealthScheckOrFollowUp = (programStage) => {
   return programStageDictionary[programStage] ? true : false;
 };
+const dateIsToday = (fromDate, toDate) => {
+  const today = new Date();
+  const fromDateFormatted = new Date(fromDate);
+  const toDateFormatted = toDate ? new Date(toDate) : fromDateFormatted;
+  return today.toDateString() == fromDateFormatted.toDateString() && fromDateFormatted.toDateString() === toDateFormatted.toDateString();
 
+}
 const isOverdue = (dueDate) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -103,6 +109,7 @@ const dueDateToDateObject = (dueDate) => {
 export {
   findValue,
   isOverdue,
+  dateIsToday,
   isWithinRange,
   isHealthScheckOrFollowUp,
   evaluateFilter,

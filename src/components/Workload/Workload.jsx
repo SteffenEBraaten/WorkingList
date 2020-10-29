@@ -13,7 +13,8 @@ import {
   isWithinRange,
   toDateObject,
   mapProgramIdToName,
-  isOverdue
+  isOverdue,
+  dateIsToday
 } from "../../utils/APIUtils";
 
 const Workload = ({
@@ -133,16 +134,17 @@ const Workload = ({
         datesSelected.to.day
       )
       : fromDate;
-
+    const selectedDateIsToday = dateIsToday(fromDate, toDate);
+    console.log("DATE IS TODAY: ", dateIsToday(fromDate, toDate));
     // loop through data
     for (let i = 0; i < dataToDisplay.length; i++) {
       // loop through events
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
         const dueDate = dueDateToDateObject(event.dueDate);
-        if ((event.status === StatusEnum.SCHEDULE && isOverdue(dueDate))) {
-          console.log("event: ", event)
+        if (event.status === StatusEnum.SCHEDULE && isOverdue(dueDate) && selectedDateIsToday) {
           newDataToDisplay.push(dataToDisplay[i]);
+          console.log("event: ", event)
         }
 
         else if (isWithinRange(fromDate, toDate, dueDate)) {
@@ -182,23 +184,34 @@ const Workload = ({
         events: item.enrollments[0].events.filter(
           item =>
             isHealthScheckOrFollowUp(item.programStage) &&
-            (isWithinRange(
-              toDateObject(
+            (item.status === StatusEnum.SCHEDULE &&
+              isOverdue(item.dueDate) && dateIsToday(toDateObject(datesSelected.from.year,
+                datesSelected.from.month,
+                datesSelected.from.day
+              ), datesSelected.to
+                  ? toDateObject(
+                    datesSelected.to.year,
+                    datesSelected.to.month,
+                    datesSelected.to.day
+                  )
+                  : null) ||
+              (isWithinRange(toDateObject(
                 datesSelected.from.year,
                 datesSelected.from.month,
                 datesSelected.from.day
               ),
-              datesSelected.to
-                ? toDateObject(
-                  datesSelected.to.year,
-                  datesSelected.to.month,
-                  datesSelected.to.day
-                )
-                : null,
-              dueDateToDateObject(item.dueDate)
+                datesSelected.to
+                  ? toDateObject(
+                    datesSelected.to.year,
+                    datesSelected.to.month,
+                    datesSelected.to.day
+                  )
+                  : null,
+                dueDateToDateObject(item.dueDate)
+              ))
             ) &&
-              evaluateFilter(item.status, statusSelected)) ||
-            item.status === StatusEnum.SCHEDULE && isOverdue(item.dueDate)
+            evaluateFilter(item.status, statusSelected)
+
         )
       }
     ]
