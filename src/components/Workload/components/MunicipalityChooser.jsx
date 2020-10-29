@@ -64,13 +64,3 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
 };
 
 export default MunicipalityChooser;
-
-/*
-{data.me.organisationUnits.map(item => (
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label={`${item.id} kommune`}
-            value={`${item.id}`}
-          />
-        ))}
-*/
