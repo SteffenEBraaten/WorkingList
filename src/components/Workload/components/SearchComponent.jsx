@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Workload.module.css";
+import styles from "./../Workload.module.css";
 import { 
     Input, 
   } from "@dhis2/ui";
