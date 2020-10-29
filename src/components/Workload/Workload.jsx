@@ -26,12 +26,13 @@ const Workload = ({
   const [searchValue, setSearchValue] = useState("");
   const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr")
 
+  console.log(`${orgUnit}`)
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
       params: {
         program: "DM9n1bUw8W8",
-        ou: orgUnit,
+        ou: `${orgUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -44,7 +45,6 @@ const Workload = ({
           "inactive",
           "events"
         ],
-
         paging: false
       }
     }
@@ -55,7 +55,7 @@ const Workload = ({
       resource: "trackedEntityInstances",
       params: {
         program: "uYjxkTbwRNf",
-        ou: orgUnit,
+        ou: `${orgUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -100,7 +100,7 @@ const Workload = ({
       fetchContact();
     } else if (indexFilterSelected === CaseEnum.INDEXES) fetchIndex();
     else fetchContact();
-  }, [indexFilterSelected]);
+  }, [indexFilterSelected, orgUnit]);
 
   const hasData = indexCasesData && contactCasesData;
   const both =
