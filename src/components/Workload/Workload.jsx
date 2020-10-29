@@ -200,7 +200,7 @@ const Workload = ({
   }));
 
   const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case";
+    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
 
   let followUpCounter = 0;
   let healthCheckCounter = 0;
