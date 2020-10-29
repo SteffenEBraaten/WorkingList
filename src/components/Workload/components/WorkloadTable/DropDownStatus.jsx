@@ -23,9 +23,18 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
   } else return {};
 };
 
+const sortEventsOnDate = (eventsToSort) => {
+  const sortedEvents = eventsToSort.sort(function(first, second) {
+    return first.dueDate.localeCompare(second.dueDate)
+  });
+  return sortedEvents;
+}
+
+
 const DropDownStatus = ({ events }) => {
-  const lastEvent = events[events.length - 1];
-  const prevEvents = events.slice(0, -1);
+  const sortedEvents = sortEventsOnDate(events)
+  const lastEvent = sortedEvents[sortedEvents.length - 1];
+  const prevEvents = sortedEvents.slice(0, -1);
   return (
     <DropdownButton
       className={styles.dropDownStatus}
