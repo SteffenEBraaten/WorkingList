@@ -64,11 +64,11 @@ const evaluateFilter = (eventStatus, filterStatus) => {
   return filterStatus === StatusEnum.ALL
     ? true
     : filterStatus === StatusEnum.ACTIVE
-      ? eventStatus !== StatusEnum.COMPLETED
+      ? (eventStatus !== StatusEnum.COMPLETED || eventStatus !== StatusEnum.SKIPPED)
         ? true
         : false
       : filterStatus === StatusEnum.COMPLETED
-        ? eventStatus === StatusEnum.COMPLETED
+        ? (eventStatus === StatusEnum.COMPLETED || eventStatus !== StatusEnum.SKIPPED)
           ? true
           : false
         : false;

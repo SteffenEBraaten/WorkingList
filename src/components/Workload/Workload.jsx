@@ -12,7 +12,8 @@ import {
   dueDateToDateObject,
   isWithinRange,
   toDateObject,
-  mapProgramIdToName
+  mapProgramIdToName,
+  isOverdue
 } from "../../utils/APIUtils";
 
 const Workload = ({
@@ -138,10 +139,13 @@ const Workload = ({
       // loop through events
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
-
         const dueDate = dueDateToDateObject(event.dueDate);
+        if ((event.status === StatusEnum.SCHEDULE && isOverdue(dueDate))) {
+          console.log("event: ", event)
+          newDataToDisplay.push(dataToDisplay[i]);
+        }
 
-        if (isWithinRange(fromDate, toDate, dueDate)) {
+        else if (isWithinRange(fromDate, toDate, dueDate)) {
           // filter on search bar
           if (searchValue !== "") {
             const firstName = findValue(
@@ -178,7 +182,7 @@ const Workload = ({
         events: item.enrollments[0].events.filter(
           item =>
             isHealthScheckOrFollowUp(item.programStage) &&
-            isWithinRange(
+            (isWithinRange(
               toDateObject(
                 datesSelected.from.year,
                 datesSelected.from.month,
@@ -193,11 +197,13 @@ const Workload = ({
                 : null,
               dueDateToDateObject(item.dueDate)
             ) &&
-            evaluateFilter(item.status, statusSelected)
+              evaluateFilter(item.status, statusSelected)) ||
+            item.status === StatusEnum.SCHEDULE && isOverdue(item.dueDate)
         )
       }
     ]
-  }));
+  }))
+  // .sort((item) => item);
 
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
