@@ -19,9 +19,13 @@
   align-self: center;
 }
 
+.MunicipalityChooser {
+  width: 20%;
+}
+
 .searchComponent {
   margin-bottom: 2vh;
-  width: 90vw;
+  width: 90%;
   align-self: center;
 }
 

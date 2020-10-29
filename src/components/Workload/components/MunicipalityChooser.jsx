@@ -36,6 +36,7 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
     <div className={styles.MunicipalityChooser}>
       <SingleSelect
         label="Choose municipality"
+        className="select"
         dataTest="dhis2-uicore-singleselect"
         onChange={function onChange(value) {
           setSelected(value.selected);
@@ -64,3 +65,13 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
 };
 
 export default MunicipalityChooser;
+
+/*
+{data.me.organisationUnits.map(item => (
+          <SingleSelectOption
+            dataTest="dhis2-uicore-singleselectoption"
+            label={`${item.id} kommune`}
+            value={`${item.id}`}
+          />
+        ))}
+*/
