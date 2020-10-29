@@ -15,7 +15,6 @@ import { WorkloadTableRows } from "./WokloadTableRows";
 const WorkloadTable = ({ data, showFilter }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalObject, setObject] = useState({});
-  console.log("DATA: ", data)
 
   const showContactsModal = (
     firstName,
