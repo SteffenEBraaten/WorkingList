@@ -25,13 +25,14 @@ const Workload = ({
   setNumberOfHealthChecks
 }) => {
   const [searchValue, setSearchValue] = useState("");
+  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr")
 
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
       params: {
         program: `${retrieveLocalStorage("programs", CaseEnum.CONTACTS).id}`,
-        ou: "a8QXqdXyhNr",
+        ou: orgUnit,
         fields: [
           "created",
           "orgUnit",
@@ -55,7 +56,7 @@ const Workload = ({
       resource: "trackedEntityInstances",
       params: {
         program: `${retrieveLocalStorage("programs", CaseEnum.INDEXES).id}`,
-        ou: "a8QXqdXyhNr",
+        ou: orgUnit,
         fields: [
           "created",
           "orgUnit",
@@ -246,8 +247,8 @@ const Workload = ({
   return (
     <div className={styles.workloadContainer}>
       <div className={styles.tableHeaderWrapper}>
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit}/>
         <SearchComponent setSearchValue={setSearchValue} />
-        <MunicipalityChooser />
       </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
