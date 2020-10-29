@@ -14,6 +14,7 @@ import {
   ModalActions,
   NoticeBox
 } from "@dhis2/ui";
+import styles from "./WorkloadTable.module.css";
 
 const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
   const indexCaseId = indexCase.trackedEntityInstance;
@@ -24,11 +25,11 @@ const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
   const modalTitle = `${firstName} ${surname}'s contacts (${numberOfContacts})`;
 
   return (
-    <Modal position="middle" id="modalContacts">
+    <Modal className={styles.modal} position="middle" id="modalContacts">
       <ModalTitle>{modalTitle}</ModalTitle>
       <ModalContent>
         {teiRelationships.length > 0 ? (
-          <Table>
+          <Table className={styles.table}>
             <TableHead>
               <TableRowHead>
                 <TableCellHead>Type</TableCellHead>

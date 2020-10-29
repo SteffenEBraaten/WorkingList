@@ -13,6 +13,11 @@ const relationshipQuery = {
 };
 
 const Relationship = ({ id, indexCaseId, item }) => {
+  const { baseUrl } = useConfig();
+  const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
+    `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
+  );
+  
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id
@@ -52,10 +57,6 @@ const Relationship = ({ id, indexCaseId, item }) => {
     "phone_local"
   );
 
-  const { baseUrl } = useConfig();
-  const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
-    `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
-  );
 
   return (
     <TableRow>
