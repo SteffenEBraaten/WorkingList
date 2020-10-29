@@ -31,3 +31,7 @@
 .div {
   width: 100%;
 }
+
+.trackerAppCell{
+  width: fit-content;
+}
