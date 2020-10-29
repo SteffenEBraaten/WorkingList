@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState } from "react";
 import styles from "./App.module.css";
 import Workload from "./components/Workload/Workload.jsx";
 import WorkloadHeader from "./components/WorkloadHeader/WorkloadHeader.jsx";
@@ -27,7 +27,7 @@ const MyApp = () => {
   const dateToggle = value => {
     setFilterDate(value);
   };
-    
+
   return (
     <div className={styles.container}>
       <DoLocalStorage />
