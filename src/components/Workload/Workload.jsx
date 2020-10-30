@@ -4,8 +4,9 @@ import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
-import SearchComponent from "./SearchComponent";
+import SearchComponent from "./components/SearchComponent";
 import { retrieveLocalStorage } from "./ProgramToLocalStorage";
+import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -24,13 +25,14 @@ const Workload = ({
   setNumberOfHealthChecks
 }) => {
   const [searchValue, setSearchValue] = useState("");
+  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
-      params: {
+      params: ({ organisationUnit }) => ({
         program: `${retrieveLocalStorage("programs", CaseEnum.CONTACTS).id}`,
-        ou: "a8QXqdXyhNr",
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -43,18 +45,17 @@ const Workload = ({
           "inactive",
           "events"
         ],
-
-        paging: false,
-      },
-    },
+        paging: false
+      })
+    }
   };
 
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
-      params: {
+      params: ({ organisationUnit }) => ({
         program: `${retrieveLocalStorage("programs", CaseEnum.INDEXES).id}`,
-        ou: "a8QXqdXyhNr",
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -67,31 +68,35 @@ const Workload = ({
           "inactive",
           "events"
         ],
-        paging: false,
-      },
-    },
+        paging: false
+      })
+    }
   };
 
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
-    refetch: indexcaseRefetch,
-  } = useDataQuery(queryIndex);
+    refetch: indexcaseRefetch
+  } = useDataQuery(queryIndex, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
-    refetch: contactCaseRefetch,
-  } = useDataQuery(queryContact);
+    refetch: contactCaseRefetch
+  } = useDataQuery(queryContact, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch();
+      await indexcaseRefetch({ organisationUnit: orgUnit });
     }
     async function fetchContact() {
-      await contactCaseRefetch();
+      await contactCaseRefetch({ organisationUnit: orgUnit });
     }
 
     if (indexFilterSelected === CaseEnum.ALL) {
@@ -99,7 +104,7 @@ const Workload = ({
       fetchContact();
     } else if (indexFilterSelected === CaseEnum.INDEXES) fetchIndex();
     else fetchContact();
-  }, [indexFilterSelected]);
+  }, [indexFilterSelected, orgUnit]);
 
   const hasData = indexCasesData && contactCasesData;
   const both =
@@ -112,8 +117,8 @@ const Workload = ({
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-        ? indexCasesData.indexCases.trackedEntityInstances
-        : contactCasesData.contacts.trackedEntityInstances
+      ? indexCasesData.indexCases.trackedEntityInstances
+      : contactCasesData.contacts.trackedEntityInstances
     : [];
 
   // filter data on selected date
@@ -128,10 +133,10 @@ const Workload = ({
 
     const toDate = datesSelected.to
       ? toDateObject(
-        datesSelected.to.year,
-        datesSelected.to.month,
-        datesSelected.to.day
-      )
+          datesSelected.to.year,
+          datesSelected.to.month,
+          datesSelected.to.day
+        )
       : fromDate;
 
     // loop through data
@@ -171,37 +176,40 @@ const Workload = ({
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterData(dataToDisplay).map(item => ({
-    ...item,
-    enrollments: [
-      {
-        ...item.enrollments[0],
-        events: item.enrollments[0].events.filter(
-          item =>
-            isHealthScheckOrFollowUp(item.programStage) &&
-            isWithinRange(
-              toDateObject(
-                datesSelected.from.year,
-                datesSelected.from.month,
-                datesSelected.from.day
-              ),
-              datesSelected.to
-                ? toDateObject(
-                  datesSelected.to.year,
-                  datesSelected.to.month,
-                  datesSelected.to.day
-                )
-                : null,
-              dueDateToDateObject(item.dueDate)
-            ) &&
-            evaluateFilter(item.status, statusSelected)
-        )
-      }
-    ]
-  })).filter((item) => item.enrollments[0].events.length > 0);
+  dataToDisplay = filterData(dataToDisplay)
+    .map(item => ({
+      ...item,
+      enrollments: [
+        {
+          ...item.enrollments[0],
+          events: item.enrollments[0].events.filter(
+            item =>
+              isHealthScheckOrFollowUp(item.programStage) &&
+              isWithinRange(
+                toDateObject(
+                  datesSelected.from.year,
+                  datesSelected.from.month,
+                  datesSelected.from.day
+                ),
+                datesSelected.to
+                  ? toDateObject(
+                      datesSelected.to.year,
+                      datesSelected.to.month,
+                      datesSelected.to.day
+                    )
+                  : null,
+                dueDateToDateObject(item.dueDate)
+              ) &&
+              evaluateFilter(item.status, statusSelected)
+          )
+        }
+      ]
+    }))
+    .filter(item => item.enrollments[0].events.length > 0);
 
   const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
+    mapProgramIdToName(tei.enrollments[0].program) ===
+    "Index case surveillance";
 
   let followUpCounter = 0;
   let healthCheckCounter = 0;
@@ -244,7 +252,10 @@ const Workload = ({
 
   return (
     <div className={styles.workloadContainer}>
-      <SearchComponent setSearchValue={setSearchValue} />
+      <div className={styles.tableHeaderWrapper}>
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
+        <SearchComponent setSearchValue={setSearchValue} />
+      </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );
