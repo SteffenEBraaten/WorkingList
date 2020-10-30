@@ -140,8 +140,6 @@ const Workload = ({
 
   const filterData = dataToDisplay => {
     const newDataToDisplay = [];
-
-    console.log("DATE IS TODAY: ", dateIsToday(fromDate, toDate));
     // loop through data
     for (let i = 0; i < dataToDisplay.length; i++) {
       // loop through events
@@ -206,12 +204,21 @@ const Workload = ({
     ]
   })).filter(item => item.enrollments[0].events.length > 0)
 
+  const sortEventsOnDate = (eventsToSort) => {
+    const sortedEvents = eventsToSort.sort(function (first, second) {
+      return first.dueDate.localeCompare(second.dueDate)
+    });
+    return sortedEvents;
+  }
   if (selectedDateIsToday) {
     dataToDisplay = dataToDisplay.sort((a, b) => {
-      new Date(a.enrollments[0].incidentDate).toDateString() - new Date(b.enrollments[0].incidentDate).toDateString()
-    }).reverse();
+      const sortedAEvents = sortEventsOnDate(a.enrollments[0].events);
+      const sortedBEvents = sortEventsOnDate(b.enrollments[0].events);
+      const sortedAlast = sortedAEvents[sortedAEvents.length - 1];
+      const sortedBlast = sortedBEvents[sortedBEvents.length - 1];
+      return sortedAlast.dueDate.localeCompare(sortedBlast.dueDate)
+    });
   }
-  console.log(dataToDisplay);
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) ===
     "Index case surveillance";
