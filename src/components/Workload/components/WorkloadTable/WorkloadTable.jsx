@@ -19,8 +19,7 @@ const WorkloadTable = ({ data, showFilter }) => {
   const showContactsModal = (
     firstName,
     surname,
-    trackedEntityInstance,
-    hideModal
+    trackedEntityInstance
   ) => {
     setObject({
       firstName,

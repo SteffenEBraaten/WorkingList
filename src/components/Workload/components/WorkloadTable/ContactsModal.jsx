@@ -18,18 +18,16 @@ import styles from "./WorkloadTable.module.css";
 
 const ContactsModal = ({ indexCase, firstName, surname, hideModal }) => {
   const indexCaseId = indexCase.trackedEntityInstance;
-  const teiEnrollments = indexCase.enrollments;
-  const teiAttributes = indexCase.attributes;
   const teiRelationships = indexCase.relationships;
   const numberOfContacts = teiRelationships.length;
   const modalTitle = `${firstName} ${surname}'s contacts (${numberOfContacts})`;
 
   return (
-    <Modal className={styles.modal} position="middle" id="modalContacts">
+    <Modal className={styles.contactsModal} position="middle" id="modalContacts">
       <ModalTitle>{modalTitle}</ModalTitle>
       <ModalContent>
         {teiRelationships.length > 0 ? (
-          <Table className={styles.table}>
+          <Table className={styles.contactModalTable}>
             <TableHead>
               <TableRowHead>
                 <TableCellHead>Type</TableCellHead>

@@ -2,16 +2,24 @@
   max-width: 300px;
 }
 
-.statusTagContainer {
-  margin: 8px 0;
-}
-
 .noticeAllDone {
   align-self: center;
   width: 67%;
 }
 
-.card {
+.contactModalTable {
+  width: 50vw;
+}
+
+.contactsModal {
+  width: fit-content !important;
+}
+
+.dropDownStatusContainer {
+  margin: 8px 0;
+}
+
+.dropDownStatusCard {
   width: 300px !important;
   padding-left: 15px;
   padding-right: 32px;
@@ -24,14 +32,10 @@
   background-color: inherit !important;
 }
 
-.tag {
+.dropDownStatusTag {
   max-width: 100% !important;
 }
 
-.table {
-  width: 50vw;
-}
-
-.modal {
-  width: fit-content !important;
+.dropDownWrapTag {
+  width: 100%;
 }

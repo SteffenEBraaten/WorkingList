@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "./../Workload.module.css";
-import { 
-    Input, 
-  } from "@dhis2/ui";
+import { Input } from "@dhis2/ui";
 
 const SearchComponent = ({ setSearchValue }) => {
   return (

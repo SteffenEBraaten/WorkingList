@@ -111,7 +111,7 @@ const WorkloadHeader = ({
         </SingleSelectField>
         <DropdownButton
           secondary
-          className={styles.dropdownButton}
+          className={styles.dropDownButtonDateComponent}
           component={
             <DateComponent
               toggleDate={toggleDate}

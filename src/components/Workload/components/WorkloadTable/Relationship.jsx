@@ -14,13 +14,12 @@ const relationshipQuery = {
   }
 };
 
-const Relationship = ({ id, indexCaseId, item }) => {
+const Relationship = ({ id, indexCaseId }) => {
   const { baseUrl } = useConfig();
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
   );
 
-  
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
       id
@@ -37,6 +36,16 @@ const Relationship = ({ id, indexCaseId, item }) => {
         <TableCell></TableCell>
       </TableRow>
     );
+  }
+
+  if (error) {
+    <NoticeBox
+      error
+      title="Could not get relationships"
+      className={styles.centerElement}
+    >
+      Could not get contact for specific index case.
+    </NoticeBox>;
   }
 
   const relationship = data.relationship;
