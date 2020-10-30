@@ -29,9 +29,9 @@ const Workload = ({
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
-      params: {
+      params: ({ organisationUnit }) => ({
         program: "DM9n1bUw8W8",
-        ou: `${orgUnit}`,
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -45,16 +45,16 @@ const Workload = ({
           "events"
         ],
         paging: false
-      }
+      })
     }
   };
 
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
-      params: {
+      params: ({ organisationUnit }) => ({
         program: "uYjxkTbwRNf",
-        ou: `${orgUnit}`,
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -68,7 +68,7 @@ const Workload = ({
           "events"
         ],
         paging: false
-      }
+      })
     }
   };
 
@@ -77,14 +77,18 @@ const Workload = ({
     loading: indexCaseLoading,
     data: indexCasesData,
     refetch: indexcaseRefetch
-  } = useDataQuery(queryIndex);
+  } = useDataQuery(queryIndex, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
     refetch: contactCaseRefetch
-  } = useDataQuery(queryContact);
+  } = useDataQuery(queryContact, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   useEffect(() => {
     async function fetchIndex() {
