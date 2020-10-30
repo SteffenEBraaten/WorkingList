@@ -2,8 +2,8 @@
 
 **Group members:**
 * Tine Margretha Vister (tinemv@ifi.uio.no)
-* Steffen Ekeberg Bråten (steeffeb@ifi.uio.no)
-* Thao Tran (thanht@ifi.uio.no)
+* Steffen Ekeberg Bråten (steffeeb@ifi.uio.no)
+* Thanh Thao Thi Tran (thanht@ifi.uio.no)
 * Steven Hoang Giang Nguyen (shnguyen@ifi.uio.no)
 * Susanne Semsøy (susansem@ifi.uio.no)
 
@@ -20,7 +20,7 @@ The information displayed in our application is fetched from the DHIS2 API, howe
 
 If the user wants to view another date, or a range of dates (e.g. the next 10 days), this can be done through the calendar-feature. The new data is then fetched from the API and displayed accordingly.
 
-To achieve a cohesive design, the different components is all from the DHIS2 design library. The exception is the calendar-feature (taken from the React Library), since DHIS2 do not offer this.
+To achieve a cohesive design, the different components is all from the DHIS2 design library. The exception is the calendar-feature (taken from the React Library) which was modified to our needs. This was because the DHIS2 library did not offer a suitable calendar components.
 
 Furthermore, to keep the application efficient, the application uses server-side rendering when showing both index cases and contacts, and client-side for the rest.
 
