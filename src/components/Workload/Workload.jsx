@@ -147,12 +147,7 @@ const Workload = ({
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
         const dueDate = dueDateToDateObject(event.dueDate);
-        if (isOverdue(dueDate, event.status) && selectedDateIsToday) {
-          newDataToDisplay.push(dataToDisplay[i]);
-          break; // go to the next data
-        }
-
-        else if (isWithinRange(fromDate, toDate, dueDate)) {
+        if (isWithinRange(fromDate, toDate, dueDate) || (isOverdue(dueDate, event.status) && selectedDateIsToday)) {
           // filter on search bar
           if (searchValue !== "") {
             const firstName = findValue(
