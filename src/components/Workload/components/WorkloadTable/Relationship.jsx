@@ -17,6 +17,7 @@ const Relationship = ({ id, indexCaseId, item }) => {
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
   );
+
   
   const { loading, error, data } = useDataQuery(relationshipQuery, {
     variables: {
@@ -57,6 +58,9 @@ const Relationship = ({ id, indexCaseId, item }) => {
     "phone_local"
   );
 
+  const tei = contact.trackedEntityInstance.trackedEntityInstance
+  const program = "DM9n1bUw8W8"
+  const orgUnit = contact.trackedEntityInstance.orgUnit
 
   return (
     <TableRow>
@@ -69,9 +73,9 @@ const Relationship = ({ id, indexCaseId, item }) => {
           primary
           onClick={() =>
             goToTrackerCaptureApp(
-              item.trackedEntityInstance,
-              item.enrollments[0].program,
-              item.orgUnit
+              tei,
+              program,
+              orgUnit
             )
           }
         >
