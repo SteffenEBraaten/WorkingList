@@ -32,16 +32,16 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
   // Viser bare index case boksen
   if (displayText === CaseEnum.INDEXES) {
     return (
-      <div className={styles.cards}>
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
+      <div className={styles.headerCards}>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
           <h3>{`Hello ${data.me.firstName}!`}</h3>
           <CovidIllustration />
           <p> Keep up the good work! </p>
         </Card>
 
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
-          <div className={styles.cardContent}>
-            <h1>{numberOfHealthChecks}</h1>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
+          <div className={styles.headerCardContent}>
+            <h1 className={styles.headerCardsH1}>{numberOfHealthChecks}</h1>
             <p> Health checks that needs to be performed </p>
           </div>
         </Card>
@@ -52,16 +52,16 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
   //Viser bare contacts boksen
   if (displayText === CaseEnum.CONTACTS) {
     return (
-      <div className={styles.cards}>
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
+      <div className={styles.headerCards}>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
           <h3>{`Hello ${data.me.firstName}!`}</h3>
           <CovidIllustration />
           <p> Keep up the good work! </p>
         </Card>
 
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
-          <div className={styles.cardContent}>
-            <h1>{numberOfFollowUps}</h1>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
+          <div className={styles.headerCardContent}>
+            <h1 className={styles.headerCardsH1}>{numberOfFollowUps}</h1>
             <p> Contacts that needs to be contacted </p>
           </div>
         </Card>
@@ -71,23 +71,23 @@ const HeaderCards = ({ numberOfFollowUps, numberOfHealthChecks, displayText }) =
   // Viser begge boksene
   else {
     return (
-      <div className={styles.cards}>
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
+      <div className={styles.headerCards}>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
           <h3>{`Hello ${data.me.firstName}!`}</h3>
           <CovidIllustration />
           <p> Keep up the good work! </p>
         </Card>
 
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
-          <div className={styles.cardContent}>
-            <h1>{numberOfHealthChecks}</h1>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
+          <div className={styles.headerCardContent}>
+            <h1 className={styles.headerCardsH1}>{numberOfHealthChecks}</h1>
             <p> Health checks that needs to be performed </p>
           </div>
         </Card>
 
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
-          <div className={styles.cardContent}>
-            <h1>{numberOfFollowUps}</h1>
+        <Card className={styles.headerSingleCards} dataTest="dhis2-uicore-card">
+          <div className={styles.headerCardContent}>
+            <h1 className={styles.headerCardsH1}>{numberOfFollowUps}</h1>
             <p> Contacts that needs to be contacted </p>
           </div>
         </Card>

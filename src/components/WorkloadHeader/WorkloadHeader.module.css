@@ -2,21 +2,21 @@
   display: flex;
   flex-direction: column;
   margin-top: 2vh;
-  
 }
+
 .filterContainer {
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 2vh;
   margin-top: 2vh;
 }
-.cards {
+.headerCards {
   display: flex;
   justify-content: space-around;
 }
 
-.singleCard {
+.headerSingleCards {
   max-width: 30vw;
   text-align: center;
   min-height: 14em;
@@ -26,22 +26,22 @@
   margin: 1em;
 }
 
-.cardContent {
+.headerCardContent {
   margin-top: 4em;
 }
 
-.dropdownButton{
+.dropDownButtonDateComponent {
   margin: 1em 0 0;
   width: 20vw;
   align-self: center;
-}	
+}
 
 .singleSelectField {
   width: 30vw;
-  margin:1em 1em 0 0;
+  margin: 1em 1em 0 0;
 }
 
-h1 {
+.headerCardsH1 {
   font-size: 3.5em;
 }
 
@@ -50,8 +50,7 @@ h1 {
     flex-direction: column;
   }
 
-  
-  .dropdownButton{
+  .dropDownButtonDateComponent {
     margin: 4vh 0 0 0;
   }
 }

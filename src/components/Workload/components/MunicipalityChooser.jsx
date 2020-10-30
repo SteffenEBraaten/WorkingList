@@ -23,17 +23,17 @@ const queryOrgUnit = {
   }
 };
 
-const getMappingFromIdToName = (all, orgUnitID) =>{
+const getMappingFromIdToName = (allOrgUnits, userOrgUnits) =>{
   const mapping = []
 
-  orgUnitID.map((item) => {
+  userOrgUnits.map((item) => {
     const id = item.id
 
-    for (var i = 0; i<all.length; i++){
-      if (all[i].id === id){
+    for (var i = 0; i<allOrgUnits.length; i++){
+      if (allOrgUnits[i].id === id){
         mapping.push({
           id: id,
-          name: all[i].displayName
+          name: allOrgUnits[i].displayName
         })
         break;
       }

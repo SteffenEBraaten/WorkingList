@@ -39,13 +39,13 @@ const DropDownStatus = ({ events }) => {
     <DropdownButton
       className={styles.dropDownStatus}
       component={
-        <Card className={styles.card}>
+        <Card className={styles.dropDownStatusCard}>
           <p>Previous events</p>
           {prevEvents.length === 0 ? <NoticeBox>No events</NoticeBox> : null}
           {prevEvents.map((thisEvent, key) => (
-            <div key={key} className={styles.statusTagContainer}>
+            <div key={key} className={styles.dropDownStatusContainer}>
               <Tag
-                className={styles.tag}
+                className={styles.dropDownStatusTag}
                 {...eventTagMapper(thisEvent.status, thisEvent.dueDate)}
               >
                 {`${toDateAndTimeFormat(
@@ -66,9 +66,9 @@ const DropDownStatus = ({ events }) => {
       name="default"
       value="nothing"
     >
-      <div className={styles.div}>
+      <div className={styles.dropDownWrapTag}>
         <Tag
-          className={styles.tag}
+          className={styles.dropDownStatusTag}
           {...eventTagMapper(lastEvent.status, lastEvent.dueDate)}
         >
           {`${toDateAndTimeFormat(
