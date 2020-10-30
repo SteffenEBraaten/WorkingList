@@ -116,25 +116,25 @@ const Workload = ({
         ? indexCasesData.indexCases.trackedEntityInstances
         : contactCasesData.contacts.trackedEntityInstances
     : [];
+  const fromDate = toDateObject(
+    datesSelected.from.year,
+    datesSelected.from.month,
+    datesSelected.from.day
+  );
 
+  const toDate = datesSelected.to
+    ? toDateObject(
+      datesSelected.to.year,
+      datesSelected.to.month,
+      datesSelected.to.day
+    )
+    : fromDate;
   // filter data on selected date
+  const selectedDateIsToday = dateIsToday(fromDate, toDate);
+
   const filterData = dataToDisplay => {
     const newDataToDisplay = [];
 
-    const fromDate = toDateObject(
-      datesSelected.from.year,
-      datesSelected.from.month,
-      datesSelected.from.day
-    );
-
-    const toDate = datesSelected.to
-      ? toDateObject(
-        datesSelected.to.year,
-        datesSelected.to.month,
-        datesSelected.to.day
-      )
-      : fromDate;
-    const selectedDateIsToday = dateIsToday(fromDate, toDate);
     console.log("DATE IS TODAY: ", dateIsToday(fromDate, toDate));
     // loop through data
     for (let i = 0; i < dataToDisplay.length; i++) {
@@ -142,7 +142,7 @@ const Workload = ({
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
         const dueDate = dueDateToDateObject(event.dueDate);
-        if (event.status === StatusEnum.SCHEDULE && isOverdue(dueDate) && selectedDateIsToday) {
+        if (isOverdue(dueDate, event.status) && selectedDateIsToday) {
           newDataToDisplay.push(dataToDisplay[i]);
           console.log("event: ", event)
         }
@@ -176,6 +176,8 @@ const Workload = ({
     return newDataToDisplay;
   };
 
+
+  // TODOS: Getting duplicate cases becuse of how the enrollemnts events filter is writen here.
   dataToDisplay = filterData(dataToDisplay).map(item => ({
     ...item,
     enrollments: [
@@ -184,40 +186,27 @@ const Workload = ({
         events: item.enrollments[0].events.filter(
           item =>
             isHealthScheckOrFollowUp(item.programStage) &&
-            (item.status === StatusEnum.SCHEDULE &&
-              isOverdue(item.dueDate) && dateIsToday(toDateObject(datesSelected.from.year,
-                datesSelected.from.month,
-                datesSelected.from.day
-              ), datesSelected.to
-                  ? toDateObject(
-                    datesSelected.to.year,
-                    datesSelected.to.month,
-                    datesSelected.to.day
-                  )
-                  : null) ||
-              (isWithinRange(toDateObject(
-                datesSelected.from.year,
-                datesSelected.from.month,
-                datesSelected.from.day
-              ),
-                datesSelected.to
-                  ? toDateObject(
-                    datesSelected.to.year,
-                    datesSelected.to.month,
-                    datesSelected.to.day
-                  )
-                  : null,
-                dueDateToDateObject(item.dueDate)
-              ))
-            ) &&
-            evaluateFilter(item.status, statusSelected)
-
+            (selectedDateIsToday ?
+              (isOverdue(item.dueDate, item.status) ||
+                (!isOverdue(item.dueDate, item.status) &&
+                  isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
+                  evaluateFilter(item.status, statusSelected) &&
+                  dateIsToday(item.dueDate)))
+              :
+              (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
+                evaluateFilter(item.status, statusSelected))
+            )
         )
       }
     ]
-  }))
-  // .sort((item) => item);
+  })).filter(item => item.enrollments[0].events.length > 0)
 
+  if (selectedDateIsToday) {
+    dataToDisplay = dataToDisplay.sort((a, b) => {
+      new Date(a.enrollments[0].incidentDate).toDateString() - new Date(b.enrollments[0].incidentDate).toDateString()
+    }).reverse();
+  }
+  console.log(dataToDisplay);
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
 

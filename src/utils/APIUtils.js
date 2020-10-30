@@ -49,11 +49,11 @@ const dateIsToday = (fromDate, toDate) => {
   return today.toDateString() == fromDateFormatted.toDateString() && fromDateFormatted.toDateString() === toDateFormatted.toDateString();
 
 }
-const isOverdue = (dueDate) => {
+const isOverdue = (dueDate, eventStatus) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const dueDateFormatted = new Date(dueDate);
-  return today > dueDateFormatted;
+  return (today > dueDateFormatted) && (eventStatus === StatusEnum.SCHEDULE || eventStatus === StatusEnum.ACTIVE);
 };
 
 const isWithinRange = (fromDate, toDate, dueDate) => {

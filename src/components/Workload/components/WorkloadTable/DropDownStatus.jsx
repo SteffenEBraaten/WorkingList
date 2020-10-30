@@ -10,7 +10,7 @@ import styles from "./WorkloadTable.module.css";
 
 const eventTagMapper = (eventStatus, eventDueDate) => {
   if (
-    (eventStatus === StatusEnum.SCHEDULE && isOverdue(eventDueDate)) ||
+    (isOverdue(eventDueDate, eventStatus)) ||
     eventStatus === StatusEnum.OVERDUE
   ) {
     return { negative: true };
@@ -43,11 +43,10 @@ const DropDownStatus = ({ events }) => {
                   thisEvent.dueDate,
                   false
                 )} ${mapProgramStageIdToName(thisEvent.programStage)} ${
-                  isOverdue(thisEvent.dueDate) &&
-                  thisEvent.status === StatusEnum.SCHEDULE
+                  isOverdue(thisEvent.dueDate, thisEvent.status)
                     ? StatusEnum.OVERDUE
                     : thisEvent.status
-                }`}
+                  }`}
               </Tag>
             </div>
           ))}
@@ -66,11 +65,10 @@ const DropDownStatus = ({ events }) => {
             lastEvent.dueDate,
             false
           )} ${mapProgramStageIdToName(lastEvent.programStage)} ${
-            isOverdue(lastEvent.dueDate) &&
-            lastEvent.status === StatusEnum.SCHEDULE
+            isOverdue(lastEvent.dueDate, lastEvent.status)
               ? StatusEnum.OVERDUE
               : lastEvent.status
-          }`}
+            }`}
         </Tag>
       </div>
     </DropdownButton>
