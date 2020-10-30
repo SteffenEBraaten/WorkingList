@@ -150,7 +150,7 @@ const Workload = ({
         const dueDate = dueDateToDateObject(event.dueDate);
         if (isOverdue(dueDate, event.status) && selectedDateIsToday) {
           newDataToDisplay.push(dataToDisplay[i]);
-          console.log("event: ", event)
+          break; // go to the next data
         }
 
         else if (isWithinRange(fromDate, toDate, dueDate)) {
@@ -170,7 +170,6 @@ const Workload = ({
               newDataToDisplay.push(dataToDisplay[i]);
             }
           }
-
           // if not user search, view full list
           else {
             newDataToDisplay.push(dataToDisplay[i]);
@@ -192,13 +191,13 @@ const Workload = ({
         events: item.enrollments[0].events.filter(
           item =>
             isHealthScheckOrFollowUp(item.programStage) &&
-            (selectedDateIsToday ?
-              (isOverdue(item.dueDate, item.status) ||
+            (selectedDateIsToday ? // if selected date is today
+              (isOverdue(item.dueDate, item.status) || // then we take events that are overdue or events that are within range
                 (!isOverdue(item.dueDate, item.status) &&
                   isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
                   evaluateFilter(item.status, statusSelected) &&
                   dateIsToday(item.dueDate)))
-              :
+              : // else filter only events that are within range
               (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
                 evaluateFilter(item.status, statusSelected))
             )
