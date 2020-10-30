@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 2vh;
-  
+
 }
 .filterContainer {
   display:flex;
@@ -11,7 +11,7 @@
   margin-bottom: 2vh;
   margin-top: 2vh;
 }
-.cards {
+.cardRow {
   display: flex;
   justify-content: space-around;
 }
@@ -34,7 +34,7 @@
   margin: 1em 0 0;
   width: 20vw;
   align-self: center;
-}	
+}
 
 .singleSelectField {
   width: 30vw;
@@ -50,7 +50,7 @@ h1 {
     flex-direction: column;
   }
 
-  
+
   .dropdownButton{
     margin: 4vh 0 0 0;
   }

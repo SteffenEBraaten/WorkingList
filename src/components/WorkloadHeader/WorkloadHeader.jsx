@@ -7,7 +7,7 @@ import {
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
-import HeaderCards from "./HeaderCards";
+import HeaderCardRow from "./HeaderCardRow";
 
 
 const WorkloadHeader = ({
@@ -52,7 +52,7 @@ const WorkloadHeader = ({
 
   return (
     <div className={styles.workloadHeader}>
-      <HeaderCards
+      <HeaderCardRow
         numberOfFollowUps={numberOfFollowUps}
         numberOfHealthChecks={numberOfHealthChecks}
         displayText={selectedFilter}
