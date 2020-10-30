@@ -25,9 +25,8 @@ const Workload = ({
   setNumberOfHealthChecks
 }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr")
+  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
-  console.log(`${orgUnit}`)
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -114,8 +113,8 @@ const Workload = ({
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-        ? indexCasesData.indexCases.trackedEntityInstances
-        : contactCasesData.contacts.trackedEntityInstances
+      ? indexCasesData.indexCases.trackedEntityInstances
+      : contactCasesData.contacts.trackedEntityInstances
     : [];
 
   // filter data on selected date
@@ -130,10 +129,10 @@ const Workload = ({
 
     const toDate = datesSelected.to
       ? toDateObject(
-        datesSelected.to.year,
-        datesSelected.to.month,
-        datesSelected.to.day
-      )
+          datesSelected.to.year,
+          datesSelected.to.month,
+          datesSelected.to.day
+        )
       : fromDate;
 
     // loop through data
@@ -173,37 +172,40 @@ const Workload = ({
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterData(dataToDisplay).map(item => ({
-    ...item,
-    enrollments: [
-      {
-        ...item.enrollments[0],
-        events: item.enrollments[0].events.filter(
-          item =>
-            isHealthScheckOrFollowUp(item.programStage) &&
-            isWithinRange(
-              toDateObject(
-                datesSelected.from.year,
-                datesSelected.from.month,
-                datesSelected.from.day
-              ),
-              datesSelected.to
-                ? toDateObject(
-                  datesSelected.to.year,
-                  datesSelected.to.month,
-                  datesSelected.to.day
-                )
-                : null,
-              dueDateToDateObject(item.dueDate)
-            ) &&
-            evaluateFilter(item.status, statusSelected)
-        )
-      }
-    ]
-  })).filter((item) => item.enrollments[0].events.length > 0);
+  dataToDisplay = filterData(dataToDisplay)
+    .map(item => ({
+      ...item,
+      enrollments: [
+        {
+          ...item.enrollments[0],
+          events: item.enrollments[0].events.filter(
+            item =>
+              isHealthScheckOrFollowUp(item.programStage) &&
+              isWithinRange(
+                toDateObject(
+                  datesSelected.from.year,
+                  datesSelected.from.month,
+                  datesSelected.from.day
+                ),
+                datesSelected.to
+                  ? toDateObject(
+                      datesSelected.to.year,
+                      datesSelected.to.month,
+                      datesSelected.to.day
+                    )
+                  : null,
+                dueDateToDateObject(item.dueDate)
+              ) &&
+              evaluateFilter(item.status, statusSelected)
+          )
+        }
+      ]
+    }))
+    .filter(item => item.enrollments[0].events.length > 0);
 
   const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
+    mapProgramIdToName(tei.enrollments[0].program) ===
+    "Index case surveillance";
 
   let followUpCounter = 0;
   let healthCheckCounter = 0;
@@ -247,7 +249,7 @@ const Workload = ({
   return (
     <div className={styles.workloadContainer}>
       <div className={styles.tableHeaderWrapper}>
-        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit}/>
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
         <SearchComponent setSearchValue={setSearchValue} />
       </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />

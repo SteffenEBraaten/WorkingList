@@ -7,22 +7,58 @@ import {
 import styles from "./../Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 
+const queryMe = {
+  me: {
+    resource: "me"
+  }
+};
+
+const queryOrgUnit = {
+  orgUnit: {
+    resource: "organisationUnits",
+    params: {
+      fields: ["id", "displayName"],
+      paging: false
+    }
+  }
+};
+
+const getMappingFromIdToName = (all, orgUnitID) =>{
+  const mapping = []
+
+  orgUnitID.map((item) => {
+    const id = item.id
+
+    for (var i = 0; i<all.length; i++){
+      if (all[i].id === id){
+        mapping.push({
+          id: id,
+          name: all[i].displayName
+        })
+        break;
+      }
+    }
+  })
+  return mapping
+}
+
 const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
   const [selected, setSelected] = useState(orgUnit);
 
-  const query = {
-    me: {
-      resource: "me"
-    }
-  };
+  const { error: meError, loading: meLoading, data: meData } = useDataQuery(
+    queryMe
+  );
+  const {
+    error: orgUnitError,
+    loading: orgUnitLoading,
+    data: orgUnitData
+  } = useDataQuery(queryOrgUnit);
 
-  const { error, loading, data } = useDataQuery(query);
-
-  if (loading) {
+  if (meLoading || orgUnitLoading) {
     return <CircularLoader />;
   }
 
-  if (error) {
+  if (meError || orgUnitError) {
     <NoticeBox
       error
       title="Could not get orgUnit"
@@ -31,6 +67,8 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
       Could not get the organisation unit of the user. Please try again later.
     </NoticeBox>;
   }
+
+  const mapIdToName = getMappingFromIdToName(orgUnitData.orgUnit.organisationUnits, meData.me.organisationUnits)
 
   return (
     <div className={styles.MunicipalityChooser}>
@@ -54,24 +92,18 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
           label="Oslo kommune"
           value="wmbTtMfmQON"
         />
-        <SingleSelectOption
-          dataTest="dhis2-uicore-singleselectoption"
-          label="Melhus kommune"
-          value="Ir8lIUBoe8Y"
-        />
+
+        {mapIdToName.map((item) => (
+          <SingleSelectOption
+            dataTest="dhis2-uicore-singleselectoption"
+            label={`${item.name}`}
+            value={`${item.id}`}
+            key={`${item.id}`}
+          />
+        ))}
       </SingleSelect>
     </div>
   );
 };
 
 export default MunicipalityChooser;
-
-/*
-{data.me.organisationUnits.map(item => (
-          <SingleSelectOption
-            dataTest="dhis2-uicore-singleselectoption"
-            label={`${item.id} kommune`}
-            value={`${item.id}`}
-          />
-        ))}
-*/
