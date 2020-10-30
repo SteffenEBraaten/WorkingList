@@ -1,6 +1,6 @@
 import React from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar, utils } from "react-modern-calendar-datepicker";
+import { Calendar } from "react-modern-calendar-datepicker";
 
 const myLocale = {
   // months list by order
@@ -86,7 +86,6 @@ const DateComponent = ({ toggleDate, dateSelected }) => {
       }}
       shouldHighlightWeekends
       locale={myLocale}
-      //minimumDate={utils().getToday()}
 
       colorPrimary="#00695C"
       colorPrimaryLight="#91c9c0"

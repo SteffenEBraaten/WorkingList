@@ -19,7 +19,7 @@ const WorkloadHeader = ({
   numberOfHealthChecks,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
-  const [status, setStatus] = useState(StatusEnum.ALL);
+  const [status, setStatus] = useState(StatusEnum.ACTIVE);
 
   const isToday = (date) => {
     const today = new Date();
@@ -111,7 +111,7 @@ const WorkloadHeader = ({
         </SingleSelectField>
         <DropdownButton
           secondary
-          className={styles.dropdownButton}
+          className={styles.dropDownButtonDateComponent}
           component={
             <DateComponent
               toggleDate={toggleDate}

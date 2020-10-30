@@ -12,8 +12,20 @@
   justify-self: center;
 }
 
+.tableHeaderWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}
+
 .searchComponent {
   margin-bottom: 2vh;
-  width:50vw;
+  width: 90vw;
   align-self: center;
+}
+
+.MunicipalityChooser {
+  width: 20vw;
+  margin-right: 4vw;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StatusEnum, CaseEnum } from "../components/Enum/Enum.jsx";
 import { retrieveLocalStorage } from "../components/Workload/ProgramToLocalStorage";
+
 const findValue = (listToSearch, code) => {
   return listToSearch.find((item) => item.code === code)
     ? listToSearch.find((item) => item.code === code).value

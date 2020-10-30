@@ -4,7 +4,9 @@ import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
-import SearchComponent from "./SearchComponent";
+import SearchComponent from "./components/SearchComponent";
+import { retrieveLocalStorage } from "./ProgramToLocalStorage";
+import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -25,13 +27,14 @@ const Workload = ({
   setNumberOfHealthChecks
 }) => {
   const [searchValue, setSearchValue] = useState("");
+  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
-      params: {
-        program: "DM9n1bUw8W8",
-        ou: "a8QXqdXyhNr",
+      params: ({ organisationUnit }) => ({
+        program: `${retrieveLocalStorage("programs", CaseEnum.CONTACTS).id}`,
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -44,18 +47,17 @@ const Workload = ({
           "inactive",
           "events"
         ],
-
-        paging: false,
-      },
-    },
+        paging: false
+      })
+    }
   };
 
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
-      params: {
-        program: "uYjxkTbwRNf",
-        ou: "a8QXqdXyhNr",
+      params: ({ organisationUnit }) => ({
+        program: `${retrieveLocalStorage("programs", CaseEnum.INDEXES).id}`,
+        ou: `${organisationUnit}`,
         fields: [
           "created",
           "orgUnit",
@@ -68,31 +70,35 @@ const Workload = ({
           "inactive",
           "events"
         ],
-        paging: false,
-      },
-    },
+        paging: false
+      })
+    }
   };
 
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
-    refetch: indexcaseRefetch,
-  } = useDataQuery(queryIndex);
+    refetch: indexcaseRefetch
+  } = useDataQuery(queryIndex, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
-    refetch: contactCaseRefetch,
-  } = useDataQuery(queryContact);
+    refetch: contactCaseRefetch
+  } = useDataQuery(queryContact, {
+    variables: { organisationUnit: orgUnit }
+  });
 
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch();
+      await indexcaseRefetch({ organisationUnit: orgUnit });
     }
     async function fetchContact() {
-      await contactCaseRefetch();
+      await contactCaseRefetch({ organisationUnit: orgUnit });
     }
 
     if (indexFilterSelected === CaseEnum.ALL) {
@@ -100,7 +106,7 @@ const Workload = ({
       fetchContact();
     } else if (indexFilterSelected === CaseEnum.INDEXES) fetchIndex();
     else fetchContact();
-  }, [indexFilterSelected]);
+  }, [indexFilterSelected, orgUnit]);
 
   const hasData = indexCasesData && contactCasesData;
   const both =
@@ -208,7 +214,8 @@ const Workload = ({
   }
   console.log(dataToDisplay);
   const isIndexCase = tei =>
-    mapProgramIdToName(tei.enrollments[0].program) === "Index case surveillance";
+    mapProgramIdToName(tei.enrollments[0].program) ===
+    "Index case surveillance";
 
   let followUpCounter = 0;
   let healthCheckCounter = 0;
@@ -251,7 +258,10 @@ const Workload = ({
 
   return (
     <div className={styles.workloadContainer}>
-      <SearchComponent setSearchValue={setSearchValue} />
+      <div className={styles.tableHeaderWrapper}>
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
+        <SearchComponent setSearchValue={setSearchValue} />
+      </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );

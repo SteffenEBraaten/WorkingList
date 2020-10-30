@@ -19,8 +19,7 @@ const WorkloadTable = ({ data, showFilter }) => {
   const showContactsModal = (
     firstName,
     surname,
-    trackedEntityInstance,
-    hideModal
+    trackedEntityInstance
   ) => {
     setObject({
       firstName,
@@ -58,8 +57,8 @@ const WorkloadTable = ({ data, showFilter }) => {
           </TableBody>
         </Table>
       ) : (
-          <NoticeBox className={styles.noticeAllDone}>
-            No heath checks or follow-up calls for today!
+        <NoticeBox className={styles.noticeAllDone}>
+          No health checks or follow-up calls for today!
         </NoticeBox>
         )}
       {showModal && (
