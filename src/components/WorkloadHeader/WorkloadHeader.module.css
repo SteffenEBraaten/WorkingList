@@ -11,7 +11,7 @@
   margin-bottom: 2vh;
   margin-top: 2vh;
 }
-.headerCards {
+.cardRow {
   display: flex;
   justify-content: space-around;
 }
@@ -50,7 +50,8 @@
     flex-direction: column;
   }
 
-  .dropDownButtonDateComponent {
+
+  .dropdownButton{
     margin: 4vh 0 0 0;
   }
 }
