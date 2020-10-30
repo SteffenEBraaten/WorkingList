@@ -193,12 +193,11 @@ const Workload = ({
               (isOverdue(item.dueDate, item.status) || // then we take events that are overdue or events that are within range
                 (!isOverdue(item.dueDate, item.status) &&
                   isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
-                  evaluateFilter(item.status, statusSelected) &&
                   dateIsToday(item.dueDate)))
               : // else filter only events that are within range
-              (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
-                evaluateFilter(item.status, statusSelected))
-            )
+              (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate))
+              ))
+            && evaluateFilter(item.status, statusSelected)
         )
       }
     ]

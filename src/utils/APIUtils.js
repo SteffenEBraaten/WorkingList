@@ -75,7 +75,7 @@ const evaluateFilter = (eventStatus, filterStatus) => {
         ? true
         : false
       : filterStatus === StatusEnum.COMPLETED
-        ? (eventStatus === StatusEnum.COMPLETED || eventStatus !== StatusEnum.SKIPPED)
+        ? (eventStatus === StatusEnum.COMPLETED || eventStatus === StatusEnum.SKIPPED)
           ? true
           : false
         : false;
