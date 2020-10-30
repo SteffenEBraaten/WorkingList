@@ -5,7 +5,10 @@ import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./components/SearchComponent";
+<<<<<<< HEAD
 import { retrieveLocalStorage } from "./ProgramToLocalStorage";
+=======
+>>>>>>> 9d51f4e255a6649fa421ecc68712c7b2e7fd785b
 import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
