@@ -16,6 +16,32 @@ import {
   mapProgramIdToName
 } from "../../utils/APIUtils";
 
+const CONTACT_PROGRAM_ID = "DM9n1bUw8W8";
+const INDEX_PROGRAM_ID = "uYjxkTbwRNf";
+
+const query = {
+  data: {
+    resource: "trackedEntityInstances",
+    params: ({ orgUnit, program }) => ({
+      program: program,
+      ou: orgUnit,
+      fields: [
+        "created",
+        "orgUnit",
+        "attributes",
+        "trackedEntityType",
+        "trackedEntityInstance",
+        "relationships",
+        "enrollments",
+        "lastUpdated",
+        "inactive",
+        "events"
+      ],
+      paging: false
+    })
+  }
+};
+
 const Workload = ({
   indexFilterSelected,
   statusSelected,
@@ -26,72 +52,36 @@ const Workload = ({
   const [searchValue, setSearchValue] = useState("");
   const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
-  const queryContact = {
-    contacts: {
-      resource: "trackedEntityInstances",
-      params: {
-        program: "DM9n1bUw8W8",
-        ou: `${orgUnit}`,
-        fields: [
-          "created",
-          "orgUnit",
-          "attributes",
-          "trackedEntityType",
-          "trackedEntityInstance",
-          "relationships",
-          "enrollments",
-          "lastUpdated",
-          "inactive",
-          "events"
-        ],
-        paging: false
-      }
-    }
-  };
-
-  const queryIndex = {
-    indexCases: {
-      resource: "trackedEntityInstances",
-      params: {
-        program: "uYjxkTbwRNf",
-        ou: `${orgUnit}`,
-        fields: [
-          "created",
-          "orgUnit",
-          "attributes",
-          "trackedEntityType",
-          "trackedEntityInstance",
-          "enrollments",
-          "relationships",
-          "lastUpdated",
-          "inactive",
-          "events"
-        ],
-        paging: false
-      }
-    }
-  };
-
   const {
     error: indexCaseError,
     loading: indexCaseLoading,
     data: indexCasesData,
     refetch: indexcaseRefetch
-  } = useDataQuery(queryIndex);
+  } = useDataQuery(query, {
+    variables: {
+      program: INDEX_PROGRAM_ID,
+      orgUnit: orgUnit
+    }
+  });
 
   const {
     error: contactCaseError,
     loading: contactCaseLoading,
     data: contactCasesData,
     refetch: contactCaseRefetch
-  } = useDataQuery(queryContact);
+  } = useDataQuery(query, {
+    variables: {
+      program: CONTACT_PROGRAM_ID,
+      orgUnit: orgUnit
+    }
+  });
 
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch();
+      await indexcaseRefetch({ orgUnit: orgUnit });
     }
     async function fetchContact() {
-      await contactCaseRefetch();
+      await contactCaseRefetch({ orgUnit: orgUnit });
     }
 
     if (indexFilterSelected === CaseEnum.ALL) {
@@ -104,20 +94,20 @@ const Workload = ({
   const hasData = indexCasesData && contactCasesData;
   const both =
     hasData &&
-    indexCasesData.indexCases.trackedEntityInstances.concat(
-      contactCasesData.contacts.trackedEntityInstances
+    indexCasesData.data.trackedEntityInstances.concat(
+      contactCasesData.data.trackedEntityInstances
     );
 
   let dataToDisplay = hasData
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances
+      ? indexCasesData.data.trackedEntityInstances
+      : contactCasesData.data.trackedEntityInstances
     : [];
 
   // filter data on selected date
-  const filterData = dataToDisplay => {
+  const filterData = (dataToDisplay) => {
     const newDataToDisplay = [];
 
     const fromDate = toDateObject(
@@ -172,13 +162,13 @@ const Workload = ({
   };
 
   dataToDisplay = filterData(dataToDisplay)
-    .map(item => ({
+    .map((item) => ({
       ...item,
       enrollments: [
         {
           ...item.enrollments[0],
           events: item.enrollments[0].events.filter(
-            item =>
+            (item) =>
               isHealthScheckOrFollowUp(item.programStage) &&
               isWithinRange(
                 toDateObject(
@@ -200,9 +190,9 @@ const Workload = ({
         }
       ]
     }))
-    .filter(item => item.enrollments[0].events.length > 0);
+    .filter((item) => item.enrollments[0].events.length > 0);
 
-  const isIndexCase = tei =>
+  const isIndexCase = (tei) =>
     mapProgramIdToName(tei.enrollments[0].program) ===
     "Index case surveillance";
 
