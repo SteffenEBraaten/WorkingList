@@ -13,11 +13,10 @@ const HeaderCardRow = ({ numberOfFollowUps, numberOfHealthChecks, displayText })
     },
   };
 
-  //Henter total lengde av tabellen og trekker fra antall index cases.
   const { error, loading, data } = useDataQuery(query);
 
   if (loading) {
-    return <CircularLoader />;
+    return <CircularLoader/>;
   }
 
   if (error) {
@@ -29,10 +28,12 @@ const HeaderCardRow = ({ numberOfFollowUps, numberOfHealthChecks, displayText })
       Could not get the name of the user. Please try again later.
     </NoticeBox>;
   }
+    //Her kan vi endre på meldingene som skal vises til brukere
     const displayMessageHealthchecks = "Health checks that needs to be performed";
     const displayMessageContacts = "Contacts that needs to be contacted";
 
-
+    //Hvis bruker har valgt index cases vises hilsen kortet.
+    //Resten blir hentet fra CounterCards som tar inn displayMessage og displayNumber som paramenter
     if (displayText === CaseEnum.INDEXES) {
       return (
         <div className={styles.cardRow}>
@@ -46,6 +47,7 @@ const HeaderCardRow = ({ numberOfFollowUps, numberOfHealthChecks, displayText })
       );
     }
 
+    //Hvis "contacts" er valgt
     if (displayText === CaseEnum.CONTACTS) {
       return (
         <div className={styles.cardRow}>
@@ -57,21 +59,21 @@ const HeaderCardRow = ({ numberOfFollowUps, numberOfHealthChecks, displayText })
           <CounterCard displayMessage={displayMessageContacts} displayNumber={numberOfFollowUps}/>
         </div>
     );
-
-  } else {
-    return (
-      <div className={styles.cardRow}>
-        <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
-          <h3>{`Hello ${data.me.firstName}!`}</h3>
-          <CovidIllustration />
-          <p> Keep up the good work! </p>
-        </Card>
-        <CounterCard displayMessage={displayMessageHealthchecks} displayNumber={numberOfHealthChecks}/>
-        <CounterCard displayMessage={displayMessageContacts} displayNumber={numberOfFollowUps}/>
-      </div>
-    );
-  }
-
+    
+    //Hvis "all" er valgt
+    } else {
+      return (
+        <div className={styles.cardRow}>
+          <Card className={styles.singleCard} dataTest="dhis2-uicore-card">
+            <h3>{`Hello ${data.me.firstName}!`}</h3>
+            <CovidIllustration />
+            <p> Keep up the good work! </p>
+          </Card>
+          <CounterCard displayMessage={displayMessageHealthchecks} displayNumber={numberOfHealthChecks}/>
+          <CounterCard displayMessage={displayMessageContacts} displayNumber={numberOfFollowUps}/>
+        </div>
+      );
+    }
 };
 
 export default HeaderCardRow;
