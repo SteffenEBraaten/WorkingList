@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { StatusEnum, CaseEnum } from "../components/Enum/Enum.jsx";
 import { retrieveLocalStorage } from "../components/Workload/ProgramToLocalStorage";
 const findValue = (listToSearch, code) => {
