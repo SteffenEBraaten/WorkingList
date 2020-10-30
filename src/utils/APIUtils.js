@@ -56,7 +56,12 @@ const isOverdue = (dueDate, eventStatus) => {
   const dueDateFormatted = new Date(dueDate);
   return (today > dueDateFormatted) && (eventStatus === StatusEnum.SCHEDULE || eventStatus === StatusEnum.ACTIVE);
 };
-
+const sortEventsOnDate = (eventsToSort) => {
+  const sortedEvents = eventsToSort.sort(function (first, second) {
+    return first.dueDate.localeCompare(second.dueDate)
+  });
+  return sortedEvents;
+}
 const isWithinRange = (fromDate, toDate, dueDate) => {
   const dueDateFormatted = new Date(dueDate);
   const fromDateFormatted = new Date(fromDate);
@@ -120,5 +125,6 @@ export {
   toDateObject,
   dueDateToDateObject,
   retrieveProgram,
-  retrieveProgramStage
+  retrieveProgramStage,
+  sortEventsOnDate
 };

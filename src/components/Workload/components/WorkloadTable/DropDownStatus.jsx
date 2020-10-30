@@ -3,7 +3,8 @@ import { StatusEnum } from "../../../Enum/Enum";
 import {
   isOverdue,
   toDateAndTimeFormat,
-  mapProgramStageIdToName
+  mapProgramStageIdToName,
+  sortEventsOnDate
 } from "../../../../utils/APIUtils";
 import { Tag, DropdownButton, Card, NoticeBox } from "@dhis2/ui";
 import styles from "./WorkloadTable.module.css";
@@ -22,13 +23,6 @@ const eventTagMapper = (eventStatus, eventDueDate) => {
     return { positive: true };
   } else return {};
 };
-
-const sortEventsOnDate = (eventsToSort) => {
-  const sortedEvents = eventsToSort.sort(function(first, second) {
-    return first.dueDate.localeCompare(second.dueDate)
-  });
-  return sortedEvents;
-}
 
 
 const DropDownStatus = ({ events }) => {

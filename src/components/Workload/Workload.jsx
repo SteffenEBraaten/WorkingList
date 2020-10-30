@@ -16,7 +16,8 @@ import {
   toDateObject,
   mapProgramIdToName,
   isOverdue,
-  dateIsToday
+  dateIsToday,
+  sortEventsOnDate
 } from "../../utils/APIUtils";
 
 const Workload = ({
@@ -191,8 +192,7 @@ const Workload = ({
             isHealthScheckOrFollowUp(item.programStage) &&
             (selectedDateIsToday ? // if selected date is today
               (isOverdue(item.dueDate, item.status) || // then we take events that are overdue or events that are within range
-                (!isOverdue(item.dueDate, item.status) &&
-                  isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
+                (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
                   dateIsToday(item.dueDate)))
               : // else filter only events that are within range
               (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate))
@@ -203,12 +203,7 @@ const Workload = ({
     ]
   })).filter(item => item.enrollments[0].events.length > 0)
 
-  const sortEventsOnDate = (eventsToSort) => {
-    const sortedEvents = eventsToSort.sort(function (first, second) {
-      return first.dueDate.localeCompare(second.dueDate)
-    });
-    return sortedEvents;
-  }
+
   if (selectedDateIsToday) {
     dataToDisplay = dataToDisplay.sort((a, b) => {
       const sortedAEvents = sortEventsOnDate(a.enrollments[0].events);
