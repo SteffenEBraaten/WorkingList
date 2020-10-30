@@ -30,48 +30,51 @@ export const retrieveLocalStorage = (program, type) => {
 
 
 const DoLocalStorage = () => {
-    const queryPrograms = {
-        programs: {
-            resource: "programs",
-        },
-    };
+    if (localStorage["programs"] == undefined || localStorage["programStages"] == undefined) {
+        const queryPrograms = {
+            programs: {
+                resource: "programs",
+            },
+        };
 
-    const queryProgramStages = {
-        programStages: {
-            resource: "programStages",
-        },
-    };
+        const queryProgramStages = {
+            programStages: {
+                resource: "programStages",
+            },
+        };
 
-    const {
-        error: errorProgram,
-        loading: loadingProgram,
-        data: dataProgram
-    } = useDataQuery(queryPrograms);
+        const {
+            error: errorProgram,
+            loading: loadingProgram,
+            data: dataProgram
+        } = useDataQuery(queryPrograms);
 
-    const {
-        error: errorStages,
-        loading: loadingStages,
-        data: dataStages
-    } = useDataQuery(queryProgramStages);
+        const {
+            error: errorStages,
+            loading: loadingStages,
+            data: dataStages
+        } = useDataQuery(queryProgramStages);
 
-    if (loadingProgram | loadingStages) {
-        return <CircularLoader />;
+        if (loadingProgram | loadingStages) {
+            return <CircularLoader />;
+        }
+
+        if (errorProgram | errorStages) {
+            <NoticeBox error>Could not retrieve from storage</NoticeBox>;
+        }
+        addLocalStorage(
+            dataStages.programStages.programStages.filter(e => e.displayName == "Health status" || e.displayName == "Follow-up"),
+            "programStages"
+        );
+
+        addLocalStorage(
+            dataProgram.programs.programs.filter(e => e.displayName.includes("Index case") || e.displayName.includes("Contact")),
+            "programs"
+        );
     }
-
-    if (errorProgram | errorStages) {
-        <NoticeBox error>Could not retrieve from storage</NoticeBox>;
-    }
-    addLocalStorage(
-        dataStages.programStages.programStages.filter(e => e.displayName == "Health status" || e.displayName == "Follow-up"),
-        "programStages"
-    );
-
-    addLocalStorage(
-        dataProgram.programs.programs.filter(e => e.displayName.includes("Index case") || e.displayName.includes("Contact")),
-        "programs"
-    );
+    
     retrieveProgramStage();
-    retrieveProgram();
+    retrieveProgram(); 
     return (null)
 }
 
