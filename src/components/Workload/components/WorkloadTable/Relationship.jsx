@@ -4,6 +4,8 @@ import { TableRow, TableCell, Button } from "@dhis2/ui";
 import { findValue } from "../../../../utils/APIUtils";
 import { useConfig } from "@dhis2/app-runtime";
 import { goToTrackerCaptureAppBuilder } from "./WokloadTableRows";
+import { CaseEnum } from "../../../Enum/Enum";
+import { retrieveLocalStorage } from "../../ProgramToLocalStorage";
 
 const relationshipQuery = {
   relationship: {
@@ -59,7 +61,7 @@ const Relationship = ({ id, indexCaseId, item }) => {
   );
 
   const tei = contact.trackedEntityInstance.trackedEntityInstance
-  const program = "DM9n1bUw8W8"
+  const program = retrieveLocalStorage("programs", CaseEnum.CONTACTS).id;
   const orgUnit = contact.trackedEntityInstance.orgUnit
 
   return (

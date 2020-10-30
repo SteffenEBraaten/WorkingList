@@ -5,6 +5,7 @@ import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
 import SearchComponent from "./SearchComponent";
+import { retrieveLocalStorage } from "./ProgramToLocalStorage";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -28,7 +29,7 @@ const Workload = ({
     contacts: {
       resource: "trackedEntityInstances",
       params: {
-        program: "DM9n1bUw8W8",
+        program: `${retrieveLocalStorage("programs", CaseEnum.CONTACTS).id}`,
         ou: "a8QXqdXyhNr",
         fields: [
           "created",
@@ -52,7 +53,7 @@ const Workload = ({
     indexCases: {
       resource: "trackedEntityInstances",
       params: {
-        program: "uYjxkTbwRNf",
+        program: `${retrieveLocalStorage("programs", CaseEnum.INDEXES).id}`,
         ou: "a8QXqdXyhNr",
         fields: [
           "created",
