@@ -92,10 +92,10 @@ const Workload = ({
 
   useEffect(() => {
     async function fetchIndex() {
-      await indexcaseRefetch();
+      await indexcaseRefetch({ organisationUnit: orgUnit });
     }
     async function fetchContact() {
-      await contactCaseRefetch();
+      await contactCaseRefetch({ organisationUnit: orgUnit });
     }
 
     if (indexFilterSelected === CaseEnum.ALL) {

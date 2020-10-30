@@ -86,11 +86,6 @@ const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
           label="Måsøy kommune"
           value="a8QXqdXyhNr"
         />
-        <SingleSelectOption
-          dataTest="dhis2-uicore-singleselectoption"
-          label="Oslo kommune"
-          value="wmbTtMfmQON"
-        />
 
         {mapIdToName.map((item) => (
           <SingleSelectOption
