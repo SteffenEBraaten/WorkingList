@@ -26,7 +26,9 @@ const Workload = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
   const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
-
+  if (localStorage["programs"] == undefined || localStorage["programStages"] == undefined) {
+    return null;
+  }
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -117,8 +119,8 @@ const Workload = ({
     ? indexFilterSelected === CaseEnum.ALL
       ? both
       : indexFilterSelected === CaseEnum.INDEXES
-      ? indexCasesData.indexCases.trackedEntityInstances
-      : contactCasesData.contacts.trackedEntityInstances
+        ? indexCasesData.indexCases.trackedEntityInstances
+        : contactCasesData.contacts.trackedEntityInstances
     : [];
 
   // filter data on selected date
@@ -133,10 +135,10 @@ const Workload = ({
 
     const toDate = datesSelected.to
       ? toDateObject(
-          datesSelected.to.year,
-          datesSelected.to.month,
-          datesSelected.to.day
-        )
+        datesSelected.to.year,
+        datesSelected.to.month,
+        datesSelected.to.day
+      )
       : fromDate;
 
     // loop through data
@@ -193,10 +195,10 @@ const Workload = ({
                 ),
                 datesSelected.to
                   ? toDateObject(
-                      datesSelected.to.year,
-                      datesSelected.to.month,
-                      datesSelected.to.day
-                    )
+                    datesSelected.to.year,
+                    datesSelected.to.month,
+                    datesSelected.to.day
+                  )
                   : null,
                 dueDateToDateObject(item.dueDate)
               ) &&

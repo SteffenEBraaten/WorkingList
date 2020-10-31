@@ -15,6 +15,7 @@ const relationshipQuery = {
 };
 
 const Relationship = ({ id, indexCaseId }) => {
+  if (localStorage["programs"] == undefined || localStorage["programStages"] == undefined) { return null; }
   const { baseUrl } = useConfig();
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
