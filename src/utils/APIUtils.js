@@ -42,14 +42,25 @@ const mapProgramStageIdToName = (programStageId) => {
 const isHealthScheckOrFollowUp = (programStage) => {
   return programStageDictionary[programStage] ? true : false;
 };
+const dateIsToday = (fromDate, toDate) => {
+  const today = new Date();
+  const fromDateFormatted = new Date(fromDate);
+  const toDateFormatted = toDate ? new Date(toDate) : fromDateFormatted;
+  return today.toDateString() == fromDateFormatted.toDateString() && fromDateFormatted.toDateString() === toDateFormatted.toDateString();
 
-const isOverdue = (dueDate) => {
+}
+const isOverdue = (dueDate, eventStatus) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const dueDateFormatted = new Date(dueDate);
-  return today > dueDateFormatted;
+  return (today > dueDateFormatted) && (eventStatus === StatusEnum.SCHEDULE || eventStatus === StatusEnum.ACTIVE);
 };
-
+const sortEventsOnDate = (eventsToSort) => {
+  const sortedEvents = eventsToSort.sort(function (first, second) {
+    return first.dueDate.localeCompare(second.dueDate)
+  });
+  return sortedEvents;
+}
 const isWithinRange = (fromDate, toDate, dueDate) => {
   const dueDateFormatted = new Date(dueDate);
   const fromDateFormatted = new Date(fromDate);
@@ -64,11 +75,11 @@ const evaluateFilter = (eventStatus, filterStatus) => {
   return filterStatus === StatusEnum.ALL
     ? true
     : filterStatus === StatusEnum.ACTIVE
-      ? eventStatus !== StatusEnum.COMPLETED
+      ? (eventStatus !== StatusEnum.COMPLETED || eventStatus !== StatusEnum.SKIPPED)
         ? true
         : false
       : filterStatus === StatusEnum.COMPLETED
-        ? eventStatus === StatusEnum.COMPLETED
+        ? (eventStatus === StatusEnum.COMPLETED || eventStatus === StatusEnum.SKIPPED)
           ? true
           : false
         : false;
@@ -103,6 +114,7 @@ const dueDateToDateObject = (dueDate) => {
 export {
   findValue,
   isOverdue,
+  dateIsToday,
   isWithinRange,
   isHealthScheckOrFollowUp,
   evaluateFilter,
@@ -112,5 +124,6 @@ export {
   toDateObject,
   dueDateToDateObject,
   retrieveProgram,
-  retrieveProgramStage
+  retrieveProgramStage,
+  sortEventsOnDate
 };
