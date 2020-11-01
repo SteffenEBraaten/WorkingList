@@ -43,8 +43,6 @@ const MyApp = () => {
         orgUnit={orgUnit}
         setOrgUnit={setOrgUnit}
         setSearchValue={setSearchValue}
-        orgUnit={orgUnit}
-        searchValue={searchValue}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
