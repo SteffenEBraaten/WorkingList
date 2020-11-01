@@ -4,9 +4,7 @@ import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
-import SearchComponent from "./components/SearchComponent";
 import { retrieveLocalStorage } from "./ProgramToLocalStorage";
-import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -25,11 +23,10 @@ const Workload = ({
   statusSelected,
   datesSelected,
   setNumberOfFollowUps,
-  setNumberOfHealthChecks
+  setNumberOfHealthChecks,
+  orgUnit,
+  searchValue
 }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
-
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -253,10 +250,6 @@ const Workload = ({
 
   return (
     <div className={styles.workloadContainer}>
-      <div className={styles.tableHeaderWrapper}>
-        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
-        <SearchComponent setSearchValue={setSearchValue} />
-      </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );

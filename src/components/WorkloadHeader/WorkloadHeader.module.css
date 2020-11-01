@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   margin-top: 2vh;
-}
 
+}
 .filterContainer {
-  display: flex;
+  display:flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 2vh;
@@ -16,7 +16,7 @@
   justify-content: space-around;
 }
 
-.headerSingleCards {
+.singleCard {
   max-width: 30vw;
   text-align: center;
   min-height: 14em;
@@ -26,11 +26,11 @@
   margin: 1em;
 }
 
-.headerCardContent {
+.cardContent {
   margin-top: 4em;
 }
 
-.dropDownButtonDateComponent {
+.dropdownButton{
   margin: 1em 0 0;
   width: 20vw;
   align-self: center;
@@ -38,11 +38,34 @@
 
 .singleSelectField {
   width: 30vw;
-  margin: 1em 1em 0 0;
+  margin:1em 1em 0 0;
 }
 
-.headerCardsH1 {
+h1 {
   font-size: 3.5em;
+}
+
+.centerElement {
+  align-self: center;
+  justify-self: center;
+}
+
+.searchComponent {
+  margin-bottom: 2vh;
+  width: 90vw;
+  align-self: center;
+}
+
+.MunicipalityChooser {
+  width: 20vw;
+  margin-right: 4vw;
+}
+
+.tableHeaderWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
 }
 
 @media screen and (min-width: 768px) {

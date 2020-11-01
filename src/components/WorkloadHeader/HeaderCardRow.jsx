@@ -37,9 +37,9 @@ const HeaderCardRow = ({
     >
       Could not get the name of the user. Please try again later.
     </NoticeBox>
-  ) : (
+  ) : loading ? (
     <CircularLoader />
-  );
+  ) : null;
 
   //Resten blir hentet fra CounterCards som tar inn displayMessage og displayNumber som paramenter
   if (displayText === CaseEnum.INDEXES) {

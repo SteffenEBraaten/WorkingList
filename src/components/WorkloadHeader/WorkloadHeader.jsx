@@ -8,6 +8,8 @@ import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
 import HeaderCardRow from "./HeaderCardRow";
+import MunicipalityChooser from "./MunicipalityChooser";
+import SearchComponent from "./SearchComponent"
 
 
 const WorkloadHeader = ({
@@ -17,6 +19,9 @@ const WorkloadHeader = ({
   datesSelected,
   numberOfFollowUps,
   numberOfHealthChecks,
+  setSearchValue,
+  orgUnit,
+  setOrgUnit,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ACTIVE);
@@ -52,11 +57,11 @@ const WorkloadHeader = ({
 
   return (
     <div className={styles.workloadHeader}>
-      <HeaderCardRow
-        numberOfFollowUps={numberOfFollowUps}
-        numberOfHealthChecks={numberOfHealthChecks}
-        displayText={selectedFilter}
-      />
+        <HeaderCardRow
+          numberOfFollowUps={numberOfFollowUps}
+          numberOfHealthChecks={numberOfHealthChecks}
+          displayText={selectedFilter}
+        />
       <div className={styles.filterContainer}>
         <SingleSelectField
           label="Show"
@@ -123,7 +128,10 @@ const WorkloadHeader = ({
           {formatInputValue(datesSelected)}
         </DropdownButton>
       </div>
-
+      <div className={styles.tableHeaderWrapper}>
+          <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
+          <SearchComponent setSearchValue={setSearchValue} />
+      </div>
     </div>
   );
 };

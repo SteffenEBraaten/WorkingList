@@ -4,7 +4,7 @@ import {
   SingleSelectOption,
   CircularLoader
 } from "@dhis2/ui-core";
-import styles from "./../Workload.module.css";
+import styles from "./WorkloadHeader.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 
 const queryMe = {

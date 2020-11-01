@@ -17,6 +17,8 @@ const MyApp = () => {
   });
   const [numberOfFollowUps, setNumberOfFollowUps] = useState(0);
   const [numberOfHealthChecks, setNumberOfHealthChecks] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
   const filterToggle = value => {
     setFilterIndexCase(value);
@@ -38,11 +40,18 @@ const MyApp = () => {
         datesSelected={filterDateRange}
         numberOfFollowUps={numberOfFollowUps}
         numberOfHealthChecks={numberOfHealthChecks}
+        orgUnit={orgUnit}
+        setOrgUnit={setOrgUnit}
+        setSearchValue={setSearchValue}
+        orgUnit={orgUnit}
+        searchValue={searchValue}
       />
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
         datesSelected={filterDateRange}
+        orgUnit={orgUnit}
+        searchValue={searchValue}
         setNumberOfFollowUps={setNumberOfFollowUps}
         setNumberOfHealthChecks={setNumberOfHealthChecks}
       />
