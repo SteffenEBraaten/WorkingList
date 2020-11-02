@@ -13,5 +13,9 @@ const StatusEnum = Object.freeze({
 	SKIPPED: 'SKIPPED'
 });
 
+const StorageEnum = Object.freeze({
+	PROGRAMS: "programs",
+	PROGRAMSTAGES: "programStages",
+});
 
-export { CaseEnum, StatusEnum };
+export { CaseEnum, StatusEnum, StorageEnum };
