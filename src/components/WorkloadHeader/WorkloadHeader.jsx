@@ -10,7 +10,7 @@ import DateComponent from "./DateComponent";
 import HeaderCardRow from "./HeaderCardRow";
 import MunicipalityChooser from "./MunicipalityChooser";
 import SearchComponent from "./SearchComponent";
-import { UserProvider, useUserUpdate } from "./UserContext";
+import { useUserUpdate } from "./UserContext";
 import { useDataQuery } from "@dhis2/app-runtime";
 
 const query = {
