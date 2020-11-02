@@ -14,7 +14,10 @@ import {
   dueDateToDateObject,
   isWithinRange,
   toDateObject,
-  mapProgramIdToName
+  mapProgramIdToName,
+  isOverdue,
+  dateIsToday,
+  sortEventsOnDate,
 } from "../../utils/APIUtils";
 
 const Workload = ({
@@ -22,13 +25,14 @@ const Workload = ({
   statusSelected,
   datesSelected,
   setNumberOfFollowUps,
-  setNumberOfHealthChecks
+  setNumberOfHealthChecks,
 }) => {
+  if (localStorage["programs"] === undefined || localStorage["programStages"] === undefined)
+    return (<NoticeBox error title="Could not load data from local storage" className={styles.centerElement} >
+      Could not load data from local storage. Please try again later.
+      </NoticeBox>);
   const [searchValue, setSearchValue] = useState("");
   const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
-  if (localStorage["programs"] == undefined || localStorage["programStages"] == undefined) {
-    return null;
-  }
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -51,7 +55,6 @@ const Workload = ({
       })
     }
   };
-
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
@@ -122,34 +125,31 @@ const Workload = ({
         ? indexCasesData.indexCases.trackedEntityInstances
         : contactCasesData.contacts.trackedEntityInstances
     : [];
+  const fromDate = toDateObject(
+    datesSelected.from.year,
+    datesSelected.from.month,
+    datesSelected.from.day
+  );
 
+  const toDate = datesSelected.to
+    ? toDateObject(
+      datesSelected.to.year,
+      datesSelected.to.month,
+      datesSelected.to.day
+    )
+    : fromDate;
   // filter data on selected date
+  const selectedDateIsToday = dateIsToday(fromDate, toDate);
+
   const filterData = dataToDisplay => {
     const newDataToDisplay = [];
-
-    const fromDate = toDateObject(
-      datesSelected.from.year,
-      datesSelected.from.month,
-      datesSelected.from.day
-    );
-
-    const toDate = datesSelected.to
-      ? toDateObject(
-        datesSelected.to.year,
-        datesSelected.to.month,
-        datesSelected.to.day
-      )
-      : fromDate;
-
     // loop through data
     for (let i = 0; i < dataToDisplay.length; i++) {
       // loop through events
       for (let j = 0; j < dataToDisplay[i].enrollments[0].events.length; j++) {
         const event = dataToDisplay[i].enrollments[0].events[j];
-
         const dueDate = dueDateToDateObject(event.dueDate);
-
-        if (isWithinRange(fromDate, toDate, dueDate)) {
+        if (isWithinRange(fromDate, toDate, dueDate) || (isOverdue(dueDate, event.status) && selectedDateIsToday)) {
           // filter on search bar
           if (searchValue !== "") {
             const firstName = findValue(
@@ -166,7 +166,6 @@ const Workload = ({
               newDataToDisplay.push(dataToDisplay[i]);
             }
           }
-
           // if not user search, view full list
           else {
             newDataToDisplay.push(dataToDisplay[i]);
@@ -178,37 +177,39 @@ const Workload = ({
     return newDataToDisplay;
   };
 
-  dataToDisplay = filterData(dataToDisplay)
-    .map(item => ({
-      ...item,
-      enrollments: [
-        {
-          ...item.enrollments[0],
-          events: item.enrollments[0].events.filter(
-            item =>
-              isHealthScheckOrFollowUp(item.programStage) &&
-              isWithinRange(
-                toDateObject(
-                  datesSelected.from.year,
-                  datesSelected.from.month,
-                  datesSelected.from.day
-                ),
-                datesSelected.to
-                  ? toDateObject(
-                    datesSelected.to.year,
-                    datesSelected.to.month,
-                    datesSelected.to.day
-                  )
-                  : null,
-                dueDateToDateObject(item.dueDate)
-              ) &&
-              evaluateFilter(item.status, statusSelected)
-          )
-        }
-      ]
-    }))
-    .filter(item => item.enrollments[0].events.length > 0);
 
+  // TODOS: Getting duplicate cases becuse of how the enrollemnts events filter is writen here.
+  dataToDisplay = filterData(dataToDisplay).map(item => ({
+    ...item,
+    enrollments: [
+      {
+        ...item.enrollments[0],
+        events: item.enrollments[0].events.filter(
+          item =>
+            isHealthScheckOrFollowUp(item.programStage) &&
+            (selectedDateIsToday ? // if selected date is today
+              (isOverdue(item.dueDate, item.status) || // then we take events that are overdue or events that are within range
+                (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate)) &&
+                  dateIsToday(item.dueDate)))
+              : // else filter only events that are within range
+              (isWithinRange(fromDate, toDate, dueDateToDateObject(item.dueDate))
+              ))
+            && evaluateFilter(item.status, statusSelected)
+        )
+      }
+    ]
+  })).filter(item => item.enrollments[0].events.length > 0)
+
+
+  if (selectedDateIsToday) {
+    dataToDisplay = dataToDisplay.sort((a, b) => {
+      const sortedAEvents = sortEventsOnDate(a.enrollments[0].events);
+      const sortedBEvents = sortEventsOnDate(b.enrollments[0].events);
+      const sortedAlast = sortedAEvents[sortedAEvents.length - 1];
+      const sortedBlast = sortedBEvents[sortedBEvents.length - 1];
+      return sortedAlast.dueDate.localeCompare(sortedBlast.dueDate)
+    });
+  }
   const isIndexCase = tei =>
     mapProgramIdToName(tei.enrollments[0].program) ===
     "Index case surveillance";
@@ -262,5 +263,4 @@ const Workload = ({
     </div>
   );
 };
-
 export default Workload;

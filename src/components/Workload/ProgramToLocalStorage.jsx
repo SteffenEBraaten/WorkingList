@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { NoticeBox, CircularLoader } from "@dhis2/ui";
 import { CaseEnum } from "../Enum/Enum";
 import { retrieveProgram, retrieveProgramStage } from "../../utils/APIUtils"
 
-
-const addLocalStorage = (list, program) => {
+// custom hooks
+const addLocalStorage = (list, program, setLocalStore) => {
     if (localStorage[program] == undefined) {
         localStorage.setItem(program, JSON.stringify([]))
 
@@ -29,53 +29,35 @@ export const retrieveLocalStorage = (program, type) => {
 }
 
 
-const DoLocalStorage = () => {
-    if (localStorage["programs"] == undefined || localStorage["programStages"] == undefined) {
-        const queryPrograms = {
-            programs: {
-                resource: "programs",
-            },
-        };
+export const useLocalStorage = (intialValue) => {
+    const [storedValue, setStoredValue] = useState(localStorage[intialValue]);
+    const setLocalStore = (data, program) => {
+        if (data === undefined) return
+        let list = [];
+        if (program !== undefined && program === "programStages") {
+            list = data.programStages.programStages.filter(e => e.displayName == "Health status" || e.displayName == "Follow-up");
 
-        const queryProgramStages = {
-            programStages: {
-                resource: "programStages",
-            },
-        };
+        } else if (program !== undefined && program === "programs") {
+            list = data.programs.programs.filter(e => e.displayName.includes("Index case") || e.displayName.includes("Contact"));
+        }
+        localStorage.setItem(program, JSON.stringify([]))
 
-        const {
-            error: errorProgram,
-            loading: loadingProgram,
-            data: dataProgram
-        } = useDataQuery(queryPrograms);
+        const tempStorage = JSON.parse(localStorage[program]);
 
-        const {
-            error: errorStages,
-            loading: loadingStages,
-            data: dataStages
-        } = useDataQuery(queryProgramStages);
-
-        if (loadingProgram | loadingStages) {
-            return <CircularLoader />;
+        list.forEach(element => {
+            tempStorage.push(element)
+        });
+        localStorage.setItem(program, JSON.stringify(tempStorage));
+        console.log("adding localstorage: ", localStorage[program])
+        setStoredValue(localStorage[program]);
+        if (program === "programStages") {
+            retrieveProgramStage();
+        }
+        else {
+            retrieveProgram();
         }
 
-        if (errorProgram | errorStages) {
-            <NoticeBox error>Could not retrieve from storage</NoticeBox>;
-        }
-        addLocalStorage(
-            dataStages.programStages.programStages.filter(e => e.displayName == "Health status" || e.displayName == "Follow-up"),
-            "programStages"
-        );
-
-        addLocalStorage(
-            dataProgram.programs.programs.filter(e => e.displayName.includes("Index case") || e.displayName.includes("Contact")),
-            "programs"
-        );
     }
-    
-    retrieveProgramStage();
-    retrieveProgram(); 
-    return (null)
+    return [storedValue, setLocalStore];
 }
 
-export default DoLocalStorage;
