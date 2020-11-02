@@ -51,5 +51,6 @@ export const useLocalStorage = (intialValue) => {
 
     }
     return [storedValue, setLocalStore];
+
 }
 
