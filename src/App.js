@@ -6,44 +6,46 @@ import { CaseEnum, StatusEnum } from "./components/Enum/Enum";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { utils } from "react-modern-calendar-datepicker";
 import DoLocalStorage from "./components/Workload/ProgramToLocalStorage";
-
+import UserProvider from "./components/WorkloadHeader/UserContext";
 
 const MyApp = () => {
   const [filterIndexCase, setFilterIndexCase] = useState(CaseEnum.ALL);
   const [filterStatus, setFilterStatus] = useState(StatusEnum.ALL);
   const [filterDateRange, setFilterDate] = useState({
     from: utils().getToday(),
-    to: null
+    to: null,
   });
   const [numberOfFollowUps, setNumberOfFollowUps] = useState(0);
   const [numberOfHealthChecks, setNumberOfHealthChecks] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
 
-  const filterToggle = value => {
+  const filterToggle = (value) => {
     setFilterIndexCase(value);
   };
-  const statusToggle = value => {
+  const statusToggle = (value) => {
     setFilterStatus(value);
   };
-  const dateToggle = value => {
+  const dateToggle = (value) => {
     setFilterDate(value);
   };
 
   return (
     <div className={styles.container}>
       <DoLocalStorage />
-      <WorkloadHeader
-        toggleFilter={filterToggle}
-        toggleStatus={statusToggle}
-        toggleDate={dateToggle}
-        datesSelected={filterDateRange}
-        numberOfFollowUps={numberOfFollowUps}
-        numberOfHealthChecks={numberOfHealthChecks}
-        orgUnit={orgUnit}
-        setOrgUnit={setOrgUnit}
-        setSearchValue={setSearchValue}
-      />
+      <UserProvider>
+        <WorkloadHeader
+          toggleFilter={filterToggle}
+          toggleStatus={statusToggle}
+          toggleDate={dateToggle}
+          datesSelected={filterDateRange}
+          numberOfFollowUps={numberOfFollowUps}
+          numberOfHealthChecks={numberOfHealthChecks}
+          orgUnit={orgUnit}
+          setOrgUnit={setOrgUnit}
+          setSearchValue={setSearchValue}
+        />
+      </UserProvider>
       <Workload
         indexFilterSelected={filterIndexCase}
         statusSelected={filterStatus}
@@ -58,5 +60,3 @@ const MyApp = () => {
 };
 
 export default MyApp;
-
-

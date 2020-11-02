@@ -9,8 +9,15 @@ import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
 import HeaderCardRow from "./HeaderCardRow";
 import MunicipalityChooser from "./MunicipalityChooser";
-import SearchComponent from "./SearchComponent"
+import SearchComponent from "./SearchComponent";
+import { UserProvider, useUserUpdate } from "./UserContext";
+import { useDataQuery } from "@dhis2/app-runtime";
 
+const query = {
+  me: {
+    resource: "me",
+  },
+};
 
 const WorkloadHeader = ({
   toggleFilter,
@@ -25,6 +32,7 @@ const WorkloadHeader = ({
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ACTIVE);
+  const updateUserState = useUserUpdate();
 
   const isToday = (date) => {
     const today = new Date();
@@ -55,13 +63,16 @@ const WorkloadHeader = ({
     return `${fromString} - ${toString}`;
   };
 
+  const { data, loading, error } = useDataQuery(query);
+  updateUserState({ data, loading, error });
+
   return (
     <div className={styles.workloadHeader}>
-        <HeaderCardRow
-          numberOfFollowUps={numberOfFollowUps}
-          numberOfHealthChecks={numberOfHealthChecks}
-          displayText={selectedFilter}
-        />
+      <HeaderCardRow
+        numberOfFollowUps={numberOfFollowUps}
+        numberOfHealthChecks={numberOfHealthChecks}
+        displayText={selectedFilter}
+      />
       <div className={styles.filterContainer}>
         <SingleSelectField
           label="Show"
@@ -112,7 +123,6 @@ const WorkloadHeader = ({
             label="Not completed"
             value={StatusEnum.ACTIVE}
           />
-
         </SingleSelectField>
         <DropdownButton
           secondary
@@ -129,8 +139,8 @@ const WorkloadHeader = ({
         </DropdownButton>
       </div>
       <div className={styles.tableHeaderWrapper}>
-          <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
-          <SearchComponent setSearchValue={setSearchValue} />
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
+        <SearchComponent setSearchValue={setSearchValue} />
       </div>
     </div>
   );

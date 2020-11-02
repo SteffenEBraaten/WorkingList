@@ -1,43 +1,38 @@
 import React from "react";
 import styles from "./WorkloadHeader.module.css";
-import { Card, CircularLoader, NoticeBox } from "@dhis2/ui";
-import { useDataQuery } from "@dhis2/app-runtime";
+import { CircularLoader, NoticeBox } from "@dhis2/ui";
 import { CaseEnum } from "../Enum/Enum";
 import { CounterCard } from "./CounterCard.jsx";
 import { HelloCard } from "./HelloCard.jsx";
+import { useUser } from "./UserContext";
+import commonStyles from "../../App.module.css";
 
 const HeaderCardRow = ({
   numberOfFollowUps,
   numberOfHealthChecks,
   displayText,
 }) => {
-  const query = {
-    me: {
-      resource: "me",
-    },
-  };
-
-  const { error, loading, data } = useDataQuery(query);
+  const user = useUser();
 
   //Her kan vi endre på meldingene som skal vises til brukere
   const displayMessageHealthchecks = "Health checks that needs to be performed";
   const displayMessageContacts = "Contacts that needs to be contacted";
   const displayMessageGreeting = "Keep up the good work!";
 
-  const helloCard = data ? (
+  const helloCard = user.data ? (
     <HelloCard
       displayGreeting={displayMessageGreeting}
-      displayName={data.me.firstName}
+      displayName={user.data.me.firstName}
     />
-  ) : error ? (
+  ) : user.error ? (
     <NoticeBox
       error
       title="Could not get the name of the user"
-      className={styles.centerElement}
+      className={commonStyles.centerElement}
     >
       Could not get the name of the user. Please try again later.
     </NoticeBox>
-  ) : loading ? (
+  ) : user.loading ? (
     <CircularLoader />
   ) : null;
 

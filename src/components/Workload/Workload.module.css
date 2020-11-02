@@ -6,8 +6,3 @@
   align-content: center;
   flex-direction: column;
 }
-
-.centerElement {
-  align-self: center;
-  justify-self: center;
-}

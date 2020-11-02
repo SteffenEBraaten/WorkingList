@@ -51,11 +51,6 @@ h1 {
   align-self: center;
 }
 
-.centerElement {
-  align-self: center;
-  justify-self: center;
-}
-
 .searchComponent {
   margin-bottom: 2vh;
   width: 90vw;
