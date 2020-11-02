@@ -6,6 +6,7 @@ import { useConfig } from "@dhis2/app-runtime";
 import { goToTrackerCaptureAppBuilder } from "./WokloadTableRows";
 import { CaseEnum } from "../../../Enum/Enum";
 import { retrieveLocalStorage } from "../../ProgramToLocalStorage";
+import commonSyles from "../../../../App.module.css";
 
 const relationshipQuery = {
   relationship: {
@@ -46,7 +47,7 @@ const Relationship = ({ id, indexCaseId }) => {
     <NoticeBox
       error
       title="Could not get relationships"
-      className={styles.centerElement}
+      className={commonSyles.centerElement}
     >
       Could not get contact for specific index case.
     </NoticeBox>;

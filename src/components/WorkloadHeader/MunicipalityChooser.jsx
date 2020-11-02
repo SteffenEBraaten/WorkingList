@@ -2,73 +2,71 @@ import React, { useState } from "react";
 import {
   SingleSelect,
   SingleSelectOption,
-  CircularLoader
+  CircularLoader,
 } from "@dhis2/ui-core";
-import styles from "./../Workload.module.css";
+import styles from "./WorkloadHeader.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
-
-const queryMe = {
-  me: {
-    resource: "me"
-  }
-};
+import { useUser } from "./UserContext";
+import commonStyles from "../../App.module.css";
 
 const queryOrgUnit = {
   orgUnit: {
     resource: "organisationUnits",
     params: {
       fields: ["id", "displayName"],
-      paging: false
-    }
-  }
+      paging: false,
+    },
+  },
 };
 
-const getMappingFromIdToName = (allOrgUnits, userOrgUnits) =>{
-  const mapping = []
+const getMappingFromIdToName = (allOrgUnits, userOrgUnits) => {
+  const mapping = [];
 
   userOrgUnits.map((item) => {
-    const id = item.id
+    const id = item.id;
 
-    for (var i = 0; i<allOrgUnits.length; i++){
-      if (allOrgUnits[i].id === id){
+    for (let i = 0; i < allOrgUnits.length; i++) {
+      if (allOrgUnits[i].id === id) {
         mapping.push({
           id: id,
-          name: allOrgUnits[i].displayName
-        })
+          name: allOrgUnits[i].displayName,
+        });
         break;
       }
     }
-  })
-  return mapping
-}
+  });
+  return mapping;
+};
 
 const MunicipalityChooser = ({ orgUnit, setOrgUnit }) => {
   const [selected, setSelected] = useState(orgUnit);
 
-  const { error: meError, loading: meLoading, data: meData } = useDataQuery(
-    queryMe
-  );
+  const user = useUser();
+
   const {
     error: orgUnitError,
     loading: orgUnitLoading,
-    data: orgUnitData
+    data: orgUnitData,
   } = useDataQuery(queryOrgUnit);
 
-  if (meLoading || orgUnitLoading) {
+  if (user.loading || orgUnitLoading) {
     return <CircularLoader />;
   }
 
-  if (meError || orgUnitError) {
+  if (user.error || orgUnitError) {
     <NoticeBox
       error
       title="Could not get orgUnit"
-      className={styles.centerElement}
+      className={commonStyles.centerElement}
     >
       Could not get the organisation unit of the user. Please try again later.
     </NoticeBox>;
   }
 
-  const mapIdToName = getMappingFromIdToName(orgUnitData.orgUnit.organisationUnits, meData.me.organisationUnits)
+  const mapIdToName = getMappingFromIdToName(
+    orgUnitData.orgUnit.organisationUnits,
+    user.data.me.organisationUnits
+  );
 
   return (
     <div className={styles.MunicipalityChooser}>
