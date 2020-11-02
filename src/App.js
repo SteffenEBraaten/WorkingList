@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./App.module.css";
 import Workload from "./components/Workload/Workload.jsx";
 import WorkloadHeader from "./components/WorkloadHeader/WorkloadHeader.jsx";
-import { CaseEnum, StatusEnum } from "./components/Enum/Enum";
+import { CaseEnum, StatusEnum, StorageEnum } from "./components/Enum/Enum";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { utils } from "react-modern-calendar-datepicker";
 import { useLocalStorage } from "./components/Workload/ProgramToLocalStorage";
@@ -19,8 +19,8 @@ const MyApp = () => {
   });
   const [numberOfFollowUps, setNumberOfFollowUps] = useState(0);
   const [numberOfHealthChecks, setNumberOfHealthChecks] = useState(0);
-  const [storedPrograms, setStoredPrograms] = useLocalStorage("programs");
-  const [storedStages, setStoredProgramStages] = useLocalStorage("programStages");
+  const [storedPrograms, setStoredPrograms] = useLocalStorage(StorageEnum.PROGRAMS);
+  const [storedStages, setStoredProgramStages] = useLocalStorage(StorageEnum.PROGRAMSTAGES);
 
   const queryPrograms = {
     programs: {
