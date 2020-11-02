@@ -4,9 +4,7 @@ import styles from "./Workload.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import WorkloadTable from "./components/WorkloadTable/WorkloadTable";
-import SearchComponent from "./components/SearchComponent";
 import { retrieveLocalStorage } from "./ProgramToLocalStorage";
-import MunicipalityChooser from "./components/MunicipalityChooser";
 import {
   findValue,
   isHealthScheckOrFollowUp,
@@ -19,17 +17,17 @@ import {
   dateIsToday,
   sortEventsOnDate
 } from "../../utils/APIUtils";
+import commonStyles from "../../App.module.css";
 
 const Workload = ({
   indexFilterSelected,
   statusSelected,
   datesSelected,
   setNumberOfFollowUps,
-  setNumberOfHealthChecks
+  setNumberOfHealthChecks,
+  orgUnit,
+  searchValue
 }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [orgUnit, setOrgUnit] = useState("a8QXqdXyhNr");
-
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -236,7 +234,7 @@ const Workload = ({
   }, [healthCheckCounter, followUpCounter]);
 
   if (indexCaseLoading || contactCaseLoading) {
-    return <CircularLoader className={styles.centerElement} />;
+    return <CircularLoader className={commonStyles.centerElement} />;
   }
 
   if (indexCaseError || contactCaseError) {
@@ -244,7 +242,7 @@ const Workload = ({
       <NoticeBox
         error
         title="Could not get working list"
-        className={styles.centerElement}
+        className={commonStyles.centerElement}
       >
         Could not get the working list. Please try again later.
       </NoticeBox>
@@ -253,10 +251,6 @@ const Workload = ({
 
   return (
     <div className={styles.workloadContainer}>
-      <div className={styles.tableHeaderWrapper}>
-        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
-        <SearchComponent setSearchValue={setSearchValue} />
-      </div>
       <WorkloadTable data={dataToDisplay} showFilter={indexFilterSelected} />
     </div>
   );

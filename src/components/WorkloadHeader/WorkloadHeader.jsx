@@ -7,8 +7,17 @@ import {
 import styles from "./WorkloadHeader.module.css";
 import { CaseEnum, StatusEnum } from "../Enum/Enum";
 import DateComponent from "./DateComponent";
-import HeaderCards from "./HeaderCards";
+import HeaderCardRow from "./HeaderCardRow";
+import MunicipalityChooser from "./MunicipalityChooser";
+import SearchComponent from "./SearchComponent";
+import { useUserUpdate } from "./UserContext";
+import { useDataQuery } from "@dhis2/app-runtime";
 
+const query = {
+  me: {
+    resource: "me",
+  },
+};
 
 const WorkloadHeader = ({
   toggleFilter,
@@ -17,9 +26,13 @@ const WorkloadHeader = ({
   datesSelected,
   numberOfFollowUps,
   numberOfHealthChecks,
+  setSearchValue,
+  orgUnit,
+  setOrgUnit,
 }) => {
   const [selectedFilter, setSelectedFilter] = useState(CaseEnum.ALL);
   const [status, setStatus] = useState(StatusEnum.ACTIVE);
+  const updateUserState = useUserUpdate();
 
   const isToday = (date) => {
     const today = new Date();
@@ -50,9 +63,12 @@ const WorkloadHeader = ({
     return `${fromString} - ${toString}`;
   };
 
+  const { data, loading, error } = useDataQuery(query);
+  updateUserState({ data, loading, error });
+
   return (
     <div className={styles.workloadHeader}>
-      <HeaderCards
+      <HeaderCardRow
         numberOfFollowUps={numberOfFollowUps}
         numberOfHealthChecks={numberOfHealthChecks}
         displayText={selectedFilter}
@@ -107,7 +123,6 @@ const WorkloadHeader = ({
             label="Not completed"
             value={StatusEnum.ACTIVE}
           />
-
         </SingleSelectField>
         <DropdownButton
           secondary
@@ -123,7 +138,10 @@ const WorkloadHeader = ({
           {formatInputValue(datesSelected)}
         </DropdownButton>
       </div>
-
+      <div className={styles.tableHeaderWrapper}>
+        <MunicipalityChooser orgUnit={orgUnit} setOrgUnit={setOrgUnit} />
+        <SearchComponent setSearchValue={setSearchValue} />
+      </div>
     </div>
   );
 };
