@@ -15,7 +15,7 @@ import {
   mapProgramIdToName,
   isOverdue,
   dateIsToday,
-  sortEventsOnDate
+  sortEventsOnDate,
 } from "../../utils/APIUtils";
 import commonStyles from "../../App.module.css";
 
@@ -28,6 +28,10 @@ const Workload = ({
   orgUnit,
   searchValue
 }) => {
+  if (localStorage["programs"] === undefined || localStorage["programStages"] === undefined)
+    return (<NoticeBox error title="Could not load data from local storage" className={styles.centerElement} >
+      Could not load data from local storage. Please try again later.
+      </NoticeBox>);
   const queryContact = {
     contacts: {
       resource: "trackedEntityInstances",
@@ -50,7 +54,6 @@ const Workload = ({
       })
     }
   };
-
   const queryIndex = {
     indexCases: {
       resource: "trackedEntityInstances",
@@ -255,5 +258,4 @@ const Workload = ({
     </div>
   );
 };
-
 export default Workload;

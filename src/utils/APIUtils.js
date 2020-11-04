@@ -24,7 +24,6 @@ const retrieveProgramStage = () => {
 const retrieveProgram = () => {
   const programIndex = retrieveLocalStorage("programs", CaseEnum.INDEXES)
   const programContact = retrieveLocalStorage("programs", CaseEnum.CONTACTS)
-
   programDictionary = {
     [programIndex.id]: programIndex.displayName,
     [programContact.id]: programContact.displayName,

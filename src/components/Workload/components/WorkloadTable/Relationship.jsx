@@ -16,6 +16,10 @@ const relationshipQuery = {
 };
 
 const Relationship = ({ id, indexCaseId }) => {
+  if (localStorage["programs"] === undefined || localStorage["programStages"] === undefined)
+    return (<NoticeBox error title="Could not load data from local storage" className={styles.centerElement} >
+      Could not load data from local storage. Please try again later.
+      </NoticeBox>);
   const { baseUrl } = useConfig();
   const goToTrackerCaptureApp = goToTrackerCaptureAppBuilder(
     `${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?`
