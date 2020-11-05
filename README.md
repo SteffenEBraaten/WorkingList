@@ -13,6 +13,9 @@ The application aims to assist health workers and contact tracers with keeping t
 
 The overview consists of a table with relevant information about index cases and contacts, as well as their status. The overview also provide the user with an exact number of persons that needs to be contacted. The user can sort the overview to their personal needs by filtering the results that are displayed, as well as choosing their preferred time period. Theres also a search functionality, making it easy to find the results desired.
 
+### Screenshot of application ###
+
+![](https://github.uio.no/steffeeb/WorkingList/tree/Documentation/9/Images/WorkingList_Screenshot.png)
 
 ## Implementation
 
@@ -26,7 +29,7 @@ Furthermore, to keep the application efficient, the application uses server-side
 
 ## Possible improvements
 
-Tas etter at prosjektet er ferdig.
+Missing functionality that was originally planned was to have pagination for our table. These means that the table can potentially be very long.
 
 ## Available Scripts
 
