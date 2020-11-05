@@ -15,7 +15,7 @@ The overview consists of a table with relevant information about index cases and
 
 ### Screenshot of application ###
 
-![](https://github.uio.no/steffeeb/WorkingList/tree/Documentation/9/Images/WorkingList_Screenshot.png)
+![](https://github.uio.no/steffeeb/WorkingList/blob/master/Images/WorkingList_Screenshot.png)
 
 ## Implementation
 
@@ -29,7 +29,7 @@ Furthermore, to keep the application efficient, the application uses server-side
 
 ## Possible improvements
 
-Missing functionality that was originally planned was to have pagination for our table. These means that the table can potentially be very long.
+Missing functionality that was originally planned was to have pagination for our table. These means that the table can potentially be lengthy.
 
 ## Available Scripts
 
