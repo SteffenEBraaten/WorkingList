@@ -177,7 +177,6 @@ const Workload = ({
   };
 
 
-  // TODOS: Getting duplicate cases becuse of how the enrollemnts events filter is writen here.
   dataToDisplay = filterData(dataToDisplay).map(item => ({
     ...item,
     enrollments: [

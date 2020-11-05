@@ -4,6 +4,7 @@ import {
   SingleSelectOption,
   CircularLoader,
 } from "@dhis2/ui-core";
+import { NoticeBox } from "@dhis2/ui";
 import styles from "./WorkloadHeader.module.css";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { useUser } from "./UserContext";

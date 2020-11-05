@@ -1,6 +1,6 @@
 import React from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
-import { TableRow, TableCell, Button } from "@dhis2/ui";
+import { TableRow, TableCell, Button, NoticeBox } from "@dhis2/ui";
 import { findValue } from "../../../../utils/APIUtils";
 import { useConfig } from "@dhis2/app-runtime";
 import { goToTrackerCaptureAppBuilder } from "./WokloadTableRows";
