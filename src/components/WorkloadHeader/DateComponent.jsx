@@ -88,7 +88,7 @@ const DateComponent = ({ toggleDate, dateSelected }) => {
       locale={myLocale}
 
       colorPrimary="#00695C"
-      colorPrimaryLight="#91c9c0"
+      colorPrimaryLight="#b2dfdb"
       box-shadow="0 1em 3em #E8EDF2"
     />
   );

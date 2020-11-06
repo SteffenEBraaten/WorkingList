@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useDataQuery } from "@dhis2/app-runtime";
-import { NoticeBox, CircularLoader } from "@dhis2/ui";
+import { useState } from "react";
 import { CaseEnum, StorageEnum } from "../Enum/Enum";
 import { retrieveProgram, retrieveProgramStage } from "../../utils/APIUtils"
 
