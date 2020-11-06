@@ -1,22 +1,52 @@
-This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
+# Documentation #
+
+**Group members:**
+* Tine Margretha Vister (tinemv@ifi.uio.no)
+* Steffen Ekeberg Bråten (steffeeb@ifi.uio.no)
+* Thanh Thao Thi Tran (thanht@ifi.uio.no)
+* Steven Hoang Giang Nguyen (shnguyen@ifi.uio.no)
+* Susanne Semsøy (susansem@ifi.uio.no)
+
+## Functionality ##
+
+The application aims to assist health workers and contact tracers with keeping track of the cases and contacts they need to follow up on. To achieve this, the application gives a simplified overview of the persons that they should contact at any given date. From this overview, the user can access more extensive features in the Tracker Capture App.
+
+The overview consists of a table with relevant information about index cases and contacts, as well as their status. The overview also provide the user with an exact number of persons that needs to be contacted. The user can sort the overview to their personal needs by filtering the results that are displayed, as well as choosing their preferred time period. Theres also a search functionality, making it easy to find the results desired.
+
+### Screenshot of application ###
+
+![](https://github.uio.no/steffeeb/WorkingList/blob/master/Images/WorkingList_Screenshot.png)
+
+## Implementation
+
+The information displayed in our application is fetched from the DHIS2 API, however, we have prioritized information most relevant to the user. At startup, the application fetches the workload for today (default) as well as data like the user’s username. The information is then displayed in a table, showing both index cases and contacts as default. Then the application will count through scheduled due dates for today and display it. The user can also choose to see all contacts linked to an index cases within a modal.
+
+If the user wants to view another date, or a range of dates (e.g. the next 10 days), this can be done through the calendar-feature. The new data is then fetched from the API and displayed accordingly.
+
+To achieve a cohesive design, the different components is all from the DHIS2 design library. The exception is the calendar-feature (taken from the React Library) which was modified to our needs. This was because the DHIS2 library did not offer a suitable calendar component.
+
+Furthermore, to keep the application efficient, the application uses server-side rendering when showing both index cases and contacts, and client-side for the rest.
+
+## Possible improvements
+
+Missing functionality that was originally planned was to have pagination for our table. These means that the table can potentially be lengthy.
+
+It should also be mentioned that the application has not gone through automated testes, but rather been manually tested.
 
 ## Available Scripts
 
+This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
+
 In the project directory, you can run:
+
+### `yarn install`
+
+Must be done in order for `yarn start` to work.
 
 ### `yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner and runs all available tests found in `/src`.<br />
-
-See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
 
 ### `yarn build`
 
