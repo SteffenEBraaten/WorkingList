@@ -1,4 +1,7 @@
-# Documentation #
+# About the app
+The WorkingList application was made to improve the workflow of health personell and contact tracers when they were going to follow up index cases of COVID-19 and contacts of index cases. This application was implemented as a project in the course [IN5320 - Development in platform ecosystems](https://www.uio.no/studier/emner/matnat/ifi/IN5320/) for the [Case 1 - Working List](https://www.uio.no/studier/emner/matnat/ifi/IN5320/h20/project/project-cases.html) at the University of Oslo (UiO). The following sections shows the short documentation of the project as well as who was involved in the development of the app. 
+
+## Documentation #
 
 **Group members:**
 * Tine Margretha Vister (tinemv@ifi.uio.no)
@@ -15,7 +18,7 @@ The overview consists of a table with relevant information about index cases and
 
 ### Screenshot of application ###
 
-![](https://github.uio.no/steffeeb/WorkingList/blob/master/Images/WorkingList_Screenshot.png)
+![](https://github.com/SteffenEBraaten/WorkingList/blob/master/Images/WorkingList_Screenshot.png)
 
 ## Implementation
 
